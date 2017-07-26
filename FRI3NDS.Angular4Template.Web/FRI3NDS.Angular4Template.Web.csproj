@@ -31,6 +31,8 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FRI3NDS.Angular4Template.Core\FRI3NDS.Angular4Template.Core.csproj" />
+    <ProjectReference Include="..\FRI3NDS.Angular4Template.Data\FRI3NDS.Angular4Template.Data.csproj" />
     <ProjectReference Include="..\FRI3NDS.Angular4Template.Util\FRI3NDS.Angular4Template.Util.csproj" />
   </ItemGroup>
 

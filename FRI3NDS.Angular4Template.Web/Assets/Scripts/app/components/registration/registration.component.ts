@@ -36,7 +36,7 @@ export class RegistrationComponent implements OnInit {
 	/**
 	 * Зарегистрироваться в приложении.
 	 */
-	login() {
+    doRegister() {
 		this.authService.register(this.userLoginModel)
 			.then((result: TokenInfo) => {
 				console.log('Регистрация успешна: ' + JSON.stringify(result));

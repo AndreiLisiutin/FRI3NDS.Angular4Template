@@ -38,7 +38,7 @@ namespace FRI3NDS.Angular4Template.Web
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<Microsoft.AspNetCore.Http.IHttpContextAccessor, HttpContextAccessor>(); //для NLog Web
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //для NLog Web
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()

@@ -32,11 +32,11 @@ export class LoginComponent implements OnInit {
 	ngOnInit(): void {
 		this.userLoginModel = new UserLoginModel();
 	}
-
+    
 	/**
 	 * Войти в приложение.
 	 */
-	login(): void {
+	doLogin(): void {
 		this.authService.login(this.userLoginModel)
 			.then((result :TokenInfo)  => {
 				console.log('Авторизация успешна: ' + JSON.stringify(result));
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
 	/**
 	 * Выйти из приложения.
 	 */
-	logout(): void {
+	doLogout(): void {
 		this.authService.logout();
 	}
 

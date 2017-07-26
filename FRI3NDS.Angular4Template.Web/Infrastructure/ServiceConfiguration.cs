@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FRI3NDS.Angular4Template.Core.Interfaces.Data;
+using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data;
+using FRI3NDS.Angular4Template.Core.Services.Data;
+using FRI3NDS.Angular4Template.Data.UnitOfWork;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,8 +23,8 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         public static void ConfigureServices(IServiceCollection services, IConfigurationRoot configuration)
         {
             services.AddSingleton<IConfiguration>((serviceProvider) => configuration);
-            ConfigureCoreServices(services);
             ConfigureDataServices(services);
+            ConfigureCoreServices(services);
         }
 
         /// <summary>
@@ -29,8 +33,8 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         /// <param name="services">Набор сервисов.</param>
         private static void ConfigureCoreServices(IServiceCollection services)
         {
-            //services.AddTransient<I_TestDataService, _TestDataService>();
-            //services.AddTransient<IAuthenticationDataService, AuthenticationDataService>();
+            services.AddTransient<I_TestDataService, _TestDataService>();
+            services.AddTransient<IAuthenticationDataService, AuthenticationDataService>();
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         private static void ConfigureDataServices(IServiceCollection services)
         {
             //FluentMappingConfiguration.ConfigureMapping();
-            //services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
+            services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
         }
     }
 }

@@ -13,9 +13,9 @@
 		</div>
 
 		<div class="form-group">
-			<button [disabled]="loginForm.invalid" (click)="login()">Войти</button>
+			<button [disabled]="loginForm.invalid" (click)="doLogin()">Войти</button>
 		</div>
 	</form>
 	<button *ngIf="isAuthenticated()" class="btn btn-default" (click)="checkLogin()">Проверить</button>
-	<button *ngIf="isAuthenticated()" class="btn btn-default" (click)="logout()">Выйти</button>
+	<button *ngIf="isAuthenticated()" class="btn btn-default" (click)="doLogout()">Выйти</button>
 </div>
