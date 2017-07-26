@@ -15,14 +15,14 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories
         /// </summary>
         /// <param name="id">Идентификатор пользователя.</param>
         /// <param name="login">Логин.</param>
-        /// <param name="page_size">Количество возвращаемых поьзователей.</param>
-        /// <param name="page_number">Страница возвращаемых пользователей, начиная с 1.</param>
+        /// <param name="pageSize">Количество возвращаемых поьзователей.</param>
+        /// <param name="pageNumber">Страница возвращаемых пользователей, начиная с 1.</param>
         /// <returns>Список отфильтрованных пользователей.</returns>
         List<User> Query(
             int? id = null,
             string login = null,
-            int page_size = 1000,
-            int page_number = 1);
+            int pageSize = 1000,
+            int pageNumber = 0);
 
         /// <summary>
         /// Сохранить пользователя.
