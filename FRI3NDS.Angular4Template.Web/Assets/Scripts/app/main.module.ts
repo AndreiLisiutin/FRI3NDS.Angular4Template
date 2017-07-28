@@ -11,7 +11,6 @@ import { RootComponent } from 'components/root/root.component';
 import { ComponentsModule } from 'components/components.module';
 import { ServicesModule } from 'services/services.module';
 import { RoutingModule } from 'routing.module';
-import { AuthenticationModule } from 'services/authentication/authentication.module';
 
 /**
  * Главный модуль приложения.
@@ -25,8 +24,7 @@ import { AuthenticationModule } from 'services/authentication/authentication.mod
 		RouterModule,
 		ComponentsModule,
 		ServicesModule,
-		RoutingModule,
-		AuthenticationModule
+		RoutingModule
     ],
     declarations: [],
 	bootstrap: [RootComponent],

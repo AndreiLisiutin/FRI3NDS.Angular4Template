@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { AuthenticationService } from "services/authentication/authentication.service";
+import { AuthenticationService } from "services/authentication.service";
 import { AuthHttp } from 'angular2-jwt';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
@@ -49,7 +49,8 @@ export class LoginComponent implements OnInit {
 	/**
 	 * Тест - проверить логин через запрос по защищенному маршруту.
 	 */
-	checkLogin(): void {
+    checkLogin(): void {
+        this.authService.checkLogin();
 		var tokenInfo = this.authService.getTokenInfo();
 		console.log('Инфа о токене: ' + JSON.stringify(tokenInfo));
 	}

@@ -1,8 +1,8 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { AuthenticationService } from "services/authentication/authentication.service";
 import { AuthHttp } from 'angular2-jwt';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
+import { AuthenticationService } from "services/authentication.service";
 
 /**
  * Компонент регистрации нового пользователя.

@@ -7,7 +7,6 @@ import { CustomFormsModule } from 'ng2-validation';
 
 import { MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule } from '@angular/material';
 
-import { AuthenticationModule } from 'services/authentication/authentication.module';
 import { RootComponent } from 'components/root/root.component';
 import { LoginComponent } from 'components/login/login.component';
 import { RegistrationComponent } from 'components/registration/registration.component';

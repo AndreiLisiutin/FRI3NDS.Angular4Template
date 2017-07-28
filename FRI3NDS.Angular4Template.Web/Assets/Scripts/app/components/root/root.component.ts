@@ -1,6 +1,5 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit, ViewChild } from '@angular/core';
-import { AuthenticationService } from "services/authentication/authentication.service";
 import { AuthHttp } from 'angular2-jwt';
 import { MdSidenav } from "@angular/material";
 

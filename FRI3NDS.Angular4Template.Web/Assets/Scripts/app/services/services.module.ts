@@ -5,6 +5,8 @@ import { RoutingModule } from 'routing.module';
 import { HttpModule } from "@angular/http";
 
 import { ValidationService } from "services/validation.service";
+import { DataAdapter } from "services/data.adapter";
+import { AuthenticationService } from "services/authentication.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -20,7 +22,9 @@ import { ValidationService } from "services/validation.service";
 	declarations: [
 	],
 	providers: [
-		ValidationService
+        ValidationService,
+        AuthenticationService,
+        DataAdapter
 	]
 })
 export class ServicesModule { }

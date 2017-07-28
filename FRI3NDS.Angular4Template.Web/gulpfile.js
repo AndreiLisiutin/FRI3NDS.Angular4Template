@@ -45,7 +45,7 @@ gulp.task('tslint', function () {
 // Билд
 gulp.task('ts:compile:copy', function () {
     return tsProject.src(paths.src.js + "/**/*.ts", { since: gulp.lastRun('ts:compile:copy') })
-        .pipe(newer({ dest: paths.dest.js, ext: '.js' }))
+        //.pipe(newer({ dest: paths.dest.js, ext: '.js' }))
         .pipe(gulpIf(isDevelopment, debug({ title: 'ts from assets' })))
         .pipe(sourcemaps.init())
         .pipe(tsProject()).js
