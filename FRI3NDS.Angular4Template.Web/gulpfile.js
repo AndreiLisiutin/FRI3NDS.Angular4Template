@@ -62,6 +62,7 @@ gulp.task('lib:copy', function () {
         paths.src.lib + '/angular2-jwt/**',
         paths.src.lib + '/ng2-validation/**',
         paths.src.lib + '/libphonenumber-js/**',
+        paths.src.lib + '/hammerjs/hammer.min.js',
     ], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
         .pipe(newer(paths.dest.lib))
         .pipe(gulp.dest(paths.dest.lib));
@@ -82,6 +83,22 @@ gulp.task('bootstrap:compile:copy', function () {
             ]
         }))
         .pipe(rename('bootstrap.css'))
+        .pipe(gulp.dest(paths.dest.styles));
+});
+gulp.task('material:compile:copy', function () {
+    return gulp
+        .src(paths.src.styles + '/material-theme-customized.scss')
+        .pipe(newer(paths.dest.styles + '/material-theme.css'))
+        .pipe(gulpIf(isDevelopment, debug({ title: 'material-theme' })))
+        .pipe(sass({
+            outputStyle: 'nested',
+            precison: 3,
+            errLogToConsole: true,
+            includePaths: [
+                paths.src.lib + '/@angular/material'
+            ]
+        }))
+        .pipe(rename('material-theme.css'))
         .pipe(gulp.dest(paths.dest.styles));
 });
 gulp.task('images:copy', function () {
@@ -131,7 +148,7 @@ gulp.task('assets:clean', gulp.parallel('js:clean', 'styles:clean', 'images:clea
 gulp.task('assets:build',
     gulp.series(
         gulp.parallel('js:clean', 'styles:clean', 'images:clean', 'settings:clean'),
-        gulp.parallel('ts:compile:copy', 'bootstrap:compile:copy', 'images:copy', 'styles:copy', 'views:copy', 'settings:copy')
+        gulp.parallel('ts:compile:copy', 'bootstrap:compile:copy', 'material:compile:copy', 'images:copy', 'styles:copy', 'views:copy', 'settings:copy')
     )
 );
 // Почистить и построить библиотеки
@@ -143,9 +160,10 @@ gulp.task('assets:watch', function () {
     gulp.watch(paths.src.js + "/**/*.html", gulp.series('views:copy'));
     gulp.watch(paths.src.js + '/**/*.css', gulp.series('styles:copy'));
     gulp.watch(paths.src.images + '/**/*.*', gulp.series('images:copy'));
+    gulp.watch(paths.src.styles + '/material-theme-customized.scss', gulp.series('material:compile:copy'));
     gulp.watch(paths.src.styles + '/bootstrap-customized.scss', gulp.series('bootstrap:compile:copy'));
     gulp.watch(paths.src.root + '/*.{html,config.js}', gulp.series('settings:copy'));
 });
 
 // Почистить и построить все, кроме библиотек + следить за всеми изменениями, кроме библиотек
-gulp.task('dev', gulp.series('assets:build', 'assets:watch'));
+gulp.task('__dev', gulp.series('assets:build', 'assets:watch'));

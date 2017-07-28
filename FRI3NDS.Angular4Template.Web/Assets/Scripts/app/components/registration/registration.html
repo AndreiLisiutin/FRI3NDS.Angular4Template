@@ -1,24 +1,33 @@
 ﻿<div class="container">
 	<h1>Регистрация</h1>
 	<form novalidate #registrationForm="ngForm">
-		<div class="form-group">
-			<label>Логин</label>
-			<input class="form-control" id="login" name="login" [(ngModel)]="userLoginModel.login" #login="ngModel" required />
-			<validation-messages [control]="login"></validation-messages>
-		</div>
-		<div class="form-group">
-			<label>Пароль</label>
-			<input class="form-control" id="password" name="password" [(ngModel)]="userLoginModel.password" #password="ngModel" required />
-			<validation-messages [control]="password"></validation-messages>
-		</div>
-		<div class="form-group">
-			<label>Повторите пароль</label>
-			<input class="form-control" id="repeatPassword" name="repeatPassword" [(ngModel)]="userLoginModel.repeatPassword" #repeatPassword="ngModel" required [equalTo]="password"/>
-			<validation-messages [control]="repeatPassword"></validation-messages>
-		</div>
+        <div class="row">
+            <md-input-container style="flex: 1 1 100%;">
+                <input mdInput placeholder="Логин" id="login" name="login" [(ngModel)]="userLoginModel.login" #login="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="login.invalid" style="margin-top:-20px;">
+                <validation-messages [control]="login"></validation-messages>
+            </md-error>
+        </div>
+        <div class="row">
+            <md-input-container style="flex: 1 1 100%;">
+                <input type="password" mdInput placeholder="Пароль" id="password" name="password" [(ngModel)]="userLoginModel.password" #password="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="password.invalid" style="margin-top:-20px;">
+                <validation-messages [control]="password"></validation-messages>
+            </md-error>
+        </div>
+        <div class="row">
+            <md-input-container style="flex: 1 1 100%;">
+                <input type="password" mdInput placeholder="Повторите пароль" id="repeatPassword" name="repeatPassword" [(ngModel)]="userLoginModel.repeatPassword" #repeatPassword="ngModel" required [equalTo]="password" />
+            </md-input-container>
+            <md-error *ngIf="repeatPassword.invalid" style="margin-top:-20px;">
+                <validation-messages [control]="repeatPassword"></validation-messages>
+            </md-error>
+        </div>
 
-		<div class="form-group">
-			<button [disabled]="registrationForm.invalid" (click)="doRegister()">Зарегаться</button>
-		</div>
+        <div class="row">
+            <button md-raised-button [disabled]="registrationForm.invalid" (click)="doRegister()">Войти</button>
+        </div>
 	</form>
 </div>

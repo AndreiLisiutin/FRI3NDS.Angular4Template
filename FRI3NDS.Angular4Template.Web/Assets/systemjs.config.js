@@ -19,11 +19,17 @@
             '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
             '@angular/router/upgrade': 'npm:@angular/router/bundles/router-upgrade.umd.js',
             '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+            '@angular/animations': 'npm:@angular/animations/bundles/animations.umd.js',
+            '@angular/animations/browser': 'npm:@angular/animations/bundles/animations-browser.umd.js',
+            '@angular/platform-browser/animations': 'npm:@angular/platform-browser/bundles/platform-browser-animations.umd.js',   
             'angular2-jwt': 'npm:angular2-jwt/angular2-jwt.js',
             'ng2-validation': 'npm:ng2-validation/bundles/ng2-validation.umd.js',
             'libphonenumber-js': 'npm:libphonenumber-js/bundle/libphonenumber-js.min.js',
             'rxjs': 'npm:rxjs',
-            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+            'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+            '@angular/material': 'npm:@angular/material/bundles/material.umd.js',
+            '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
+            'hammerjs': 'npm:hammerjs/hammer.min.js',
         },
 
         packages: {
