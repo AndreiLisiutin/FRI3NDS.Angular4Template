@@ -18,10 +18,5 @@ import { MdSidenav } from "@angular/material";
 `]
 })
 export class RootComponent {
-
-    @ViewChild('sidenav') md: MdSidenav;
     
-    Open() {
-        this.md.open();
-    }
 }

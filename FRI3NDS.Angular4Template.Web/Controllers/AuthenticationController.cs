@@ -1,5 +1,6 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Util;
 using FRI3NDS.Angular4Template.Web.Models;
 using FRI3NDS.Angular4Template.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -46,11 +47,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         public TokenInfo GetAuthToken([FromBody]UserLoginModel user)
         {
             UserBase existUser = this.AuthenticationDataService.VerifyUser(user.Login, user.Password);
-            if (existUser == null)
-            {
-                return null;
-            }
-
+            Argument.Require(existUser != null, "Введенные данные пользователя не верны.");
             TokenInfo token = this._GenerateToken(existUser);
             return token;
         }

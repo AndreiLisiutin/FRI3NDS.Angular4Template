@@ -63,6 +63,7 @@ gulp.task('lib:copy', function () {
         paths.src.lib + '/ng2-validation/**',
         paths.src.lib + '/libphonenumber-js/**',
         paths.src.lib + '/hammerjs/hammer.min.js',
+        paths.src.lib + '/angular4-notifications/**',
     ], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
         .pipe(newer(paths.dest.lib))
         .pipe(gulp.dest(paths.dest.lib));

@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"baseUrl": "./Assets/Scripts/app/",
-		"noImplicitAny": true,
+		"noImplicitAny": false,
 		"noEmitOnError": true,
 		"removeComments": false,
 		"sourceMap": true,

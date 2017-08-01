@@ -4,6 +4,7 @@ import { AuthenticationService } from "services/authentication.service";
 import { AuthHttp } from 'angular2-jwt';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
+import { NotificationsService } from "angular4-notifications";
 
 /**
  * Компонент формы входа.
@@ -22,8 +23,9 @@ export class LoginComponent implements OnInit {
 	/**
 	 * Конструктор компонента формы входа.
 	 * @param authService Сервис аутентификации.
+	 * @param _notificationService Сервис тостера.
 	 */
-	constructor(private authService: AuthenticationService) {
+    constructor(private authService: AuthenticationService, private _notificationService: NotificationsService) {
 	}
 
 	/**
@@ -41,8 +43,8 @@ export class LoginComponent implements OnInit {
 			.then((result :TokenInfo)  => {
 				console.log('Авторизация успешна: ' + JSON.stringify(result));
 			})
-			.catch(error => {
-				alert(error.text && error.text() || 'Ошибка.');
+            .catch(error => {
+                this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
 			});
 	}
 
@@ -51,8 +53,8 @@ export class LoginComponent implements OnInit {
 	 */
     checkLogin(): void {
         this.authService.checkLogin();
-		var tokenInfo = this.authService.getTokenInfo();
-		console.log('Инфа о токене: ' + JSON.stringify(tokenInfo));
+        var tokenInfo = this.authService.getTokenInfo();
+        this._notificationService.success('Токен', 'Инфа о токене: ' + JSON.stringify(tokenInfo));
 	}
 
 	/**

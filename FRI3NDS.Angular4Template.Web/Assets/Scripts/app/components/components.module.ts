@@ -11,6 +11,8 @@ import { RootComponent } from 'components/root/root.component';
 import { LoginComponent } from 'components/login/login.component';
 import { RegistrationComponent } from 'components/registration/registration.component';
 import { ValidationMessagesComponent } from 'components/validation-messages/validation-messages.component';
+import { SimpleNotificationsModule } from "angular4-notifications";
+import { ToastComponent } from "components/toast/toast.component";
 
 /**
  * Модуль регистрации компонентов приложения.
@@ -18,6 +20,7 @@ import { ValidationMessagesComponent } from 'components/validation-messages/vali
 @NgModule({
     imports: [
         MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule,
+        SimpleNotificationsModule.forRoot(),
 		FormsModule,
 		HttpModule,
 		BrowserModule,
@@ -27,13 +30,15 @@ import { ValidationMessagesComponent } from 'components/validation-messages/vali
 	exports: [
 		RootComponent,
 		LoginComponent,
-		RegistrationComponent,
+        RegistrationComponent,
+        ToastComponent,
 		ValidationMessagesComponent
 	],
 	declarations: [
 		RootComponent,
 		LoginComponent,
-		RegistrationComponent,
+        RegistrationComponent,
+        ToastComponent,
 		ValidationMessagesComponent
 	],
 	providers: []
