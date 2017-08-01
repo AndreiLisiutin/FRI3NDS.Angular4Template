@@ -26,7 +26,8 @@ export class DataAdapter {
 	/**
 	 * Ключ, по которому лежит токен в sessionStorage.
 	 */
-    private _TOKEN_KEY = "token";
+    private _AUTH_TOKEN_KEY = 'AUTH_TOKEN';
+    private _XSRF_TOKEN_HEADER = 'X-XSRF-TOKEN';
 
     // Define the internal Subject we'll use to push the command count
     public pendingCommandsSubject = new Subject<number>();
@@ -88,15 +89,15 @@ export class DataAdapter {
     }
 
     public getToken(): string {
-        return sessionStorage.getItem(this._TOKEN_KEY);
+        return sessionStorage.getItem(this._AUTH_TOKEN_KEY);
     }
 
     public setToken(token: string) {
-        sessionStorage.setItem(this._TOKEN_KEY, token);
+        sessionStorage.setItem(this._AUTH_TOKEN_KEY, token);
     }
 
     public clearToken() {
-        sessionStorage.removeItem(this._TOKEN_KEY);
+        sessionStorage.removeItem(this._AUTH_TOKEN_KEY);
     }
 
     private request(options: DataServiceOptions): Observable<Response> {
@@ -160,7 +161,7 @@ export class DataAdapter {
     private addXsrfToken(options: DataServiceOptions): DataServiceOptions {
         const xsrfToken = this.getXsrfCookie();
         if (xsrfToken) {
-            options.headers['X-XSRF-TOKEN'] = xsrfToken;
+            options.headers[this._XSRF_TOKEN_HEADER] = xsrfToken;
         }
         return options;
     }

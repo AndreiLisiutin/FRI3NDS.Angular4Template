@@ -19,6 +19,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
     /// Контроллер для работы с аутентификацией и учетными записями пользователей.
     /// </summary>
     [Route("api/Authentication")]
+    [ValidateAntiForgeryToken]
     public class AuthenticationController : Controller
     {
         /// <summary>

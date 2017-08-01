@@ -15,6 +15,7 @@ using NLog.Extensions.Logging;
 using NLog.Web;
 using Microsoft.IdentityModel.Tokens;
 using FRI3NDS.Angular4Template.Web.Models;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace FRI3NDS.Angular4Template.Web
 {
@@ -47,12 +48,14 @@ namespace FRI3NDS.Angular4Template.Web
                     .Build());
             });
 
+
+            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
             services.AddMvc();
             ServiceConfiguration.ConfigureServices(services, this.Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IAntiforgery antiforgery)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -60,7 +63,7 @@ namespace FRI3NDS.Angular4Template.Web
             loggerFactory.AddNLog();
             app.AddNLogWeb();
             env.ConfigureNLog("NLog.config");
-            
+
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();
@@ -70,6 +73,17 @@ namespace FRI3NDS.Angular4Template.Web
             //{
             //    app.UseExceptionHandler("/Home/Error");
             //}
+
+            app.Use(next => context =>
+            {
+                string path = context.Request.Path.Value;
+                if (path == "/")
+                {
+                    var token = antiforgery.GetAndStoreTokens(context).RequestToken;
+                    context.Response.Cookies.Append("X-XSRF-TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
+                }
+                return next(context);
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
