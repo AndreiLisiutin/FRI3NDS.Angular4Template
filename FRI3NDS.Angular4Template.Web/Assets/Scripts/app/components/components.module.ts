@@ -13,6 +13,7 @@ import { RegistrationComponent } from 'components/registration/registration.comp
 import { ValidationMessagesComponent } from 'components/validation-messages/validation-messages.component';
 import { SimpleNotificationsModule } from "angular4-notifications";
 import { ToastComponent } from "components/toast/toast.component";
+import { TranslateModule } from "@ngx-translate/core";
 
 /**
  * Модуль регистрации компонентов приложения.
@@ -24,7 +25,8 @@ import { ToastComponent } from "components/toast/toast.component";
 		FormsModule,
 		HttpModule,
 		BrowserModule,
-		RoutingModule,
+        RoutingModule,
+        TranslateModule,
 		CustomFormsModule
 	],
 	exports: [

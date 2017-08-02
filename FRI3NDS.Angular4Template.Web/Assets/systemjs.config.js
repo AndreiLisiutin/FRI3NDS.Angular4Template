@@ -12,6 +12,7 @@
             //подключаемые в typescript сборки
             '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
             '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
+            '@angular/common/http': 'npm:@angular/common/bundles/common-http.umd.js',
             '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
             '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
             '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
@@ -31,6 +32,9 @@
             '@angular/cdk': 'npm:@angular/cdk/bundles/cdk.umd.js',
             'hammerjs': 'npm:hammerjs/hammer.min.js',
             'angular4-notifications': 'npm:angular4-notifications',
+            '@ngx-translate/core': 'npm:@ngx-translate/core/bundles/core.umd.js',
+            '@ngx-translate/http-loader': 'npm:@ngx-translate/http-loader/bundles/http-loader.umd.js',
+            'tslib': 'npm:tslib/tslib.js',
         },
 
         packages: {

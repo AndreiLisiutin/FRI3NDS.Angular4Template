@@ -5,9 +5,13 @@
 
             <span class="example-fill-remaining-space"></span>
             <ul class="" style="display: flex; flex-direction: row; list-style: none; margin: 0; padding: 0;">
-                <li><a routerLink="login" routerLinkActive="is-active" style="text-decoration: none; padding: 5px;">Логинка</a></li>
-                <li><a routerLink="register" routerLinkActive="is-active" style="text-decoration: none; padding: 5px;">Регистрация</a></li>
+                <li><a routerLink="login" routerLinkActive="is-active" style="text-decoration: none; padding: 5px;"> {{ "login" | translate }}</a></li>
+                <li><a routerLink="register" routerLinkActive="is-active" style="text-decoration: none; padding: 5px;">{{ "register" | translate }}</a></li>
             </ul>
+            <div class="lang-bar">
+                <a (click)="changeLang('en')">EN</a>
+                <a (click)="changeLang('ru')">RU</a>
+            </div>
         </md-toolbar>
     </div>
     <div class="base" style="width: 100%; flex: 1 1 100%">

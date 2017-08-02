@@ -23,6 +23,7 @@ var paths = {
         bootstrap: "./node_modules/bootstrap",
         styles: "./Assets/Styles",
         images: "./Assets/Images",
+        localization: "./Assets/Localization",
     },
     dest: {
         root: "./wwwroot",
@@ -31,6 +32,7 @@ var paths = {
         lib: "./wwwroot/Scripts/lib",
         styles: "./wwwroot/Styles",
         images: "./wwwroot/Images",
+        localization: "./wwwroot/Localization",
     }
 };
 
@@ -60,10 +62,13 @@ gulp.task('lib:copy', function () {
         paths.src.lib + '/zone.js/dist/**',
         paths.src.lib + '/@angular/**',
         paths.src.lib + '/angular2-jwt/**',
-        paths.src.lib + '/ng2-validation/**',
-        paths.src.lib + '/libphonenumber-js/**',
+        paths.src.lib + '/ng2-validation/bundles/ng2-validation.umd.js',
+        paths.src.lib + '/libphonenumber-js/bundle/libphonenumber-js.min.js',
         paths.src.lib + '/hammerjs/hammer.min.js',
         paths.src.lib + '/angular4-notifications/**',
+        paths.src.lib + '/@ngx-translate/core/bundles/core.umd.js',
+        paths.src.lib + '/@ngx-translate/http-loader/bundles/http-loader.umd.js',
+        paths.src.lib + '/tslib/tslib.js',
     ], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
         .pipe(newer(paths.dest.lib))
         .pipe(gulp.dest(paths.dest.lib));
@@ -121,10 +126,15 @@ gulp.task('views:copy', function () {
         .pipe(gulp.dest(paths.dest.js));
 });
 gulp.task('settings:copy', function () {
-    return gulp.src(paths.src.root + '/*.{html,config.js}', { since: gulp.lastRun('settings:copy') })
+    var task1 = gulp.src(paths.src.root + '/*.{html,config.js}', { since: gulp.lastRun('settings:copy') })
         .pipe(newer(paths.dest.root))
         .pipe(gulpIf(isDevelopment, debug({ title: 'settings from assets' })))
         .pipe(gulp.dest(paths.dest.root));
+    var task2 = gulp.src(paths.src.localization + '/*.json', { since: gulp.lastRun('settings:copy') })
+        .pipe(newer(paths.dest.localization))
+        .pipe(gulpIf(isDevelopment, debug({ title: 'localization from assets' })))
+        .pipe(gulp.dest(paths.dest.localization));
+    return merge(task1, task2);
 });
 
 // Очистка
@@ -164,6 +174,7 @@ gulp.task('assets:watch', function () {
     gulp.watch(paths.src.styles + '/material-theme-customized.scss', gulp.series('material:compile:copy'));
     gulp.watch(paths.src.styles + '/bootstrap-customized.scss', gulp.series('bootstrap:compile:copy'));
     gulp.watch(paths.src.root + '/*.{html,config.js}', gulp.series('settings:copy'));
+    gulp.watch(paths.src.localization + '/*.json', gulp.series('settings:copy'));
 });
 
 // Почистить и построить все, кроме библиотек + следить за всеми изменениями, кроме библиотек
