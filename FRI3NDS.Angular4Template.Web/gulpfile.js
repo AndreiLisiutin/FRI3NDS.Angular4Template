@@ -22,6 +22,7 @@ var paths = {
         lib: "./node_modules",
         bootstrap: "./node_modules/bootstrap",
         globalStyles: "./Assets/Styles",
+        sassBase: "./Assets/Styles/base",
         images: "./Assets/Images",
         localization: "./Assets/Localization",
     },
@@ -75,7 +76,7 @@ gulp.task('lib:copy', function () {
 });
 gulp.task('bootstrap:compile:copy', function () {
     return gulp
-        .src(paths.src.globalStyles + '/bootstrap-customized.scss')
+        .src(paths.src.globalStyles + '/vendors/bootstrap-customized.scss')
         .pipe(newer(paths.dest.globalStyles + '/bootstrap.css'))
         .pipe(gulpIf(isDevelopment, debug({ title: 'bootstrap from bootstrap' })))
         .pipe(sass({
@@ -83,6 +84,7 @@ gulp.task('bootstrap:compile:copy', function () {
             precison: 3,
             errLogToConsole: true,
             includePaths: [
+                paths.src.sassBase,
                 paths.src.lib + '/bootstrap/scss',
                 paths.src.lib + '/bootstrap/utilities',
                 paths.src.lib + '/bootstrap/mixins'
@@ -93,7 +95,7 @@ gulp.task('bootstrap:compile:copy', function () {
 });
 gulp.task('material:compile:copy', function () {
     return gulp
-        .src(paths.src.globalStyles + '/material-theme-customized.scss')
+        .src(paths.src.globalStyles + '/vendors/material-theme-customized.scss')
         .pipe(newer(paths.dest.globalStyles + '/material-theme.css'))
         .pipe(gulpIf(isDevelopment, debug({ title: 'material-theme' })))
         .pipe(sass({
@@ -101,6 +103,7 @@ gulp.task('material:compile:copy', function () {
             precison: 3,
             errLogToConsole: true,
             includePaths: [
+                paths.src.sassBase,
                 paths.src.lib + '/@angular/material'
             ]
         }))
@@ -128,7 +131,9 @@ gulp.task('styles:copy', function () {
             outputStyle: 'nested',
             precison: 3,
             errLogToConsole: true,
-            includePaths: []
+            includePaths: [
+                paths.src.sassBase
+            ]
         }))
         .pipe(gulp.dest(paths.dest.js));
 });
