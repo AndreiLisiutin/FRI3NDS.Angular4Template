@@ -6,9 +6,10 @@ import { ValidationService } from "services/validation.service";
  * Компонент валидации поля.
  */
 @Component({
-	selector: 'validation-messages',
-    template: `<div class="validation-messages" *ngIf="errorMessage !== null">{{errorMessage}}</div>`,
-    styles: ['.validation-messages {color: #f44336; font-size: 12px;}']
+    selector: 'validation-messages',
+    moduleId: module.id,
+    templateUrl: 'validation-messages.component.html',
+    styleUrls: ['validation-messages.component.css']
 })
 export class ValidationMessagesComponent {
 	/**

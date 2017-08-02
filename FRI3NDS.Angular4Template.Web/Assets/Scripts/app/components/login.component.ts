@@ -12,7 +12,7 @@ import { NotificationsService } from "angular4-notifications";
 @Component({
 	selector: 'login',
 	moduleId: module.id,
-	templateUrl: 'login.html',
+    templateUrl: 'login.component.html',
 	styleUrls: []
 })
 export class LoginComponent implements OnInit {

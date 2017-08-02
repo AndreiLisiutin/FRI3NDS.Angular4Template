@@ -3,7 +3,7 @@
 @Component({
 	selector: 'toast',
 	moduleId: module.id,
-    templateUrl: 'toast.html',
+    templateUrl: 'toast.component.html',
 	styleUrls: []
 })
 export class ToastComponent {

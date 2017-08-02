@@ -21,7 +21,7 @@ var paths = {
         js: "./Assets/Scripts/app",
         lib: "./node_modules",
         bootstrap: "./node_modules/bootstrap",
-        styles: "./Assets/Styles",
+        globalStyles: "./Assets/Styles",
         images: "./Assets/Images",
         localization: "./Assets/Localization",
     },
@@ -30,7 +30,7 @@ var paths = {
         scripts: "./wwwroot/Scripts",
         js: "./wwwroot/Scripts/app",
         lib: "./wwwroot/Scripts/lib",
-        styles: "./wwwroot/Styles",
+        globalStyles: "./wwwroot/Styles",
         images: "./wwwroot/Images",
         localization: "./wwwroot/Localization",
     }
@@ -75,8 +75,8 @@ gulp.task('lib:copy', function () {
 });
 gulp.task('bootstrap:compile:copy', function () {
     return gulp
-        .src(paths.src.styles + '/bootstrap-customized.scss')
-        .pipe(newer(paths.dest.styles + '/bootstrap.css'))
+        .src(paths.src.globalStyles + '/bootstrap-customized.scss')
+        .pipe(newer(paths.dest.globalStyles + '/bootstrap.css'))
         .pipe(gulpIf(isDevelopment, debug({ title: 'bootstrap from bootstrap' })))
         .pipe(sass({
             outputStyle: 'nested',
@@ -89,12 +89,12 @@ gulp.task('bootstrap:compile:copy', function () {
             ]
         }))
         .pipe(rename('bootstrap.css'))
-        .pipe(gulp.dest(paths.dest.styles));
+        .pipe(gulp.dest(paths.dest.globalStyles));
 });
 gulp.task('material:compile:copy', function () {
     return gulp
-        .src(paths.src.styles + '/material-theme-customized.scss')
-        .pipe(newer(paths.dest.styles + '/material-theme.css'))
+        .src(paths.src.globalStyles + '/material-theme-customized.scss')
+        .pipe(newer(paths.dest.globalStyles + '/material-theme.css'))
         .pipe(gulpIf(isDevelopment, debug({ title: 'material-theme' })))
         .pipe(sass({
             outputStyle: 'nested',
@@ -105,7 +105,7 @@ gulp.task('material:compile:copy', function () {
             ]
         }))
         .pipe(rename('material-theme.css'))
-        .pipe(gulp.dest(paths.dest.styles));
+        .pipe(gulp.dest(paths.dest.globalStyles));
 });
 gulp.task('images:copy', function () {
     return gulp.src(paths.src.images + '/**/*.*', { since: gulp.lastRun('images:copy') })
@@ -113,16 +113,23 @@ gulp.task('images:copy', function () {
         .pipe(gulpIf(isDevelopment, debug({ title: 'images from assets' })))
         .pipe(gulp.dest(paths.dest.images));
 });
-gulp.task('styles:copy', function () {
-    return gulp.src(paths.src.js + '/**/*.css', { since: gulp.lastRun('styles:copy') })
-        .pipe(newer(paths.dest.js))
-        .pipe(gulpIf(isDevelopment, debug({ title: 'styles from assets' })))
-        .pipe(gulp.dest(paths.dest.js));
-});
 gulp.task('views:copy', function () {
     return gulp.src(paths.src.js + '/**/*.html', { since: gulp.lastRun('views:copy') })
         .pipe(newer(paths.dest.js))
         .pipe(gulpIf(isDevelopment, debug({ title: 'views from assets' })))
+        .pipe(gulp.dest(paths.dest.js));
+});
+gulp.task('styles:copy', function () {
+    return gulp
+        .src(paths.src.js + '/**/*.scss', { since: gulp.lastRun('styles:copy') })
+        .pipe(newer(paths.dest.js))
+        .pipe(gulpIf(isDevelopment, debug({ title: 'stylesheets compilation' })))
+        .pipe(sass({
+            outputStyle: 'nested',
+            precison: 3,
+            errLogToConsole: true,
+            includePaths: []
+        }))
         .pipe(gulp.dest(paths.dest.js));
 });
 gulp.task('settings:copy', function () {
@@ -145,7 +152,7 @@ gulp.task('lib:clean', function () {
     return del(paths.dest.lib);
 });
 gulp.task('styles:clean', function () {
-    return del(paths.dest.styles);
+    return del(paths.dest.js + '/*.css');
 });
 gulp.task('images:clean', function () {
     return del(paths.dest.images);
@@ -169,10 +176,10 @@ gulp.task('assets:lib:build', gulp.series('lib:clean', 'lib:copy'));
 gulp.task('assets:watch', function () {
     gulp.watch(paths.src.js + "/**/*.ts", gulp.series('ts:compile:copy'));
     gulp.watch(paths.src.js + "/**/*.html", gulp.series('views:copy'));
-    gulp.watch(paths.src.js + '/**/*.css', gulp.series('styles:copy'));
+    gulp.watch(paths.src.js + '/**/*.scss', gulp.series('styles:copy'));
     gulp.watch(paths.src.images + '/**/*.*', gulp.series('images:copy'));
-    gulp.watch(paths.src.styles + '/material-theme-customized.scss', gulp.series('material:compile:copy'));
-    gulp.watch(paths.src.styles + '/bootstrap-customized.scss', gulp.series('bootstrap:compile:copy'));
+    gulp.watch(paths.src.globalStyles + '/material-theme-customized.scss', gulp.series('material:compile:copy'));
+    gulp.watch(paths.src.globalStyles + '/bootstrap-customized.scss', gulp.series('bootstrap:compile:copy'));
     gulp.watch(paths.src.root + '/*.{html,config.js}', gulp.series('settings:copy'));
     gulp.watch(paths.src.localization + '/*.json', gulp.series('settings:copy'));
 });

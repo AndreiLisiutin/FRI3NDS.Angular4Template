@@ -11,7 +11,7 @@ import { NotificationsService } from "angular4-notifications";
 @Component({
 	selector: 'registration',
 	moduleId: module.id,
-	templateUrl: 'registration.html',
+    templateUrl: 'registration.component.html',
 	styleUrls: []
 })
 export class RegistrationComponent implements OnInit {

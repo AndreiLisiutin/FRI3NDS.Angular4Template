@@ -6,9 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\Scripts\app\components\login\login.component.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Assets\Images\" />
-    <Folder Include="Assets\Scripts\app\components\util\" />
-    <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\Styles\" />
     <Folder Include="wwwroot\Styles\" />
     <Folder Include="wwwroot\Styles\" />
@@ -48,6 +50,14 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\Scripts\app\components\root.component.scss">
+      <DependentUpon>root.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\validation-messages.component.scss">
+      <DependentUpon>validation-messages.component.html</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

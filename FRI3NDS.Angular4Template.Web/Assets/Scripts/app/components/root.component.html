@@ -1,0 +1,24 @@
+﻿<div class="root">
+    <div class="root_header">
+        <md-toolbar color="primary">
+            <a class="" href="#"><span>Приложуха</span></a>
+
+            <span class="root_remaining-space"></span>
+            <ul class="root_navigation">
+                <li><a routerLink="login" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "login" | translate }}</a></li>
+                <li><a routerLink="register" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">{{ "register" | translate }}</a></li>
+            </ul>
+            <div class="root_lang-bar">
+                <a (click)="changeLang('en')">EN</a>
+                <a (click)="changeLang('ru')">RU</a>
+            </div>
+        </md-toolbar>
+    </div>
+    <div class="root_base">
+        <router-outlet></router-outlet>
+    </div>
+    <div class="root_footer">
+        Copyright
+    </div>
+    <toast></toast>
+</div>

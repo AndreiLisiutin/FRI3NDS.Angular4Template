@@ -11,12 +11,8 @@ import { TranslateService } from "@ngx-translate/core";
 	selector: 'root',
 	providers: [],
 	moduleId: module.id,
-	templateUrl: 'root.html',
-    styles: [`.is-active {color: cornflowerblue;}
-.example-fill-remaining-space {
-  flex: 1 1 auto;
-}
-`]
+    templateUrl: 'root.component.html',
+    styleUrls: ['root.component.css']
 })
 export class RootComponent {
     constructor(private translate: TranslateService) {

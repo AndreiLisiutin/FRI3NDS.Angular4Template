@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 
-import { RootComponent } from 'components/root/root.component';
+import { RootComponent } from 'components/root.component';
 import { ComponentsModule } from 'components/components.module';
 import { ServicesModule } from 'services/services.module';
 import { RoutingModule } from 'routing.module';
