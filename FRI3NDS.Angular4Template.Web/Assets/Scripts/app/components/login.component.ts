@@ -1,10 +1,10 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { AuthenticationService } from "services/authentication.service";
-import { AuthHttp } from 'angular2-jwt';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
-import { NotificationsService } from "angular4-notifications";
+import { ToastService } from "services/toast.service";
+import { Router } from "@angular/router";
 
 /**
  * Компонент формы входа.
@@ -24,8 +24,12 @@ export class LoginComponent implements OnInit {
 	 * Конструктор компонента формы входа.
 	 * @param authService Сервис аутентификации.
 	 * @param _notificationService Сервис тостера.
+	 * @param router Роутер.
 	 */
-    constructor(private authService: AuthenticationService, private _notificationService: NotificationsService) {
+    constructor(
+        private authService: AuthenticationService,
+        private _notificationService: ToastService,
+        private router: Router) {
 	}
 
 	/**
@@ -41,27 +45,12 @@ export class LoginComponent implements OnInit {
 	doLogin(): void {
 		this.authService.login(this.userLoginModel)
 			.then((result :TokenInfo)  => {
-				console.log('Авторизация успешна: ' + JSON.stringify(result));
+                console.log('Авторизация успешна: ' + JSON.stringify(result));
+                this.router.navigate(['profile']);
 			})
             .catch(error => {
                 this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
 			});
-	}
-
-	/**
-	 * Тест - проверить логин через запрос по защищенному маршруту.
-	 */
-    checkLogin(): void {
-        this.authService.checkLogin();
-        var tokenInfo = this.authService.getTokenInfo();
-        this._notificationService.success('Токен', 'Инфа о токене: ' + JSON.stringify(tokenInfo));
-	}
-
-	/**
-	 * Выйти из приложения.
-	 */
-	doLogout(): void {
-		this.authService.logout();
 	}
 
 	/**

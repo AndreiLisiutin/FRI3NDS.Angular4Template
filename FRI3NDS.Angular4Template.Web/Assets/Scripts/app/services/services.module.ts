@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { RoutingModule } from 'routing.module';
 import { HttpModule } from "@angular/http";
 import { TranslateModule } from "@ngx-translate/core";
+import { SimpleNotificationsModule } from "angular4-notifications";
 
 import { ValidationService } from "services/validation.service";
 import { DataAdapter } from "services/data.adapter";
 import { AuthenticationService } from "services/authentication.service";
+import { ToastService } from "services/toast.service";
+import { UserService } from "services/user.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -16,7 +19,8 @@ import { AuthenticationService } from "services/authentication.service";
 	imports: [
 		FormsModule,
         HttpModule,
-        TranslateModule
+        TranslateModule,
+        SimpleNotificationsModule
 	],
 	exports: [
 
@@ -26,7 +30,9 @@ import { AuthenticationService } from "services/authentication.service";
 	providers: [
         ValidationService,
         AuthenticationService,
-        DataAdapter
+        DataAdapter,
+        UserService,
+        ToastService
 	]
 })
 export class ServicesModule { }

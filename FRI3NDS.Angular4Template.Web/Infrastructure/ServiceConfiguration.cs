@@ -35,6 +35,7 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         {
             services.AddTransient<I_TestDataService, _TestDataService>();
             services.AddTransient<IAuthenticationDataService, AuthenticationDataService>();
+            services.AddTransient<IUserDataService, UserDataService>();
         }
 
         /// <summary>

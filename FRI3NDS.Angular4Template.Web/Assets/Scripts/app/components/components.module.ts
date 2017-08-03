@@ -4,23 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { RoutingModule } from 'routing.module';
 import { HttpModule } from "@angular/http";
 import { CustomFormsModule } from 'ng2-validation';
+import { TranslateModule } from "@ngx-translate/core";
+import { SimpleNotificationsModule } from "angular4-notifications";
 
-import { MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule } from '@angular/material';
+import { MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule } from '@angular/material';
 
 import { RootComponent } from 'components/root.component';
 import { LoginComponent } from 'components/login.component';
 import { RegistrationComponent } from 'components/registration.component';
 import { ValidationMessagesComponent } from 'components/validation-messages.component';
-import { SimpleNotificationsModule } from "angular4-notifications";
 import { ToastComponent } from "components/toast.component";
-import { TranslateModule } from "@ngx-translate/core";
+import { ProfileComponent } from "components/profile/profile.component";
 
 /**
  * Модуль регистрации компонентов приложения.
  */
 @NgModule({
     imports: [
-        MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule,
+        MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule,
         SimpleNotificationsModule.forRoot(),
 		FormsModule,
 		HttpModule,
@@ -34,6 +35,7 @@ import { TranslateModule } from "@ngx-translate/core";
 		LoginComponent,
         RegistrationComponent,
         ToastComponent,
+        ProfileComponent,
 		ValidationMessagesComponent
 	],
 	declarations: [
@@ -41,6 +43,7 @@ import { TranslateModule } from "@ngx-translate/core";
 		LoginComponent,
         RegistrationComponent,
         ToastComponent,
+        ProfileComponent,
 		ValidationMessagesComponent
 	],
 	providers: []

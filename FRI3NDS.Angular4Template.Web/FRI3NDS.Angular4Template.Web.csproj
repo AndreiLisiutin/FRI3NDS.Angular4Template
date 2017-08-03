@@ -55,9 +55,6 @@
     <None Update="Assets\Scripts\app\components\root.component.scss">
       <DependentUpon>root.component.html</DependentUpon>
     </None>
-    <None Update="Assets\Scripts\app\components\validation-messages.component.scss">
-      <DependentUpon>validation-messages.component.html</DependentUpon>
-    </None>
   </ItemGroup>
 
 </Project>

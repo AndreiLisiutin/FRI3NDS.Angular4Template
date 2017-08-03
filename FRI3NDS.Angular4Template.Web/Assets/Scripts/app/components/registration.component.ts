@@ -1,9 +1,8 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { AuthHttp } from 'angular2-jwt';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
 import { AuthenticationService } from "services/authentication.service";
-import { NotificationsService } from "angular4-notifications";
+import { ToastService } from "services/toast.service";
 
 /**
  * Компонент регистрации нового пользователя.
@@ -25,7 +24,7 @@ export class RegistrationComponent implements OnInit {
 	 * @param authService Сервис аутентификации.
 	 * @param _notificationService Сервис тостера.
 	 */
-    constructor(private authService: AuthenticationService, private _notificationService: NotificationsService) {
+    constructor(private authService: AuthenticationService, private _notificationService: ToastService) {
 	}
 
 	/**

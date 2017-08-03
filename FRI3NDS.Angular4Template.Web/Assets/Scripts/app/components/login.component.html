@@ -3,26 +3,24 @@
     <form novalidate #loginForm="ngForm" *ngIf="!isAuthenticated()">
 
         <div class="row">
-            <md-input-container style="flex: 1 1 100%;">
+            <md-input-container color="accent">
                 <input mdInput placeholder="Логин" id="login" name="login" [(ngModel)]="userLoginModel.login" #login="ngModel" required />
             </md-input-container>
-            <md-error *ngIf="login.invalid" style="margin-top:-20px;">
+            <md-error *ngIf="login.invalid">
                 <validation-messages [control]="login"></validation-messages>
             </md-error>
         </div>
         <div class="row">
-            <md-input-container style="flex: 1 1 100%;">
+            <md-input-container color="accent">
                 <input mdInput placeholder="Пароль" id="password" name="password" [(ngModel)]="userLoginModel.password" #password="ngModel" required />
             </md-input-container>
-            <md-error *ngIf="password.invalid" style="margin-top:-20px;">
+            <md-error *ngIf="password.invalid">
                 <validation-messages [control]="password"></validation-messages>
             </md-error>
         </div>
 
         <div class="row">
-            <button md-raised-button [disabled]="loginForm.invalid" (click)="doLogin()">Войти</button>
+            <button md-raised-button [disabled]="loginForm.invalid" (click)="doLogin()" color="accent">Войти</button>
         </div>
     </form>
-    <button *ngIf="isAuthenticated()" class="btn btn-default" (click)="checkLogin()">Проверить</button>
-    <button *ngIf="isAuthenticated()" class="btn btn-default" (click)="doLogout()">Выйти</button>
 </div>

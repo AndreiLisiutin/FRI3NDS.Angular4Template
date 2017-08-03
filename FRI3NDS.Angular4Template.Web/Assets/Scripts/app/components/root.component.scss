@@ -1,4 +1,6 @@
-﻿.root {
+﻿@import 'main';
+
+.root {
     width: 100%;
     min-height: 100vh;
     display: flex;
@@ -29,5 +31,5 @@
 }
 
 .root_navigation-link__is-active {
-    color: cornflowerblue;
+    color: accent-color(500);
 }

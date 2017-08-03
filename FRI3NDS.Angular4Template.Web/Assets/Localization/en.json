@@ -1,4 +1,6 @@
 ﻿{
   "login": "Login",
-  "register": "Registration"
+  "register": "Registration",
+  "logout": "Logout",
+  "profile": "Profile"
 }

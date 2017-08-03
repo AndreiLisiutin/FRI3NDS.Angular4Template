@@ -8,8 +8,7 @@ import { ValidationService } from "services/validation.service";
 @Component({
     selector: 'validation-messages',
     moduleId: module.id,
-    templateUrl: 'validation-messages.component.html',
-    styleUrls: ['validation-messages.component.css']
+    templateUrl: 'validation-messages.component.html'
 })
 export class ValidationMessagesComponent {
 	/**

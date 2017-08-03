@@ -20,8 +20,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
     /// Контроллер для работы с аутентификацией и учетными записями пользователей.
     /// </summary>
     [Route("api/Authentication")]
-    [ValidateAntiForgeryToken]
-    public class AuthenticationController : Controller
+    public class AuthenticationController : SecureControllerBase
     {
         /// <summary>
         /// Сервис аутентификации и работы с учетными записями пользователей.
@@ -77,14 +76,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             var createdOn = DateTime.Now;
             var expiresOn = createdOn + TokenAuthenticationOptions.ExpiresSpan;
 
-            ClaimsIdentity identity = new ClaimsIdentity(
-                new GenericIdentity(user.Login, "TokenAuth"),
-                new List<Claim>()
-                {
-                    new Claim("ID", user.Id.ToString())
-                }
-            );
-
+            ClaimsIdentity identity = CreateClaimsIdentity(user);
             var securityToken = handler.CreateToken(new SecurityTokenDescriptor
             {
                 Issuer = TokenAuthenticationOptions.Issuer,

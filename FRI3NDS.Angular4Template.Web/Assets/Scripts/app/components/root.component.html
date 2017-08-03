@@ -5,12 +5,15 @@
 
             <span class="root_remaining-space"></span>
             <ul class="root_navigation">
-                <li><a routerLink="login" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "login" | translate }}</a></li>
-                <li><a routerLink="register" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">{{ "register" | translate }}</a></li>
+                <li><a *ngIf="isAuthenticated()" routerLink="profile" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "profile" | translate }}</a></li>
+                <li><a *ngIf="isAuthenticated()" href="#" (click)="onLogoutClick()" class="root_navigation-link"> {{ "logout" | translate }}</a></li>
+                <li><a *ngIf="!isAuthenticated()" routerLink="login" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "login" | translate }}</a></li>
+                <li><a *ngIf="!isAuthenticated()" routerLink="register" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">{{ "register" | translate }}</a></li>
             </ul>
             <div class="root_lang-bar">
-                <a (click)="changeLang('en')">EN</a>
-                <a (click)="changeLang('ru')">RU</a>
+                <md-select placeholder="" [ngModel]="selectedLanguageId" (ngModelChange)="onLanguageChange($event)" color="accent">
+                    <md-option *ngFor="let language of languages" [value]="language.id" color="accent">{{ language.name }}</md-option>
+                </md-select>
             </div>
         </md-toolbar>
     </div>

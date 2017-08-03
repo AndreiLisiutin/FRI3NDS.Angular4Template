@@ -1,0 +1,16 @@
+﻿$errors-list-margin-top: -20px;
+$errors-list-font-size: 12px;
+$errors-list-color: #f44336;
+
+md-error {
+    margin-top: $errors-list-margin-top;
+    /*color: $errors-list-color;*/
+    font-size: $errors-list-font-size;
+}
+
+md-input-container {
+    flex: 1 1 100%;
+}
+
+.validation-messages {
+}
