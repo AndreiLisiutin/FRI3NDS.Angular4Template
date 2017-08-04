@@ -27,7 +27,7 @@ export class DataAdapter {
 	 * Ключ, по которому лежит токен в sessionStorage.
 	 */
     private _AUTH_TOKEN_KEY = 'AUTH_TOKEN';
-    private _XSRF_TOKEN_HEADER = 'X-XSRF-TOKEN';
+    private _XSRF_TOKEN_HEADER = 'X_XSRF_TOKEN';
 
     // Define the internal Subject we'll use to push the command count
     public pendingCommandsSubject = new Subject<number>();
@@ -123,13 +123,9 @@ export class DataAdapter {
 
         const stream = this.http.request(options.url, requestOptions)
             .catch((error: any) => {
-                this.handleErrors(error);
+                console.log(error);
                 return Observable.throw(error);
             })
-            //.map(res => res.json())
-            //.catch((error: any) => {
-            //    return Observable.throw(this.unwrapHttpError(error));
-            //})
             .finally(() => {
                 this.pendingCommandsSubject.next(--this.pendingCommandCount);
             });
@@ -167,7 +163,7 @@ export class DataAdapter {
     }
 
     private getXsrfCookie(): string {
-        const matches = document.cookie.match(/\bXSRF-TOKEN=([^\s;]+)/);
+        const matches = document.cookie.match(/\X_XSRF_TOKEN=([^\s;]+)/);
         try {
             return matches ? decodeURIComponent(matches[1]) : '';
         } catch (decodeError) {
@@ -210,26 +206,5 @@ export class DataAdapter {
         options.url = options.url.replace(/\/+$/g, '');
 
         return options;
-    }
-
-    private unwrapHttpError(error: any): any {
-        try {
-            return (error.json());
-        } catch (jsonError) {
-            return ({
-                code: -1,
-                message: 'An unexpected error occurred.'
-            });
-        }
-    }
-
-    private handleErrors(error: any) {
-        if (error.status === 401) {
-            sessionStorage.clear();
-            //this.us.navigateToSignIn();
-        } else if (error.status === 403) {
-            // Forbidden
-            //this.us.navigateToSignIn();
-        }
     }
 }

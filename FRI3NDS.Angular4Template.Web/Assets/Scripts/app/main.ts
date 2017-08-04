@@ -14,5 +14,6 @@ import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/merge';
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/do';
 
 platformBrowserDynamic().bootstrapModule(MainModule);

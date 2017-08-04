@@ -55,7 +55,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             throw new InvalidOperationException("Unable to get logged user.");
         }
     }
-    
+
     /// <summary>
     /// Базовый контроллер c поддержкой защиты от XSRF.
     /// </summary>

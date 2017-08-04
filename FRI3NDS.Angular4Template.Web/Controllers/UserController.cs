@@ -49,5 +49,19 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             User user = this.UserDataService.GetById(id);
             return user;
         }
+        
+        /// <summary>
+        /// Получить текущего пользователя.
+        /// </summary>
+        /// <returns>Пользователь.</returns>
+        [Route("SaveUser")]
+        [HttpPost]
+        [Authorize]
+        public UserBase SaveUser([FromBody]UserBase user)
+        {
+            var id = this.GetCurrentUserId();
+            user = this.UserDataService.Save(user, id);
+            return user;
+        }
     }
 }

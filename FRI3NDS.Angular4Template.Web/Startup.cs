@@ -49,7 +49,7 @@ namespace FRI3NDS.Angular4Template.Web
             });
 
 
-            services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
+            services.AddAntiforgery(options => { options.HeaderName = "X_XSRF_TOKEN"; });
             services.AddMvc();
             ServiceConfiguration.ConfigureServices(services, this.Configuration);
         }
@@ -74,25 +74,16 @@ namespace FRI3NDS.Angular4Template.Web
             //    app.UseExceptionHandler("/Home/Error");
             //}
 
-            app.Use(next => context =>
-            {
-                string path = context.Request.Path.Value;
-                if (path == "/")
-                {
-                    var token = antiforgery.GetAndStoreTokens(context).RequestToken;
-                    context.Response.Cookies.Append("X-XSRF-TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
-                }
-                return next(context);
-            });
-
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
+            
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             #region UseJwtBearerAuthentication
             app.UseJwtBearerAuthentication(new JwtBearerOptions()
             {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
                 TokenValidationParameters = new TokenValidationParameters()
                 {
                     IssuerSigningKey = TokenAuthenticationOptions.Key,
@@ -107,12 +98,44 @@ namespace FRI3NDS.Angular4Template.Web
             });
             #endregion
 
+            app.Use(next => context =>
+            {
+                string path = context.Request.Path.Value;
+                if (path == "/")
+                {
+                    var token = antiforgery.GetAndStoreTokens(context).RequestToken;
+                    context.Response.Cookies.Append("X_XSRF_TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
+                }
+                return next(context);
+            });
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+    }
+
+    public class CookiesHandlingMiddleware
+    {
+        private RequestDelegate _next;
+        private IAntiforgery _antiforgery;
+        public CookiesHandlingMiddleware(RequestDelegate next, IAntiforgery antiforgery)
+        {
+            _next = next;
+            _antiforgery = antiforgery;
+        }
+        public async Task Invoke(HttpContext context)
+        {
+            await _next.Invoke(context);
+            string path = context.Request.Path.Value;
+            if (path == "/" || path == "/api/Authentication/Login")
+            {
+                var token = _antiforgery.GetAndStoreTokens(context).RequestToken;
+                context.Response.Cookies.Append("X_XSRF_TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
+            }
         }
     }
 }

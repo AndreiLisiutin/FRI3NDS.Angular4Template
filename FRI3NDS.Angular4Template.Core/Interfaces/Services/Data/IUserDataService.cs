@@ -16,5 +16,13 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Services.Data
         /// <param name="id">Идентификатор пользователя.</param>
         /// <returns>Пользователь.</returns>
         User GetById(int id);
+
+        /// <summary>
+        /// Сохранить пользователя.
+        /// </summary>
+        /// <param name="user">Пользователь.</param>
+        /// <param name="currentUserId">Идентификатор текущего пользователя.</param>
+        /// <returns>Пользователь.</returns>
+        UserBase Save(UserBase user, int currentUserId);
     }
 }

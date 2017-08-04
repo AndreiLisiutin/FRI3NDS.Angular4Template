@@ -38,4 +38,14 @@ export class ProfileComponent implements OnInit {
                 this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
             });
     }
+
+    onSaveBtnClick(): void {
+        this.userService.saveUser(this.user).subscribe(
+            user => {
+                this.user.id = user.id;
+            },
+            error => {
+                this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+            });
+    }
 }

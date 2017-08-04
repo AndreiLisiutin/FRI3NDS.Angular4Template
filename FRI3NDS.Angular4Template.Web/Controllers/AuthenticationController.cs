@@ -3,7 +3,9 @@ using FRI3NDS.Angular4Template.Core.Models.Domain;
 using FRI3NDS.Angular4Template.Util;
 using FRI3NDS.Angular4Template.Web.Models;
 using FRI3NDS.Angular4Template.Web.Models.ViewModels;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -26,14 +28,15 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         /// Сервис аутентификации и работы с учетными записями пользователей.
         /// </summary>
         public IAuthenticationDataService AuthenticationDataService { get; set; }
-
+        IAntiforgery antiforgery;
         /// <summary>
         /// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
         /// </summary>
         /// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
-        public AuthenticationController(IAuthenticationDataService authenticationDataService)
+        public AuthenticationController(IAuthenticationDataService authenticationDataService, IAntiforgery antiforgery)
         {
             this.AuthenticationDataService = authenticationDataService;
+            this.antiforgery = antiforgery;
         }
 
         /// <summary>
@@ -86,6 +89,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
                 Expires = expiresOn,
                 NotBefore = DateTime.Now
             });
+
             var token = handler.WriteToken(securityToken);
             return new TokenInfo()
             {

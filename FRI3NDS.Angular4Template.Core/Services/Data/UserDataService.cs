@@ -2,6 +2,7 @@
 using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories;
 using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Util;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -37,14 +38,17 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data
         }
 
         /// <summary>
-        /// Получить список тестовых сущностей.
+        /// Сохранить пользователя.
         /// </summary>
-        /// <returns></returns>
-        public List<_TestEntityBase> GetTestEntities()
+        /// <param name="user">Пользователь.</param>
+        /// <param name="currentUserId">Идентификатор текущего пользователя.</param>
+        /// <returns>Пользователь.</returns>
+        public UserBase Save(UserBase user, int currentUserId)
         {
+            Argument.Require(user.Id == currentUserId, "Нельзя редактировать чужой профиль");
             using (var uow = this.CreateUnitOfWork())
             {
-                return uow._TestEntityRepository.GetAllBase();
+                return uow.UserRepository.Save(user);
             }
         }
     }

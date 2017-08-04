@@ -38,13 +38,12 @@ export class RegistrationComponent implements OnInit {
 	 * Зарегистрироваться в приложении.
 	 */
     doRegister() {
-		this.authService.register(this.userLoginModel)
-            .then((result: TokenInfo) => {
-                this._notificationService.success('Регистрация успешна', 'Регистрация успешна: ' + JSON.stringify(result));
-			})
-			.catch(error => {
+        this.authService.register(this.userLoginModel)
+            .subscribe((tokenInfo: TokenInfo) => {
+                this._notificationService.success('Регистрация успешна', 'Регистрация успешна: ' + JSON.stringify(tokenInfo));
+            }, (error) => {
                 this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-			});
+            });
 	}
 
 	/**

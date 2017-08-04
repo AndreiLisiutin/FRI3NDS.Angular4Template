@@ -12,18 +12,18 @@
         </div>
         <div class="row">
             <md-input-container color="accent">
-                <input mdInput placeholder="Имя" id="name" name="name" [(ngModel)]="user.name" #name="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="name.invalid">
-                <validation-messages [control]="name"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
                 <input mdInput placeholder="Фамилия" id="surname" name="surname" [(ngModel)]="user.surname" #surname="ngModel" required />
             </md-input-container>
             <md-error *ngIf="surname.invalid">
                 <validation-messages [control]="surname"></validation-messages>
+            </md-error>
+        </div>
+        <div class="row">
+            <md-input-container color="accent">
+                <input mdInput placeholder="Имя" id="name" name="name" [(ngModel)]="user.name" #name="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="name.invalid">
+                <validation-messages [control]="name"></validation-messages>
             </md-error>
         </div>
         <div class="row">
@@ -44,12 +44,14 @@
         </div>
         <div class="row">
             <md-input-container color="accent">
-                <input mdInput placeholder="Email" id="email" name="email" [(ngModel)]="user.email" #email="ngModel" required />
+                <input mdInput placeholder="Email" id="email" name="email" [(ngModel)]="user.email" #email="ngModel" required email />
             </md-input-container>
             <md-error *ngIf="email.invalid">
                 <validation-messages [control]="email"></validation-messages>
             </md-error>
         </div>
-
+        <div class="row">
+            <button md-raised-button [disabled]="userForm.invalid" (click)="onSaveBtnClick()" color="accent">Сохранить</button>
+        </div>
     </form>
 </div>
