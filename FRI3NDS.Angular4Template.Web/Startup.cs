@@ -16,6 +16,7 @@ using NLog.Web;
 using Microsoft.IdentityModel.Tokens;
 using FRI3NDS.Angular4Template.Web.Models;
 using Microsoft.AspNetCore.Antiforgery;
+using System.Net;
 
 namespace FRI3NDS.Angular4Template.Web
 {
@@ -39,7 +40,7 @@ namespace FRI3NDS.Angular4Template.Web
         /// <param name="services">Сервисы.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //для NLog Web
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddAuthorization(auth =>
             {
                 auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -47,9 +48,8 @@ namespace FRI3NDS.Angular4Template.Web
                     .RequireAuthenticatedUser()
                     .Build());
             });
-
-
-            services.AddAntiforgery(options => { options.HeaderName = "X_XSRF_TOKEN"; });
+            
+            services.AddAntiforgery(options => { options.HeaderName = TokenAuthenticationOptions.AntiforgeryHeaderName; });
             services.AddMvc();
             ServiceConfiguration.ConfigureServices(services, this.Configuration);
         }
@@ -63,22 +63,7 @@ namespace FRI3NDS.Angular4Template.Web
             loggerFactory.AddNLog();
             app.AddNLogWeb();
             env.ConfigureNLog("NLog.config");
-
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseBrowserLink();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //}
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
             
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-
             #region UseJwtBearerAuthentication
             app.UseJwtBearerAuthentication(new JwtBearerOptions()
             {
@@ -97,17 +82,12 @@ namespace FRI3NDS.Angular4Template.Web
                 }
             });
             #endregion
+            
+            app.UseMiddleware<AntiXsrfCookiesMiddleware>();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-            app.Use(next => context =>
-            {
-                string path = context.Request.Path.Value;
-                if (path == "/")
-                {
-                    var token = antiforgery.GetAndStoreTokens(context).RequestToken;
-                    context.Response.Cookies.Append("X_XSRF_TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
-                }
-                return next(context);
-            });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -115,27 +95,6 @@ namespace FRI3NDS.Angular4Template.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-        }
-    }
-
-    public class CookiesHandlingMiddleware
-    {
-        private RequestDelegate _next;
-        private IAntiforgery _antiforgery;
-        public CookiesHandlingMiddleware(RequestDelegate next, IAntiforgery antiforgery)
-        {
-            _next = next;
-            _antiforgery = antiforgery;
-        }
-        public async Task Invoke(HttpContext context)
-        {
-            await _next.Invoke(context);
-            string path = context.Request.Path.Value;
-            if (path == "/" || path == "/api/Authentication/Login")
-            {
-                var token = _antiforgery.GetAndStoreTokens(context).RequestToken;
-                context.Response.Cookies.Append("X_XSRF_TOKEN", token, new CookieOptions { HttpOnly = false/*, Secure = true */});
-            }
         }
     }
 }

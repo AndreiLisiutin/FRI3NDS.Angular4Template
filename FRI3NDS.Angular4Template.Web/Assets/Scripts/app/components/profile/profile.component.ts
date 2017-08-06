@@ -1,6 +1,5 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { AuthenticationService } from "services/authentication.service";
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastService } from "services/toast.service";
 import { User } from "models/domain/User";
@@ -21,7 +20,9 @@ export class ProfileComponent implements OnInit {
 	 */
     private user: User;
 
-    constructor(private userService: UserService, private _notificationService: ToastService) {
+    constructor(
+        private userService: UserService,
+        private notificationService: ToastService) {
     }
 
 	/**
@@ -35,7 +36,7 @@ export class ProfileComponent implements OnInit {
                 this.user = user;
             },
             error => {
-                this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+                this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
             });
     }
 
@@ -43,9 +44,10 @@ export class ProfileComponent implements OnInit {
         this.userService.saveUser(this.user).subscribe(
             user => {
                 this.user.id = user.id;
+                this.notificationService.success('Успех', 'Учетная запись успешно изменена.');
             },
             error => {
-                this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+                this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
             });
     }
 }

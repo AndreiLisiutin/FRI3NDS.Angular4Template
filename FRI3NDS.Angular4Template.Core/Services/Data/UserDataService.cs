@@ -45,9 +45,14 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data
         /// <returns>Пользователь.</returns>
         public UserBase Save(UserBase user, int currentUserId)
         {
-            Argument.Require(user.Id == currentUserId, "Нельзя редактировать чужой профиль");
+            Argument.Require(currentUserId != 0, "Текущий пользователь не определен.");
+            Argument.Require(user.Id == currentUserId, "Нельзя редактировать чужой профиль.");
             using (var uow = this.CreateUnitOfWork())
             {
+                var userOld = uow.UserRepository.GetById(user.Id);
+                user.CreatedOn = userOld.CreatedOn;
+                user.PasswordHash = userOld.PasswordHash;
+
                 return uow.UserRepository.Save(user);
             }
         }

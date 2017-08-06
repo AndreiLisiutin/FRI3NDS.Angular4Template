@@ -28,15 +28,14 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         /// Сервис аутентификации и работы с учетными записями пользователей.
         /// </summary>
         public IAuthenticationDataService AuthenticationDataService { get; set; }
-        IAntiforgery antiforgery;
+
         /// <summary>
         /// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
         /// </summary>
         /// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
-        public AuthenticationController(IAuthenticationDataService authenticationDataService, IAntiforgery antiforgery)
+        public AuthenticationController(IAuthenticationDataService authenticationDataService)
         {
             this.AuthenticationDataService = authenticationDataService;
-            this.antiforgery = antiforgery;
         }
 
         /// <summary>
@@ -89,6 +88,9 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
                 Expires = expiresOn,
                 NotBefore = DateTime.Now
             });
+
+            //необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
+            HttpContext.User = new ClaimsPrincipal(identity);
 
             var token = handler.WriteToken(securityToken);
             return new TokenInfo()

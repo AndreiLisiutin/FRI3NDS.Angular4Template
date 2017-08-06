@@ -20,6 +20,11 @@ namespace FRI3NDS.Angular4Template.Web.Models
         public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(40);
         public static string TokenType { get; } = "Bearer";
 
+        /// <summary>
+        /// Заголовок, в который пишется XSRF токен при запросе на сервер.
+        /// </summary>
+        public static string AntiforgeryHeaderName { get; } = "X_XSRF_TOKEN";
+
         public static RSAParameters GenerateKey()
         {
             using (var key = new RSACryptoServiceProvider(2048))

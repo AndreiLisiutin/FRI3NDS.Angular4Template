@@ -32,8 +32,8 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
                 new GenericIdentity(user.Login, "TokenAuth"),
                 new List<Claim>()
                 {
-                    new Claim("Id", user.Id.ToString()),
-                    new Claim("Name", user.Name)
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.Integer32, TokenAuthenticationOptions.Issuer, TokenAuthenticationOptions.Issuer),
+                    new Claim(ClaimTypes.Name, user.Login, ClaimValueTypes.String, TokenAuthenticationOptions.Issuer, TokenAuthenticationOptions.Issuer)
                 }
             );
         }
@@ -46,13 +46,13 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 ClaimsIdentity identity = User.Identity as ClaimsIdentity;
-                int id;
-                if (Int32.TryParse(identity.FindFirst("Id").Value, out id))
+                if (identity.HasClaim(c => c.Type == ClaimTypes.NameIdentifier)
+                    && Int32.TryParse(identity.FindFirst(ClaimTypes.NameIdentifier).Value, out int id))
                 {
                     return id;
                 }
             }
-            throw new InvalidOperationException("Unable to get logged user.");
+            throw new InvalidOperationException("Пользователь не авторизован.");
         }
     }
 
