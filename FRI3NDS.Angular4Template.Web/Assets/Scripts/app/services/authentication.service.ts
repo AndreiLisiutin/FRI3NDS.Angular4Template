@@ -27,6 +27,23 @@ export class AuthenticationService {
                 return Observable.throw(error);
             });
     }
+
+    /**
+     * Разлогиниться.
+     */
+    logout(): Observable<void> {
+        return this.dataAdapter.post("/api/Authentication/Logout")
+            .do((result) => {
+                if (result.ok) {
+                    this.dataAdapter.clearToken();
+                }
+            })
+            .catch((error) => {
+                this.handleError(error);
+                return Observable.throw(error);
+            });
+    }
+
     /**
      * Сохранить пользователя.
      * @param user Пользователь.
@@ -56,13 +73,6 @@ export class AuthenticationService {
                 this.handleError(error);
                 return Promise.reject(error);
             });
-    }
-
-    /**
-	 * Разлогиниться.
-	 */
-    logout(): void {
-        this.dataAdapter.clearToken();
     }
 
 	/**

@@ -54,6 +54,19 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         }
 
         /// <summary>
+        /// Выход из приложение, очистка токена.
+        /// </summary>
+        /// <returns>Ничего интересного.</returns>
+        [Route("Logout")]
+        [HttpPost]
+        public StatusCodeResult ClearAuthToken()
+        {
+            //необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
+            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+            return Ok();
+        }
+
+        /// <summary>
         /// Зарегистрироваться в системе.
         /// </summary>
         /// <param name="user">Данные для создания пользователя.</param>

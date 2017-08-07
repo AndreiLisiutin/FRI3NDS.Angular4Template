@@ -42,7 +42,7 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         public async Task Invoke(HttpContext context)
         {
             string path = context.Request.Path.Value;
-            if (path == "/" || path == "/api/Authentication/Login")
+            if (path == "/" || path == "/api/Authentication/Login" || path == "/api/Authentication/Logout")
             {
                 context.Response.OnStarting((state) =>
                 {

@@ -4,6 +4,7 @@ import { MdSidenav } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthenticationService } from "services/authentication.service";
 import { Router } from "@angular/router";
+import { ToastService } from "services/toast.service";
 
 /**
  * Корневой компонент приложения.
@@ -23,6 +24,7 @@ export class RootComponent {
     constructor(
         private translate: TranslateService,
         private authService: AuthenticationService,
+        private notificationService: ToastService,
         private router: Router
     ) {
         this.languages = [{
@@ -44,8 +46,11 @@ export class RootComponent {
     }
 
     onLogoutClick(): void {
-        this.authService.logout();
-        this.router.navigate(['login']);
+        this.authService.logout().subscribe(() => {
+            this.router.navigate(['login']);
+        }, (error) => {
+            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+        });
     }
 
     onLanguageChange(lang: string) {
