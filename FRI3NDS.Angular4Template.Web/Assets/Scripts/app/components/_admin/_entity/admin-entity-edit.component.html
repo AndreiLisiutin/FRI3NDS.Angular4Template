@@ -1,0 +1,33 @@
+﻿<form novalidate #entityForm="ngForm">
+    <div class="vertical-form">
+        <div class="vertical-form-row">
+            <md-input-container>
+                <input mdInput placeholder="Название сущности" id="name" name="name" [(ngModel)]="entity.name" #name="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="name.invalid">
+                <validation-messages [control]="name"></validation-messages>
+            </md-error>
+        </div>
+        <div class="vertical-form-row">
+            <md-input-container>
+                <input mdInput placeholder="Название сущности в базе данных" id="databaseName" name="databaseName" [(ngModel)]="entity.databaseName" #databaseName="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="databaseName.invalid">
+                <validation-messages [control]="databaseName"></validation-messages>
+            </md-error>
+        </div>
+        <div class="vertical-form-row">
+            <md-input-container>
+                <input mdInput placeholder="Схема в базе данных" id="databaseScheme" name="databaseScheme" [(ngModel)]="entity.databaseScheme" #databaseScheme="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="databaseScheme.invalid">
+                <validation-messages [control]="databaseScheme"></validation-messages>
+            </md-error>
+        </div>
+
+        <div class="">
+            <button md-raised-button [disabled]="entityForm.invalid" (click)="saveEntity()">Сохранить</button>
+            <button md-raised-button (click)="goBack()">Отмена</button>
+        </div>
+    </div>
+</form>

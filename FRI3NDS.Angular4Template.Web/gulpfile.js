@@ -9,7 +9,7 @@ const sass = require('gulp-sass');
 const tslint = require('gulp-tslint');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
-
+var tildeImporter = require('node-sass-tilde-importer');
 
 var tsProject = ts.createProject('tsconfig.json');
 var isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
@@ -71,6 +71,7 @@ gulp.task('lib:copy', function () {
         paths.src.lib + '/@ngx-translate/core/bundles/core.umd.js',
         paths.src.lib + '/@ngx-translate/http-loader/bundles/http-loader.umd.js',
         paths.src.lib + '/tslib/tslib.js',
+        paths.src.lib + '/ng2-md-datatable/ng2-md-datatable.umd.js',
     ], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
         .pipe(newer(paths.dest.lib))
         .pipe(gulp.dest(paths.dest.lib));
@@ -99,11 +100,13 @@ gulp.task('material:compile:copy', function () {
         .pipe(gulpIf(isDevelopment, debug({ title: 'material-theme' })))
         .pipe(sass({
             outputStyle: 'nested',
+            importer: tildeImporter,
             precison: 3,
             errLogToConsole: true,
             includePaths: [
                 paths.src.sassBase,
-                paths.src.lib + '/@angular/material'
+                paths.src.lib + '/@angular/material',
+                paths.src.lib + '/ng2-md-datatable'
             ]
         }))
         .pipe(rename('material-theme.css'))

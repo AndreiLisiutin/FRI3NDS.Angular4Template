@@ -17,6 +17,9 @@ using Microsoft.IdentityModel.Tokens;
 using FRI3NDS.Angular4Template.Web.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using System.Net;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace FRI3NDS.Angular4Template.Web
 {
@@ -48,7 +51,7 @@ namespace FRI3NDS.Angular4Template.Web
                     .RequireAuthenticatedUser()
                     .Build());
             });
-            
+
             services.AddAntiforgery(options => { options.HeaderName = TokenAuthenticationOptions.AntiforgeryHeaderName; });
             services.AddMvc();
             ServiceConfiguration.ConfigureServices(services, this.Configuration);
@@ -63,12 +66,13 @@ namespace FRI3NDS.Angular4Template.Web
             loggerFactory.AddNLog();
             app.AddNLogWeb();
             env.ConfigureNLog("NLog.config");
-            
+
             #region UseJwtBearerAuthentication
             app.UseJwtBearerAuthentication(new JwtBearerOptions()
             {
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
+                ClaimsIssuer = TokenAuthenticationOptions.Issuer,
                 TokenValidationParameters = new TokenValidationParameters()
                 {
                     IssuerSigningKey = TokenAuthenticationOptions.Key,
@@ -82,7 +86,7 @@ namespace FRI3NDS.Angular4Template.Web
                 }
             });
             #endregion
-            
+
             app.UseMiddleware<AntiXsrfCookiesMiddleware>();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 

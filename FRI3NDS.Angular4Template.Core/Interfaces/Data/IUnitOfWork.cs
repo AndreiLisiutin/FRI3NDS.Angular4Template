@@ -1,4 +1,5 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories;
+using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories._Admin;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +24,7 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
         IUserRepository UserRepository { get; }
 
         #endregion
-        
+
         /// <summary>
         /// Открыть транзакцию.
         /// </summary>
@@ -39,4 +40,14 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
         /// </summary>
         void RollbackTransaction();
     }
+
+    public interface IAdminUnitOfWork : IUnitOfWork
+    {
+        #region Repositories
+        
+        I_EntityRepository _EntityRepository { get; }
+
+        #endregion
+    }
+
 }

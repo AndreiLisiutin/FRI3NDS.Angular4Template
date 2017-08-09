@@ -1,0 +1,20 @@
+﻿<div class="">
+    <div class="">
+        <div class="">
+            Название сущности: {{field._EntityName}}
+        </div>
+        <div class="">
+            Название поля: {{field.name}}
+        </div>
+        <div class="">
+            Название поля в базе данных: {{field.databaseName}}
+        </div>
+        <div class="">
+            _FieldTypeId: {{field._FieldTypeId}}
+        </div>
+    </div>
+    <div class="">
+        <button md-raised-button (click)="goEditField()">Редактировать</button>
+        <button md-raised-button (click)="goBack()">Отмена</button>
+    </div>
+</div>

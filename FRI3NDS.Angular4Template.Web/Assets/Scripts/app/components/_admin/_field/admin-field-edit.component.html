@@ -1,0 +1,25 @@
+﻿<form novalidate #fieldForm="ngForm">
+    <div class="vertical-form">
+        <div class="vertical-form-row">
+            <md-input-container>
+                <input mdInput placeholder="Название поля" id="name" name="name" [(ngModel)]="field.name" #name="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="name.invalid">
+                <validation-messages [control]="name"></validation-messages>
+            </md-error>
+        </div>
+        <div class="vertical-form-row">
+            <md-input-container>
+                <input mdInput placeholder="Название поля в базе данных" id="databaseName" name="databaseName" [(ngModel)]="field.databaseName" #databaseName="ngModel" required />
+            </md-input-container>
+            <md-error *ngIf="databaseName.invalid">
+                <validation-messages [control]="databaseName"></validation-messages>
+            </md-error>
+        </div>
+       
+        <div class="">
+            <button md-raised-button [disabled]="fieldForm.invalid" (click)="saveField()">Сохранить</button>
+            <button md-raised-button (click)="goBack()">Отмена</button>
+        </div>
+    </div>
+</form>

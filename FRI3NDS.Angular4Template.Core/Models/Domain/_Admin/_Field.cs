@@ -1,0 +1,46 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace FRI3NDS.Angular4Template.Core.Models.Domain
+{
+    /// <summary>
+    /// Расширенная модель поля сущности БД.
+    /// </summary>
+    public class _Field : _FieldBase
+    {
+        public string _EntityName { get; set; }
+    }
+
+    /// <summary>
+    /// Доменная модель поля сущности БД.
+    /// </summary>
+    public class _FieldBase
+    {
+        /// <summary>
+        /// Идентификатор поля сущности БД.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
+        /// Идентификатор типа поля сущности БД.
+        /// </summary>
+        public int _FieldTypeId { get; set; }
+
+        /// <summary>
+        /// Идентификатор сущности БД.
+        /// </summary>
+        public int _EntityId { get; set; }
+
+        /// <summary>
+        /// Название.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Название поля в базе данных.
+        /// </summary>
+        public string DatabaseName { get; set; }
+    }
+}

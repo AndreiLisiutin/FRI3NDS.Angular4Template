@@ -30,5 +30,14 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
         {
             return new UnitOfWork(this._configuration);
         }
+
+        /// <summary>
+        /// Создать новую единицу работы с заданной конфигурацией.
+        /// </summary>
+        /// <returns>Экземпляр единицы работы.</returns>
+        public IAdminUnitOfWork CreateAdmin()
+        {
+            return new AdminUnitOfWork(this._configuration);
+        }
     }
 }

@@ -15,5 +15,11 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
         /// </summary>
         /// <returns>Экземпляр единицы работы.</returns>
         IUnitOfWork Create();
+
+        /// <summary>
+        /// Создать новую единицу работы с заданной конфигурацией.
+        /// </summary>
+        /// <returns>Экземпляр единицы работы.</returns>
+        IAdminUnitOfWork CreateAdmin();
     }
 }

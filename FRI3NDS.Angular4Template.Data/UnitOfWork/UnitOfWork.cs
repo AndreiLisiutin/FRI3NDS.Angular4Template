@@ -1,5 +1,6 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Data;
 using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories;
+using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories._Admin;
 using FRI3NDS.Angular4Template.Data.Repositories;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
@@ -19,7 +20,7 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
         /// Имя узла конфигурации, хранящее значение строки подключения к БД.
         /// </summary>
         private const string _CONNECTION_STRING_NAME = "Data:Angular4Template:ConnectionString";
-        private Lazy<DataContext> _dataContext;
+        protected Lazy<DataContext> _dataContext;
 
         #region Repositories
 
@@ -108,5 +109,40 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
                 }
             }
         }
+    }
+    
+    /// <summary>
+    /// Админская едница работы. Чтоб не засорять основной сайт.
+    /// </summary>
+    public class AdminUnitOfWork : UnitOfWork, IAdminUnitOfWork
+    {
+        /// <summary>
+        /// Конструктор единицы работы.
+        /// </summary>
+        /// <param name="configuration">Конфигурация запускаемого проекта. 
+        /// Должен быть заполнен узел для строки подключения к базе данных (<see cref="_CONNECTION_STRING_NAME"/>).</param>
+        public AdminUnitOfWork(IConfiguration configuration) 
+            : base(configuration)
+        {
+        }
+
+        #region Repositories
+
+        /// <summary>
+        /// Репозиторий сущностей.
+        /// </summary>
+        public I_EntityRepository _EntityRepository => new _EntityRepository(this._dataContext.Value);
+
+        /// <summary>
+        /// Репозиторий типов полей сущностей.
+        /// </summary>
+        public I_FieldTypeRepository _FieldTypeRepository => new _FieldTypeRepository(this._dataContext.Value);
+
+        /// <summary>
+        /// Репозиторий полей сущностей.
+        /// </summary>
+        public I_FieldRepository _FieldRepository => new _FieldRepository(this._dataContext.Value);
+
+        #endregion
     }
 }

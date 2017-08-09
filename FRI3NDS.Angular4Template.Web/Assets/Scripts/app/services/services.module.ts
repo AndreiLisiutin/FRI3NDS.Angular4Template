@@ -11,6 +11,8 @@ import { DataAdapter } from "services/data.adapter";
 import { AuthenticationService } from "services/authentication.service";
 import { ToastService } from "services/toast.service";
 import { UserService } from "services/user.service";
+import { _EntityService } from "services/_admin/_entity.service";
+import { _FieldService } from "services/_admin/_field.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -32,7 +34,9 @@ import { UserService } from "services/user.service";
         AuthenticationService,
         DataAdapter,
         UserService,
-        ToastService
+        ToastService,
+        _EntityService,
+        _FieldService
 	]
 })
 export class ServicesModule { }

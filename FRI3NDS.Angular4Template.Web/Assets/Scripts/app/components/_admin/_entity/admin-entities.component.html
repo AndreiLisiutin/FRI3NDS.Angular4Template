@@ -1,0 +1,15 @@
+﻿<ng2-md-datatable selectable="true" (sortChange)="onTableSortChange($event)" (selectionChange)="onTableSelectionChange($event)">
+    <ng2-md-datatable-header>
+        <ng2-md-datatable-column sortableValue="id">ID</ng2-md-datatable-column>
+        <ng2-md-datatable-column sortableValue="name">Name</ng2-md-datatable-column>
+    </ng2-md-datatable-header>
+    <tbody>
+        <ng2-md-datatable-row *ngFor="let e of entities" selectableValue="{{e.id}}">
+            <td>{{e.id}}</td>
+            <td>{{e.name}}</td>
+        </ng2-md-datatable-row>
+    </tbody>
+</ng2-md-datatable>
+<button md-raised-button color="accent" [disabled]="!selectedEntityId" (click)="goEditEntity()">Редактировать</button>
+<button md-raised-button color="accent" (click)="goCreateEntity()">Новая</button>
+<button md-raised-button color="accent" [disabled]="!selectedEntityId" (click)="deleteEntity()">Удалить</button>

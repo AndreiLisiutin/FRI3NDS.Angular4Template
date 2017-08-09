@@ -59,7 +59,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
     /// <summary>
     /// Базовый контроллер c поддержкой защиты от XSRF.
     /// </summary>
-    [AutoValidateAntiforgeryToken]
+    //[AutoValidateAntiforgeryToken]
     public class SecureControllerBase : ControllerBase
     {
 

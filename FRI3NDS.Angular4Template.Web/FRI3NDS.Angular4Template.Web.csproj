@@ -55,6 +55,51 @@
     <None Update="Assets\Scripts\app\components\root.component.scss">
       <DependentUpon>root.component.html</DependentUpon>
     </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entity-edit.component.scss">
+      <DependentUpon>admin-entity-edit.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entity-edit.component.ts">
+      <DependentUpon>admin-entity-edit.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entity.component.scss">
+      <DependentUpon>admin-entity.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entity.component.ts">
+      <DependentUpon>admin-entity.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entities.component.scss">
+      <DependentUpon>admin-entities.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\admin-panel.component.scss">
+      <DependentUpon>admin-panel.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entities.component.ts">
+      <DependentUpon>admin-entities.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\admin-viewer.component.scss">
+      <DependentUpon>admin-viewer.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_field\admin-field-edit.component.scss">
+      <DependentUpon>admin-field-edit.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_field\admin-field.component.scss">
+      <DependentUpon>admin-field.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\_field\admin-field.component.ts">
+      <DependentUpon>admin-field.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\models\domain\_Entity.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_Entity.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\domain\_Field.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_Field.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\domain\_FieldType.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_FieldType.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\viewModels\_FieldViewModels.ts">
+      <CustomToolNamespace>Models\ViewModels\_Admin\_FieldViewModels.cs</CustomToolNamespace>
+    </None>
   </ItemGroup>
 
 </Project>
