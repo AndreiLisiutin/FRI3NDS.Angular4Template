@@ -12,13 +12,15 @@ import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, RequestMethod, URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { JwtHelper } from "angular2-jwt";
+import { UserLoginModel, TokenInfo } from "models/viewModels/AuthenticationViewModels";
 
 export class DataServiceOptions {
-    public method: RequestMethod;
-    public url: string;
-    public headers: any = {};
-    public params = {};
-    public data = {};
+	public method: RequestMethod;
+	public url: string;
+	public headers: any = {};
+	public params = {};
+	public data = {};
 }
 
 @Injectable()
@@ -26,195 +28,248 @@ export class DataAdapter {
 	/**
 	 * Ключ, по которому лежит токен в sessionStorage.
 	 */
-    private _AUTH_TOKEN_KEY = 'AUTH_TOKEN';
-    private _AUTH_REFRESH_TOKEN_KEY = 'AUTH_REFRESH_TOKEN';
-    private _XSRF_TOKEN_HEADER = 'X_XSRF_TOKEN';
+	private _AUTH_TOKEN_KEY = 'AUTH_TOKEN';
+	private _AUTH_REFRESH_TOKEN_KEY = 'AUTH_REFRESH_TOKEN';
+	private _XSRF_TOKEN_HEADER = 'X_XSRF_TOKEN';
 
-    // Define the internal Subject we'll use to push the command count
-    public pendingCommandsSubject = new Subject<number>();
-    public pendingCommandCount = 0;
+	// Define the internal Subject we'll use to push the command count
+	public pendingCommandsSubject = new Subject<number>();
+	public pendingCommandCount = 0;
 
-    // Provide the *public* Observable that clients can subscribe to
-    public pendingCommands$: Observable<number>;
+	// Provide the *public* Observable that clients can subscribe to
+	public pendingCommands$: Observable<number>;
 
-    constructor(public http: Http) {
-        this.pendingCommands$ = this.pendingCommandsSubject.asObservable();
-    }
+	private jwtHelper: JwtHelper = new JwtHelper();
 
-    // I perform a GET request to the API, appending the given params
-    // as URL search parameters. Returns a stream.
-    public get(url: string, params?: any): Observable<Response> {
-        const options = new DataServiceOptions();
-        options.method = RequestMethod.Get;
-        options.url = url;
-        options.params = params;
-        return this.request(options);
-    }
+	constructor(public http: Http) {
+		this.pendingCommands$ = this.pendingCommandsSubject.asObservable();
+	}
 
-    // I perform a POST request to the API. If both the params and data
-    // are present, the params will be appended as URL search parameters
-    // and the data will be serialized as a JSON payload. If only the
-    // data is present, it will be serialized as a JSON payload. Returns
-    // a stream.
-    public post(url: string, data?: any, params?: any): Observable<Response> {
-        if (!data) {
-            data = params;
-            params = {};
-        }
-        const options = new DataServiceOptions();
-        options.method = RequestMethod.Post;
-        options.url = url;
-        options.params = params;
-        options.data = data;
-        return this.request(options);
-    }
+	// I perform a GET request to the API, appending the given params
+	// as URL search parameters. Returns a stream.
+	public get(url: string, params?: any): Observable<Response> {
+		const options = new DataServiceOptions();
+		options.method = RequestMethod.Get;
+		options.url = url;
+		options.params = params;
+		return this.request(options);
+	}
 
-    public put(url: string, data?: any, params?: any): Observable<Response> {
-        if (!data) {
-            data = params;
-            params = {};
-        }
-        const options = new DataServiceOptions();
-        options.method = RequestMethod.Put;
-        options.url = url;
-        options.params = params;
-        options.data = data;
-        return this.request(options);
-    }
+	// I perform a POST request to the API. If both the params and data
+	// are present, the params will be appended as URL search parameters
+	// and the data will be serialized as a JSON payload. If only the
+	// data is present, it will be serialized as a JSON payload. Returns
+	// a stream.
+	public post(url: string, data?: any, params?: any): Observable<Response> {
+		if (!data) {
+			data = params;
+			params = {};
+		}
+		const options = new DataServiceOptions();
+		options.method = RequestMethod.Post;
+		options.url = url;
+		options.params = params;
+		options.data = data;
+		return this.request(options);
+	}
 
-    public delete(url: string): Observable<Response> {
-        const options = new DataServiceOptions();
-        options.method = RequestMethod.Delete;
-        options.url = url;
-        return this.request(options);
-    }
+	public put(url: string, data?: any, params?: any): Observable<Response> {
+		if (!data) {
+			data = params;
+			params = {};
+		}
+		const options = new DataServiceOptions();
+		options.method = RequestMethod.Put;
+		options.url = url;
+		options.params = params;
+		options.data = data;
+		return this.request(options);
+	}
 
-    public getToken(): string {
-        return sessionStorage.getItem(this._AUTH_TOKEN_KEY);
-    }
-    public getRefreshToken(): string {
-        return sessionStorage.getItem(this._AUTH_REFRESH_TOKEN_KEY);
-    }
+	public delete(url: string): Observable<Response> {
+		const options = new DataServiceOptions();
+		options.method = RequestMethod.Delete;
+		options.url = url;
+		return this.request(options);
+	}
 
-    public setToken(token: string) {
-        sessionStorage.setItem(this._AUTH_TOKEN_KEY, token);
-    }
-    public setRefreshToken(token: string) {
-        sessionStorage.setItem(this._AUTH_REFRESH_TOKEN_KEY, token);
-    }
+	public getToken(): string {
+		return sessionStorage.getItem(this._AUTH_TOKEN_KEY);
+	}
+	public getRefreshToken(): string {
+		return sessionStorage.getItem(this._AUTH_REFRESH_TOKEN_KEY);
+	}
 
-    public clearToken() {
-        sessionStorage.removeItem(this._AUTH_TOKEN_KEY);
-    }
-    public clearRefreshToken() {
-        sessionStorage.removeItem(this._AUTH_REFRESH_TOKEN_KEY);
-    }
+	public setToken(token: string) {
+		sessionStorage.setItem(this._AUTH_TOKEN_KEY, token);
+	}
+	public setRefreshToken(token: string) {
+		sessionStorage.setItem(this._AUTH_REFRESH_TOKEN_KEY, token);
+	}
 
-    private request(options: DataServiceOptions): Observable<Response> {
-        options.method = (options.method || RequestMethod.Get);
-        options.url = (options.url || '');
-        options.headers = (options.headers || {});
-        options.params = (options.params || {});
-        options.data = (options.data || {});
+	public clearToken() {
+		sessionStorage.removeItem(this._AUTH_TOKEN_KEY);
+	}
+	public clearRefreshToken() {
+		sessionStorage.removeItem(this._AUTH_REFRESH_TOKEN_KEY);
+	}
 
-        this.interpolateUrl(options);
-        this.addXsrfToken(options);
-        this.addContentType(options);
-        this.addAuthToken(options);
+	/**
+	 * Проверить, аутентифицирован ли текущий пользователь.
+	 */
+	isAuthenticated(): boolean {
+		return this.getToken() && !this.isTokenExpired();
+	}
 
-        const requestOptions = new RequestOptions();
-        requestOptions.method = options.method;
-        requestOptions.url = options.url;
-        requestOptions.headers = options.headers;
-        requestOptions.search = this.buildUrlSearchParams(options.params);
-        requestOptions.body = JSON.stringify(options.data);
+	/**
+	 * Проверить, аутентифицирован ли текущий пользователь.
+	 */
+	isTokenExpired(): boolean {
+		var token = this.getToken();
+		return token && this.jwtHelper.isTokenExpired(token);
+	}
 
-        this.pendingCommandsSubject.next(++this.pendingCommandCount);
+	/**
+	 * Получить инфу по токену. TODO: переписать на модель.
+	 */
+	getTokenInfo(): any {
+		var token = this.getToken();
+		return token && this.jwtHelper.decodeToken(token);
+	}
 
-        const stream = this.http.request(options.url, requestOptions)
-            .catch((error: any) => {
-                console.log(error);
-                return Observable.throw(error);
-            })
-            .finally(() => {
-                this.pendingCommandsSubject.next(--this.pendingCommandCount);
-            });
+	private request(options: DataServiceOptions): Observable<Response> {
+		if (this.getToken() && this.isTokenExpired() && this.getRefreshToken()) {
+			var refreshOptions: DataServiceOptions = new DataServiceOptions();
+			refreshOptions.method = RequestMethod.Post;
+			refreshOptions.url = "/api/Authentication/RefreshToken";
+			refreshOptions.data = {
+				refreshToken: this.getRefreshToken(),
+				usreId: this.getTokenInfo().nameid
+			};
+			return this._request(refreshOptions)
+				.catch((error: Response) => {
+					console.log(error);
+					this.clearRefreshToken();
+					return Observable.of(error);
+				})
+				.do((response: Response) => {
+					var result = response.ok && response.json() as TokenInfo;
+					if (result) {
+						this.setToken(result.token);
+						this.setRefreshToken(result.refreshToken);
+					}
+					return result;
+				})
+				.flatMap((res) => {
+					return this._request(options);
+				});
+		}
+		return this._request(options);
+	}
 
-        return stream;
-    }
+	private _request(options: DataServiceOptions): Observable<Response> {
+		options.method = (options.method || RequestMethod.Get);
+		options.url = (options.url || '');
+		options.headers = (options.headers || {});
+		options.params = (options.params || {});
+		options.data = (options.data || {});
 
-    private addContentType(options: DataServiceOptions): DataServiceOptions {
-        // if (options.method !== RequestMethod.Get) {
-        options.headers['Content-Type'] = 'application/json; charset=UTF-8';
-        // }
-        return options;
-    }
+		this.interpolateUrl(options);
+		this.addXsrfToken(options);
+		this.addContentType(options);
+		this.addAuthToken(options);
 
-    private addAuthToken(options: DataServiceOptions): DataServiceOptions {
-        const authTokens = this.getToken();
-        if (authTokens) {
-            options.headers.Authorization = 'Bearer ' + authTokens;
-        }
-        return options;
-    }
+		const requestOptions = new RequestOptions();
+		requestOptions.method = options.method;
+		requestOptions.url = options.url;
+		requestOptions.headers = options.headers;
+		requestOptions.search = this.buildUrlSearchParams(options.params);
+		requestOptions.body = JSON.stringify(options.data);
 
-    private extractValue(collection: any, key: string): any {
-        const value = collection[key];
-        delete (collection[key]);
-        return value;
-    }
+		this.pendingCommandsSubject.next(++this.pendingCommandCount);
 
-    private addXsrfToken(options: DataServiceOptions): DataServiceOptions {
-        const xsrfToken = this.getXsrfCookie();
-        if (xsrfToken) {
-            options.headers[this._XSRF_TOKEN_HEADER] = xsrfToken;
-        }
-        return options;
-    }
+		const stream = this.http.request(options.url, requestOptions)
+			.catch((error: any) => {
+				console.log(error);
+				return Observable.throw(error);
+			})
+			.finally(() => {
+				this.pendingCommandsSubject.next(--this.pendingCommandCount);
+			});
 
-    private getXsrfCookie(): string {
-        const matches = document.cookie.match(/\X_XSRF_TOKEN=([^\s;]+)/);
-        try {
-            return matches ? decodeURIComponent(matches[1]) : '';
-        } catch (decodeError) {
-            return '';
-        }
-    }
+		return stream;
+	}
 
-    // private addCors(options: DataServiceOptions): DataServiceOptions {
-    //     options.headers['Access-Control-Allow-Origin'] = '*';
-    //     return options;
-    // }
+	private addContentType(options: DataServiceOptions): DataServiceOptions {
+		options.headers['Content-Type'] = 'application/json; charset=UTF-8';
+		return options;
+	}
 
-    private buildUrlSearchParams(params: any): URLSearchParams {
-        const searchParams = new URLSearchParams();
-        for (const key in params) {
-            if (params.hasOwnProperty(key)) {
-                searchParams.append(key, params[key]);
-            }
-        }
-        return searchParams;
-    }
+	private addAuthToken(options: DataServiceOptions): DataServiceOptions {
+		const authTokens = this.getToken();
+		if (authTokens) {
+			options.headers.Authorization = 'Bearer ' + authTokens;
+		}
+		return options;
+	}
 
-    private interpolateUrl(options: DataServiceOptions): DataServiceOptions {
-        options.url = options.url.replace(/:([a-zA-Z]+[\w-]*)/g, ($0, token) => {
-            // Try to move matching token from the params collection.
-            if (options.params.hasOwnProperty(token)) {
-                return (this.extractValue(options.params, token));
-            }
-            // Try to move matching token from the data collection.
-            if (options.data.hasOwnProperty(token)) {
-                return (this.extractValue(options.data, token));
-            }
-            // If a matching value couldn't be found, just replace
-            // the token with the empty string.
-            return ('');
-        });
-        // Clean up any repeating slashes.
-        options.url = options.url.replace(/\/{2,}/g, '/');
-        // Clean up any trailing slashes.
-        options.url = options.url.replace(/\/+$/g, '');
+	private extractValue(collection: any, key: string): any {
+		const value = collection[key];
+		delete (collection[key]);
+		return value;
+	}
 
-        return options;
-    }
+	private addXsrfToken(options: DataServiceOptions): DataServiceOptions {
+		const xsrfToken = this.getXsrfCookie();
+		if (xsrfToken) {
+			options.headers[this._XSRF_TOKEN_HEADER] = xsrfToken;
+		}
+		return options;
+	}
+
+	private getXsrfCookie(): string {
+		const matches = document.cookie.match(/\X_XSRF_TOKEN=([^\s;]+)/);
+		try {
+			return matches ? decodeURIComponent(matches[1]) : '';
+		} catch (decodeError) {
+			return '';
+		}
+	}
+
+	// private addCors(options: DataServiceOptions): DataServiceOptions {
+	//     options.headers['Access-Control-Allow-Origin'] = '*';
+	//     return options;
+	// }
+
+	private buildUrlSearchParams(params: any): URLSearchParams {
+		const searchParams = new URLSearchParams();
+		for (const key in params) {
+			if (params.hasOwnProperty(key)) {
+				searchParams.append(key, params[key]);
+			}
+		}
+		return searchParams;
+	}
+
+	private interpolateUrl(options: DataServiceOptions): DataServiceOptions {
+		options.url = options.url.replace(/:([a-zA-Z]+[\w-]*)/g, ($0, token) => {
+			// Try to move matching token from the params collection.
+			if (options.params.hasOwnProperty(token)) {
+				return (this.extractValue(options.params, token));
+			}
+			// Try to move matching token from the data collection.
+			if (options.data.hasOwnProperty(token)) {
+				return (this.extractValue(options.data, token));
+			}
+			// If a matching value couldn't be found, just replace
+			// the token with the empty string.
+			return ('');
+		});
+		// Clean up any repeating slashes.
+		options.url = options.url.replace(/\/{2,}/g, '/');
+		// Clean up any trailing slashes.
+		options.url = options.url.replace(/\/+$/g, '');
+
+		return options;
+	}
 }

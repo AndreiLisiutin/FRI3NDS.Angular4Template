@@ -36,6 +36,16 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
         public string TokenType { get; set; }
     }
 
+	public class RefreshTokenModel
+	{
+		/// <summary>
+		/// Токен для обновления токена.
+		/// </summary>
+		public string RefreshToken { get; set; }
+
+		public int UserId { get; set; }
+	}
+
     /// <summary>
     /// Модель для аутентификации и регистрации пользователя.
     /// </summary>

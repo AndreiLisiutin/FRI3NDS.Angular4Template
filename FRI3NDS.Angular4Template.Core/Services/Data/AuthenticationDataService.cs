@@ -49,6 +49,15 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data
             return user;
         }
 
+		public UserBase GetUserById(int userId)
+        {
+            using (var unitOfWork = this.CreateUnitOfWork())
+            {
+				UserBase existingUser = unitOfWork.UserRepository.GetById(userId);
+				return existingUser;
+			}
+        }
+
         public UserBase VerifyUser(string login, string password)
         {
             Argument.Require(!string.IsNullOrWhiteSpace(login), "Логин пользователя не задан.");

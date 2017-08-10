@@ -12,5 +12,6 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Services.Data
     {
         UserBase CreateUser(string login, string password);
         UserBase VerifyUser(string login, string password);
+        UserBase GetUserById(int userId);
     }
 }

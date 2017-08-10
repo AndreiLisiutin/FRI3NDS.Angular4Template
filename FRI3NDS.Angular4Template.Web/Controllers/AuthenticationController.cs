@@ -19,126 +19,146 @@ using System.Threading.Tasks;
 
 namespace FRI3NDS.Angular4Template.Web.Controllers
 {
-    /// <summary>
-    /// Контроллер для работы с аутентификацией и учетными записями пользователей.
-    /// </summary>
-    [Route("api/Authentication")]
-    public class AuthenticationController : SecureControllerBase
-    {
-        /// <summary>
-        /// Сервис аутентификации и работы с учетными записями пользователей.
-        /// </summary>
-        public IAuthenticationDataService AuthenticationDataService { get; set; }
+	/// <summary>
+	/// Контроллер для работы с аутентификацией и учетными записями пользователей.
+	/// </summary>
+	[Route("api/Authentication")]
+	public class AuthenticationController : SecureControllerBase
+	{
+		/// <summary>
+		/// Сервис аутентификации и работы с учетными записями пользователей.
+		/// </summary>
+		public IAuthenticationDataService AuthenticationDataService { get; set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ITokensStorage TokensStorage { get; set; }
+		/// <summary>
+		/// 
+		/// </summary>
+		public ITokensStorage TokensStorage { get; set; }
 
-        /// <summary>
-        /// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
-        /// </summary>
-        /// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
-        /// <param name="tokensStorage">Сервис аутентификации и работы с учетными записями пользователей.</param>
-        public AuthenticationController(IAuthenticationDataService authenticationDataService, ITokensStorage tokensStorage)
-        {
-            this.AuthenticationDataService = authenticationDataService;
-            this.TokensStorage = tokensStorage;
-        }
+		/// <summary>
+		/// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
+		/// </summary>
+		/// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
+		/// <param name="tokensStorage">Сервис аутентификации и работы с учетными записями пользователей.</param>
+		public AuthenticationController(IAuthenticationDataService authenticationDataService, ITokensStorage tokensStorage)
+		{
+			this.AuthenticationDataService = authenticationDataService;
+			this.TokensStorage = tokensStorage;
+		}
 
-        /// <summary>
-        /// Действие входа в приложение, получение токена доступа.
-        /// </summary>
-        /// <param name="user">Данные пользователя.</param>
-        /// <returns>Информация о токене доступа.</returns>
-        [Route("Login")]
-        [HttpPost]
-        public TokenInfo GetAuthToken([FromBody]UserLoginModel user)
-        {
-            UserBase existUser = this.AuthenticationDataService.VerifyUser(user.Login, user.Password);
-            Argument.Require(existUser != null, "Введенные данные пользователя не верны.");
-            TokenInfo token = this._GenerateToken(existUser);
-            this.TokensStorage.Store(existUser.Id, token.RefreshToken);
-            return token;
-        }
+		/// <summary>
+		/// Действие входа в приложение, получение токена доступа.
+		/// </summary>
+		/// <param name="user">Данные пользователя.</param>
+		/// <returns>Информация о токене доступа.</returns>
+		[Route("Login")]
+		[HttpPost]
+		public TokenInfo GetAuthToken([FromBody]UserLoginModel user)
+		{
+			UserBase existUser = this.AuthenticationDataService.VerifyUser(user.Login, user.Password);
+			Argument.Require(existUser != null, "Введенные данные пользователя не верны.");
+			TokenInfo token = this._GenerateToken(existUser);
+			this.TokensStorage.Store(existUser.Id, token.RefreshToken);
+			return token;
+		}
 
-        /// <summary>
-        /// Выход из приложение, очистка токена.
-        /// </summary>
-        /// <returns>Ничего интересного.</returns>
-        [Route("Logout")]
-        [HttpPost]
-        public StatusCodeResult ClearAuthToken()
-        {
-            //необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
-            HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
-            return Ok();
-        }
+		/// <summary>
+		/// Действие входа в приложение, получение токена доступа.
+		/// </summary>
+		/// <param name="user">Данные пользователя.</param>
+		/// <returns>Информация о токене доступа.</returns>
+		[Route("RefreshToken")]
+		[HttpPost]
+		public TokenInfo RefreshToken([FromBody]RefreshTokenModel refreshTokenRequest)
+		{
+			Argument.Require(refreshTokenRequest?.RefreshToken != null, "Некорректный запрос.");
+			var tokenId = refreshTokenRequest.RefreshToken.Split('.')[0];
+			var userId = Int32.Parse(refreshTokenRequest.RefreshToken.Split('.')[1]);
+			Argument.Require(this.TokensStorage.Get(userId) == refreshTokenRequest.RefreshToken, "Некорректный токен обновления токенов.");
 
-        /// <summary>
-        /// Зарегистрироваться в системе.
-        /// </summary>
-        /// <param name="user">Данные для создания пользователя.</param>
-        /// <returns>Информация о токене доступа.</returns>
-        [Route("SignUp")]
-        [HttpPost]
-        public TokenInfo Registrer([FromBody]UserLoginModel user)
-        {
-            UserBase existUser = this.AuthenticationDataService.CreateUser(user.Login, user.Password);
-            TokenInfo token = this._GenerateToken(existUser);
-            this.TokensStorage.Store(existUser.Id, token.RefreshToken);
-            return token;
-        }
+			UserBase existUser = this.AuthenticationDataService.GetUserById(userId);
+			TokenInfo token = this._GenerateToken(existUser);
+			this.TokensStorage.Store(existUser.Id, token.RefreshToken);
+			return token;
+		}
 
-        /// <summary>
-        /// Сгенерировать токен доступа.
-        /// </summary>
-        /// <param name="user">Пользователь системы.</param>
-        /// <returns>Информация о сгенерированном токене.</returns>
-        private TokenInfo _GenerateToken(UserBase user)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var createdOn = DateTime.Now;
-            var expiresOn = createdOn + TokenAuthenticationOptions.ExpiresSpan;
+		/// <summary>
+		/// Выход из приложение, очистка токена.
+		/// </summary>
+		/// <returns>Ничего интересного.</returns>
+		[Route("Logout")]
+		[HttpPost]
+		public StatusCodeResult ClearAuthToken()
+		{
+			//необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
+			HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
+			return Ok();
+		}
 
-            ClaimsIdentity identity = CreateClaimsIdentity(user);
-            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
-            {
-                Issuer = TokenAuthenticationOptions.Issuer,
-                Audience = TokenAuthenticationOptions.Audience,
-                SigningCredentials = TokenAuthenticationOptions.SigningCredentials,
-                Subject = identity,
-                Expires = expiresOn,
-                IssuedAt = createdOn,
-                NotBefore = DateTime.Now
-            });
+		/// <summary>
+		/// Зарегистрироваться в системе.
+		/// </summary>
+		/// <param name="user">Данные для создания пользователя.</param>
+		/// <returns>Информация о токене доступа.</returns>
+		[Route("SignUp")]
+		[HttpPost]
+		public TokenInfo Registrer([FromBody]UserLoginModel user)
+		{
+			UserBase existUser = this.AuthenticationDataService.CreateUser(user.Login, user.Password);
+			TokenInfo token = this._GenerateToken(existUser);
+			this.TokensStorage.Store(existUser.Id, token.RefreshToken);
+			return token;
+		}
 
-            //необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
-            HttpContext.User = new ClaimsPrincipal(identity);
+		/// <summary>
+		/// Сгенерировать токен доступа.
+		/// </summary>
+		/// <param name="user">Пользователь системы.</param>
+		/// <returns>Информация о сгенерированном токене.</returns>
+		private TokenInfo _GenerateToken(UserBase user)
+		{
+			var handler = new JwtSecurityTokenHandler();
+			var createdOn = DateTime.Now;
+			var expiresOn = createdOn + TokenAuthenticationOptions.ExpiresSpan;
 
-            var token = handler.WriteToken(securityToken);
-            var refreshToken = $"{Guid.NewGuid()}.{user.Id}";
-            return new TokenInfo()
-            {
-                CreatedOn = createdOn,
-                ExpiresOn = expiresOn,
-                Token = token,
-                RefreshToken = refreshToken,
-                TokenType = TokenAuthenticationOptions.TokenType
-            };
-        }
+			ClaimsIdentity identity = CreateClaimsIdentity(user);
+			var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+			{
+				Issuer = TokenAuthenticationOptions.Issuer,
+				Audience = TokenAuthenticationOptions.Audience,
+				SigningCredentials = TokenAuthenticationOptions.SigningCredentials,
+				Subject = identity,
+				Expires = expiresOn,
+				IssuedAt = createdOn,
+				NotBefore = DateTime.Now
+			});
 
-        /// <summary>
-        /// Тестовое действие - вернуть имя пользователя.
-        /// </summary>
-        /// <returns>Имя пользователя.</returns>
-        [Route("Test")]
-        [HttpGet]
-        [Authorize]
-        public string GetUserInfo()
-        {
-            var claimsIdentity = User.Identity as ClaimsIdentity;
-            return claimsIdentity.Name;
-        }
-    }
+			//необходимо для обновления Anti-XSRF-cookie в классе AntiXsrfCookiesMiddleware
+			HttpContext.User = new ClaimsPrincipal(identity);
+
+			var token = handler.WriteToken(securityToken);
+			var refreshToken = $"{Guid.NewGuid()}.{user.Id}";
+			return new TokenInfo()
+			{
+				CreatedOn = createdOn,
+				ExpiresOn = expiresOn,
+				Token = token,
+				RefreshToken = refreshToken,
+				TokenType = TokenAuthenticationOptions.TokenType
+			};
+		}
+
+		/// <summary>
+		/// Тестовое действие - вернуть имя пользователя.
+		/// </summary>
+		/// <returns>Имя пользователя.</returns>
+		[Route("Test")]
+		[HttpGet]
+		[Authorize]
+		public string GetUserInfo()
+		{
+			var claimsIdentity = User.Identity as ClaimsIdentity;
+			return claimsIdentity.Name;
+		}
+	}
 }

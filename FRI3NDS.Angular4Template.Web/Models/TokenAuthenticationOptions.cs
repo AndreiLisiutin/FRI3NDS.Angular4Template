@@ -17,7 +17,7 @@ namespace FRI3NDS.Angular4Template.Web.Models
         public static RsaSecurityKey Key { get; } = new RsaSecurityKey(GenerateKey());
         public static SigningCredentials SigningCredentials { get; } = new SigningCredentials(Key, SecurityAlgorithms.RsaSha256Signature);
 
-        public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(40);
+        public static TimeSpan ExpiresSpan { get; } = TimeSpan.FromMinutes(1);
         public static string TokenType { get; } = "Bearer";
 
         /// <summary>
