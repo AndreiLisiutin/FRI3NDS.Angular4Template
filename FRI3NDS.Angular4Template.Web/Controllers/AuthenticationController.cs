@@ -1,6 +1,7 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
 using FRI3NDS.Angular4Template.Util;
+using FRI3NDS.Angular4Template.Web.Infrastructure;
 using FRI3NDS.Angular4Template.Web.Models;
 using FRI3NDS.Angular4Template.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Antiforgery;
@@ -30,12 +31,19 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         public IAuthenticationDataService AuthenticationDataService { get; set; }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public ITokensStorage TokensStorage { get; set; }
+
+        /// <summary>
         /// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
         /// </summary>
         /// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
-        public AuthenticationController(IAuthenticationDataService authenticationDataService)
+        /// <param name="tokensStorage">Сервис аутентификации и работы с учетными записями пользователей.</param>
+        public AuthenticationController(IAuthenticationDataService authenticationDataService, ITokensStorage tokensStorage)
         {
             this.AuthenticationDataService = authenticationDataService;
+            this.TokensStorage = tokensStorage;
         }
 
         /// <summary>
@@ -50,6 +58,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             UserBase existUser = this.AuthenticationDataService.VerifyUser(user.Login, user.Password);
             Argument.Require(existUser != null, "Введенные данные пользователя не верны.");
             TokenInfo token = this._GenerateToken(existUser);
+            this.TokensStorage.Store(existUser.Id, token.RefreshToken);
             return token;
         }
 
@@ -77,6 +86,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
         {
             UserBase existUser = this.AuthenticationDataService.CreateUser(user.Login, user.Password);
             TokenInfo token = this._GenerateToken(existUser);
+            this.TokensStorage.Store(existUser.Id, token.RefreshToken);
             return token;
         }
 
@@ -99,6 +109,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
                 SigningCredentials = TokenAuthenticationOptions.SigningCredentials,
                 Subject = identity,
                 Expires = expiresOn,
+                IssuedAt = createdOn,
                 NotBefore = DateTime.Now
             });
 
@@ -106,11 +117,13 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             HttpContext.User = new ClaimsPrincipal(identity);
 
             var token = handler.WriteToken(securityToken);
+            var refreshToken = $"{Guid.NewGuid()}.{user.Id}";
             return new TokenInfo()
             {
                 CreatedOn = createdOn,
                 ExpiresOn = expiresOn,
                 Token = token,
+                RefreshToken = refreshToken,
                 TokenType = TokenAuthenticationOptions.TokenType
             };
         }

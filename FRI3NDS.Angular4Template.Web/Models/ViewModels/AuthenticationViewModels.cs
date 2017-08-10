@@ -16,6 +16,11 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
         public string Token { get; set; }
 
         /// <summary>
+        /// Токен для обновления токена.
+        /// </summary>
+        public string RefreshToken { get; set; }
+
+        /// <summary>
         /// Время создания токена.
         /// </summary>
         public DateTime CreatedOn { get; set; }
@@ -36,6 +41,11 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
     /// </summary>
     public class UserLoginModel
     {
+        /// <summary>
+        /// Тип запроса токена - "password" - аутентификация, "refresh_token" - обновление токена.
+        /// </summary>
+        public string GrantType { get; set; }
+
         /// <summary>
         /// Логин.
         /// </summary>

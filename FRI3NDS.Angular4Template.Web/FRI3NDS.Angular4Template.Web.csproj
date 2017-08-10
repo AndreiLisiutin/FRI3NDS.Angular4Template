@@ -97,6 +97,9 @@
     <None Update="Assets\Scripts\app\models\domain\_FieldType.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_FieldType.cs</CustomToolNamespace>
     </None>
+    <None Update="Assets\Scripts\app\models\viewModels\AuthenticationViewModels.ts">
+      <CustomToolNamespace>Models\ViewModels\AuthenticationViewModels.cs</CustomToolNamespace>
+    </None>
     <None Update="Assets\Scripts\app\models\viewModels\_FieldViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\_Admin\_FieldViewModels.cs</CustomToolNamespace>
     </None>

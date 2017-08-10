@@ -20,6 +20,7 @@ export class AuthenticationService {
             .do((result: TokenInfo) => {
                 if (result) {
                     this.dataAdapter.setToken(result.token);
+                    this.dataAdapter.setRefreshToken(result.refreshToken);
                 }
             })
             .catch((error) => {
@@ -36,6 +37,7 @@ export class AuthenticationService {
             .do((result) => {
                 if (result.ok) {
                     this.dataAdapter.clearToken();
+                    this.dataAdapter.clearRefreshToken();
                 }
             })
             .catch((error) => {
@@ -67,6 +69,7 @@ export class AuthenticationService {
             .do((result: TokenInfo) => {
                 if (result) {
                     this.dataAdapter.setToken(result.token);
+                    this.dataAdapter.setRefreshToken(result.refreshToken);
                 }
             })
             .catch((error) => {

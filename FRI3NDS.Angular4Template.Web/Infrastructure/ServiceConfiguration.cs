@@ -23,6 +23,7 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
         public static void ConfigureServices(IServiceCollection services, IConfigurationRoot configuration)
         {
             services.AddSingleton<IConfiguration>((serviceProvider) => configuration);
+            services.AddSingleton<ITokensStorage, TokensStorage>();
             ConfigureDataServices(services);
             ConfigureCoreServices(services);
         }

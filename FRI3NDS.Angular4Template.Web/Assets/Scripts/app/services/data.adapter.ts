@@ -27,6 +27,7 @@ export class DataAdapter {
 	 * Ключ, по которому лежит токен в sessionStorage.
 	 */
     private _AUTH_TOKEN_KEY = 'AUTH_TOKEN';
+    private _AUTH_REFRESH_TOKEN_KEY = 'AUTH_REFRESH_TOKEN';
     private _XSRF_TOKEN_HEADER = 'X_XSRF_TOKEN';
 
     // Define the internal Subject we'll use to push the command count
@@ -91,13 +92,22 @@ export class DataAdapter {
     public getToken(): string {
         return sessionStorage.getItem(this._AUTH_TOKEN_KEY);
     }
+    public getRefreshToken(): string {
+        return sessionStorage.getItem(this._AUTH_REFRESH_TOKEN_KEY);
+    }
 
     public setToken(token: string) {
         sessionStorage.setItem(this._AUTH_TOKEN_KEY, token);
     }
+    public setRefreshToken(token: string) {
+        sessionStorage.setItem(this._AUTH_REFRESH_TOKEN_KEY, token);
+    }
 
     public clearToken() {
         sessionStorage.removeItem(this._AUTH_TOKEN_KEY);
+    }
+    public clearRefreshToken() {
+        sessionStorage.removeItem(this._AUTH_REFRESH_TOKEN_KEY);
     }
 
     private request(options: DataServiceOptions): Observable<Response> {
