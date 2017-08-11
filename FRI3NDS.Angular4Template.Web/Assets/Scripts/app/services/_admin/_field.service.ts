@@ -3,6 +3,7 @@ import { DataAdapter } from "services/data.adapter";
 import { Observable } from "rxjs/Observable";
 import { _Field, _FieldBase } from "models/domain/_Field";
 import { _FieldFilter } from "models/viewModels/_FieldViewModels";
+import { _FieldType } from "models/domain/_FieldType";
 
 @Injectable()
 export class _FieldService {
@@ -21,6 +22,15 @@ export class _FieldService {
     getById(id: number): Observable<_Field> {
         return this.dataAdapter.get(`/api/Admin/_Field/${id}`)
             .map(response => response.json() as _Field)
+            .catch(error => {
+                this.handleError(error);
+                return Observable.throw(error);
+            });
+    }
+    
+    GetFieldTypes(): Observable<_FieldType[]> {
+        return this.dataAdapter.get(`/api/Admin/_Field/GetFieldTypes`)
+            .map(response => response.json() as _FieldType[])
             .catch(error => {
                 this.handleError(error);
                 return Observable.throw(error);

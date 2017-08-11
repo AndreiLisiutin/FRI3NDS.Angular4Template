@@ -30,16 +30,16 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
 		/// </summary>
 		public IAuthenticationDataService AuthenticationDataService { get; set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
-		public ITokensStorage TokensStorage { get; set; }
+        /// <summary>
+        /// Хранилище токенов для обновления токенов.
+        /// </summary>
+        public ITokensStorage TokensStorage { get; set; }
 
 		/// <summary>
 		/// Конструктор контроллера для работы с аутентификацией и учетными записями пользователей.
 		/// </summary>
 		/// <param name="authenticationDataService">Сервис аутентификации и работы с учетными записями пользователей.</param>
-		/// <param name="tokensStorage">Сервис аутентификации и работы с учетными записями пользователей.</param>
+		/// <param name="tokensStorage">Хранилище токенов для обновления токенов.</param>
 		public AuthenticationController(IAuthenticationDataService authenticationDataService, ITokensStorage tokensStorage)
 		{
 			this.AuthenticationDataService = authenticationDataService;
@@ -62,22 +62,25 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
 			return token;
 		}
 
-		/// <summary>
-		/// Действие входа в приложение, получение токена доступа.
-		/// </summary>
-		/// <param name="user">Данные пользователя.</param>
-		/// <returns>Информация о токене доступа.</returns>
-		[Route("RefreshToken")]
+        /// <summary>
+        /// Обновление токена доступа.
+        /// </summary>
+        /// <param name="refreshTokenRequest">Данные о токене обновления токенов.</param>
+        /// <returns>Информация о новом токене доступа.</returns>
+        [Route("RefreshToken")]
 		[HttpPost]
 		public TokenInfo RefreshToken([FromBody]RefreshTokenModel refreshTokenRequest)
 		{
-			Argument.Require(refreshTokenRequest?.RefreshToken != null, "Некорректный запрос.");
-			var tokenId = refreshTokenRequest.RefreshToken.Split('.')[0];
-			var userId = Int32.Parse(refreshTokenRequest.RefreshToken.Split('.')[1]);
+			Argument.Require(refreshTokenRequest?.RefreshToken != null, "Некорректный запрос, пустой токен обновления токенов.");
+            var splittedData = refreshTokenRequest.RefreshToken.Split('.');
+            Argument.Require(splittedData.Length == 2, "Некорректный формат токена для обновления токенов.");
+            Argument.Require(Int32.TryParse(splittedData[1], out int userId), "Некорректный формат идентификатора пользователя в токене для обновления токенов.");
+            var tokenId = splittedData[0];
 			Argument.Require(this.TokensStorage.Get(userId) == refreshTokenRequest.RefreshToken, "Некорректный токен обновления токенов.");
 
 			UserBase existUser = this.AuthenticationDataService.GetUserById(userId);
-			TokenInfo token = this._GenerateToken(existUser);
+            Argument.Require(existUser != null, "Не найден пользователь-владелец токена.");
+            TokenInfo token = this._GenerateToken(existUser);
 			this.TokensStorage.Store(existUser.Id, token.RefreshToken);
 			return token;
 		}

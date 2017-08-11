@@ -14,6 +14,7 @@ import { IDatatableSelectionEvent, IDatatableSortEvent } from "ng2-md-datatable"
 import { _FieldService } from "services/_admin/_field.service";
 import { _FieldFilter } from "models/viewModels/_FieldViewModels";
 import { _Field, _FieldBase } from "models/domain/_Field";
+import { _FieldType } from "models/domain/_FieldType";
 
 @Component({
     selector: 'admin-field-edit',
@@ -34,12 +35,17 @@ export class AdminFieldEditComponent implements OnInit {
     }
 
     private field: _Field = new _Field();
+    private fieldTypes: _FieldType[] = new Array<_FieldType>();
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
             if (!params['id']) {
                 //создание нового поля
                 this.field = new _Field();
+                if (!params['entityId']) {
+                    this.notificationService.error('Ошибка', 'Не задана сущность для нового поля.');
+                }
+                this.field._EntityId = parseInt(params['entityId']);
                 return;
             }
 
@@ -50,6 +56,12 @@ export class AdminFieldEditComponent implements OnInit {
             }, (error) => {
                 this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
             });
+        });
+
+        this._fieldService.GetFieldTypes().subscribe((fieldTypes: _FieldType[]) => {
+            this.fieldTypes = fieldTypes;
+        }, (error) => {
+            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
         });
     }
     

@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
 import { IDatatableSelectionEvent, IDatatableSortEvent } from "ng2-md-datatable";
 import { _FieldService } from "services/_admin/_field.service";
 import { _FieldFilter } from "models/viewModels/_FieldViewModels";
-import { _Field } from "models/domain/_Field";
+import { _Field, _FieldBase } from "models/domain/_Field";
 
 @Component({
     selector: 'admin-entity',
@@ -85,6 +85,22 @@ export class AdminEntityComponent implements OnInit {
             return;
         }
         this.router.navigate(['/admin/entity/field', this.selectedFieldId]);
+    }
+
+    goCreateField(): void {
+        this.router.navigate(['/admin/entity/field/new/', this.entity.id]);
+    }
+
+    deleteField(): void {
+        if (!this.selectedFieldId) {
+            this.notificationService.error('Ошибка', 'Выберите поле для удаления.');
+            return;
+        }
+        this._fieldService.delete(this.selectedFieldId).subscribe((field: _FieldBase) => {
+            this.fields = this.fields.filter(f => f.id != field.id);
+        }, (error) => {
+            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+        });
     }
 
     goBack(): void {

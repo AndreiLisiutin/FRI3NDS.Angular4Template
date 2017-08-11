@@ -36,6 +36,9 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
         public string TokenType { get; set; }
     }
 
+    /// <summary>
+    /// Модель для обновления токена доступа.
+    /// </summary>
 	public class RefreshTokenModel
 	{
 		/// <summary>
@@ -43,6 +46,9 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
 		/// </summary>
 		public string RefreshToken { get; set; }
 
+        /// <summary>
+        /// Идентификатор пользователя.
+        /// </summary>
 		public int UserId { get; set; }
 	}
 
@@ -51,11 +57,6 @@ namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
     /// </summary>
     public class UserLoginModel
     {
-        /// <summary>
-        /// Тип запроса токена - "password" - аутентификация, "refresh_token" - обновление токена.
-        /// </summary>
-        public string GrantType { get; set; }
-
         /// <summary>
         /// Логин.
         /// </summary>

@@ -17,6 +17,30 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
         {
         }
 
+        static List<_FieldType> _fieldTypes = new List<_FieldType>()
+        {
+            new _FieldType()
+            {
+                Id = 1,
+                Name = "Integer"
+            },
+            new _FieldType()
+            {
+                Id = 2,
+                Name = "String"
+            },
+            new _FieldType()
+            {
+                Id = 3,
+                Name = "Date"
+            },
+            new _FieldType()
+            {
+                Id = 4,
+                Name = "Anything else"
+            },
+        };
+
         static List<_Field> _fields = new List<_Field>()
         {
             new _Field()
@@ -76,6 +100,13 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
             return _fields
                 .Where(e => filter?._EntityId == null || e._EntityId == filter._EntityId)
                 .ToList();
+        }
+
+        [Route("GetFieldTypes")]
+        [HttpGet]
+        public List<_FieldType> GetFieldTypes()
+        {
+            return _fieldTypes;
         }
 
         [Route("{id}")]

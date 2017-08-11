@@ -8,8 +8,11 @@
 //    public expiresOn: Date;
 //    public tokenType: string;
 //}
+//export class RefreshTokenModel { 
+//    public refreshToken: string;
+//    public userId: number;
+//}
 //export class UserLoginModel { 
-//    public grantType: string;
 //    public login: string;
 //    public password: string;
 //    public email: string;
@@ -23,11 +26,16 @@ export class TokenInfo {
     public tokenType: string;
 }
 
+export class RefreshTokenModel {
+    public refreshToken: string;
+    public userId: number;
+}
+
 export class UserLoginModel {
-    public grantType: string;
     public login: string;
     public password: string;
     public email: string;
 }
+
 
 

@@ -29,7 +29,9 @@
             </tbody>
         </ng2-md-datatable>
         <div class="">
+            <button md-raised-button (click)="goCreateField()">Добавить</button>
             <button md-raised-button [disabled]="!selectedFieldId" (click)="goViewField()">Редактировать</button>
+            <button md-raised-button [disabled]="!selectedFieldId" (click)="deleteField()">Удалить</button>
         </div>
     </div>
 

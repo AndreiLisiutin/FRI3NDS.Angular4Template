@@ -1,13 +1,11 @@
 ﻿import { Injectable } from '@angular/core';
 import { DataAdapter } from "services/data.adapter";
-import { JwtHelper } from "angular2-jwt";
 import { UserLoginModel, TokenInfo } from "models/viewModels/AuthenticationViewModels";
 import { Observable } from "rxjs/Observable";
 import { UserBase } from "models/domain/User";
 
 @Injectable()
 export class AuthenticationService {
-    private jwtHelper: JwtHelper = new JwtHelper();
     constructor(private dataAdapter: DataAdapter) { }
 
     /**
@@ -19,7 +17,7 @@ export class AuthenticationService {
             .map(response => response.json() as TokenInfo)
             .do((result: TokenInfo) => {
                 if (result) {
-                    this.dataAdapter.setToken(result.token);
+                    this.dataAdapter.setAuthToken(result.token);
                     this.dataAdapter.setRefreshToken(result.refreshToken);
                 }
             })
@@ -36,7 +34,7 @@ export class AuthenticationService {
         return this.dataAdapter.post("/api/Authentication/Logout")
             .do((result) => {
                 if (result.ok) {
-                    this.dataAdapter.clearToken();
+                    this.dataAdapter.clearAuthToken();
                     this.dataAdapter.clearRefreshToken();
                 }
             })
@@ -68,7 +66,7 @@ export class AuthenticationService {
             .map(response => response.json() as TokenInfo)
             .do((result: TokenInfo) => {
                 if (result) {
-                    this.dataAdapter.setToken(result.token);
+                    this.dataAdapter.setAuthToken(result.token);
                     this.dataAdapter.setRefreshToken(result.refreshToken);
                 }
             })
@@ -82,23 +80,21 @@ export class AuthenticationService {
 	 * Получить токен из хранилища сессии.
 	 */
     getToken(): string {
-        return this.dataAdapter.getToken();
+        return this.dataAdapter.getAuthToken();
     }
 
 	/**
 	 * Проверить, аутентифицирован ли текущий пользователь.
 	 */
     isAuthenticated(): boolean {
-        var token = this.dataAdapter.getToken();
-        return token && !this.jwtHelper.isTokenExpired(token);
+        return this.dataAdapter.isAuthenticated();
     }
 
 	/**
 	 * Получить инфу по токену. TODO: переписать на модель.
 	 */
     getTokenInfo(): any {
-        var token = this.getToken();
-        return token && this.jwtHelper.decodeToken(token);
+        this.dataAdapter.getAuthTokenInfo();
     }
 
     private handleError(error: any) {

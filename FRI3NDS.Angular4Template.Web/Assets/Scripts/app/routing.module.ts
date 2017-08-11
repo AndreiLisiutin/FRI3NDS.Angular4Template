@@ -16,7 +16,7 @@ import { AdminFieldEditComponent } from "components/_admin/_field/admin-field-ed
 /**
  * Маршруты приложения.
  */
-const routes: Routes = [
+const _routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'login' },
     { path: 'register', component: RegistrationComponent },
     { path: 'login', component: LoginComponent },
@@ -28,6 +28,7 @@ const routes: Routes = [
             { path: 'entity/new', component: AdminEntityEditComponent },
             { path: 'entity/:id', component: AdminEntityComponent },
             { path: 'entity/:id/edit', component: AdminEntityEditComponent },
+            { path: 'entity/field/new/:entityId', component: AdminFieldEditComponent },
             { path: 'entity/field/:id', component: AdminFieldComponent },
             { path: 'entity/field/:id/edit', component: AdminFieldEditComponent }
         ]
@@ -38,7 +39,7 @@ const routes: Routes = [
  * Модуль навигации.
  */
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { useHash: true })],
+    imports: [RouterModule.forRoot(_routes, { useHash: true })],
     exports: [RouterModule]
 })
 export class RoutingModule { }
