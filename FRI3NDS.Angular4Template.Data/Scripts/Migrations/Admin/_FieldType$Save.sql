@@ -1,4 +1,5 @@
 ﻿-- Сохранение сущностей.
+SELECT Service$DropFunction('_FieldType$Save');
 CREATE OR REPLACE FUNCTION _FieldType$Save(
 	_id INT --идентификатор пользователя
 	, _name TEXT --имя пользователя

@@ -19,6 +19,9 @@
 //}*/
 
 export class TokenInfo {
+public constructor(init?: Partial<TokenInfo>) {
+        Object.assign(this, init);
+    }
     public token: string;
     public refreshToken: string;
     public createdOn: Date;
@@ -27,11 +30,17 @@ export class TokenInfo {
 }
 
 export class RefreshTokenModel {
+public constructor(init?: Partial<RefreshTokenModel>) {
+        Object.assign(this, init);
+    }
     public refreshToken: string;
     public userId: number;
 }
 
 export class UserLoginModel {
+public constructor(init?: Partial<UserLoginModel>) {
+        Object.assign(this, init);
+    }
     public login: string;
     public password: string;
     public email: string;

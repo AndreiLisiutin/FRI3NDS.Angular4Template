@@ -46,6 +46,10 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
         #region Repositories
         
         I_EntityRepository _EntityRepository { get; }
+        
+        I_FieldRepository _FieldRepository { get; }
+
+        I_FieldTypeRepository _FieldTypeRepository { get; }
 
         #endregion
     }

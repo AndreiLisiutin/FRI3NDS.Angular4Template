@@ -13,10 +13,17 @@
 
 
 export class _FieldTypeBase {
+public constructor(init?: Partial<_FieldTypeBase>) {
+        Object.assign(this, init);
+    }
     public id: number;
     public name: string;
 }
 
 
-export class _FieldType extends _FieldTypeBase { 
+export class _FieldType extends _FieldTypeBase {
+public constructor(init?: Partial<_FieldType>) {
+        super(init);
+        Object.assign(this, init);
+    }
 }

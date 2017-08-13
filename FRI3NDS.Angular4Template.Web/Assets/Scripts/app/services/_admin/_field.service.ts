@@ -46,9 +46,9 @@ export class _FieldService {
             });
     }
 
-    delete(id: number): Observable<_FieldBase> {
+    delete(id: number): Observable<number> {
         return this.dataAdapter.delete(`/api/Admin/_Field/${id}`)
-            .map(response => response.json() as _FieldBase)
+            .map(response => response.json() as number)
             .catch(error => {
                 this.handleError(error);
                 return Observable.throw(error);

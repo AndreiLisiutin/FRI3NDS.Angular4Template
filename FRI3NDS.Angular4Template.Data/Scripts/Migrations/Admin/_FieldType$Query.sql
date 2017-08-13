@@ -1,4 +1,5 @@
 ﻿-- Выборка типов полей.
+SELECT Service$DropFunction('_FieldType$Query');
 CREATE OR REPLACE FUNCTION _FieldType$Query(
 	_id INTEGER --идентификатор пользователя
 	, _name TEXT --логин пользователя

@@ -1,4 +1,5 @@
 ﻿-- Процедура создания тестовой сущности в БД.
+SELECT Service$DropFunction('_TestEntity$CreateTable');
 CREATE OR REPLACE FUNCTION _TestEntity$CreateTable() RETURNS VOID AS 
 $$
 	BEGIN
@@ -19,7 +20,7 @@ $$
 			CONSTRAINT _test_subentity__test_entity_id_fkey FOREIGN KEY (_test_entity_id)
 				REFERENCES public._test_entity (_test_entity_id) MATCH SIMPLE
 				ON UPDATE NO ACTION ON DELETE NO ACTION
-		)
+		);
 	END;
 $$ 
 LANGUAGE plpgsql VOLATILE;

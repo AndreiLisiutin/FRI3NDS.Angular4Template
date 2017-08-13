@@ -94,10 +94,10 @@ export class DataAdapter {
     }
 
     public getAuthToken(): string {
-        return sessionStorage.getItem(this._AUTH_TOKEN_KEY);
+        return sessionStorage.getItem(this._AUTH_TOKEN_KEY) || null;
     }
     public getRefreshToken(): string {
-        return sessionStorage.getItem(this._AUTH_REFRESH_TOKEN_KEY);
+        return sessionStorage.getItem(this._AUTH_REFRESH_TOKEN_KEY) || null;
     }
 
     public setAuthToken(token: string) {
@@ -118,7 +118,7 @@ export class DataAdapter {
 	 * Проверить, аутентифицирован ли текущий пользователь.
 	 */
     isAuthenticated(): boolean {
-        return this.getAuthToken() && !this.isTokenExpired();
+        return this.getAuthToken() != null; 
     }
 
 	/**
@@ -157,6 +157,7 @@ export class DataAdapter {
                 .catch((error: Response) => {
                     console.log(error);
                     this.clearRefreshToken();
+                    this.clearAuthToken();
                     return Observable.of(error);
                 })
                 .do((response: Response) => {

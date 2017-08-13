@@ -1,4 +1,5 @@
 ﻿-- Сохранение пользователей.
+SELECT Service$DropFunction('User$Save');
 CREATE OR REPLACE FUNCTION User$Save(
 	_id INT --идентификатор пользователя
 	, _name TEXT --имя пользователя

@@ -18,6 +18,14 @@ $$
 			name text NOT NULL,
 			CONSTRAINT _field_type_pkey PRIMARY KEY (_field_type_id)
 		);
+		INSERT INTO public._field_type (_field_type_id, name)
+		VALUES (1, 'Целое число');
+		INSERT INTO public._field_type (_field_type_id, name)
+		VALUES (2, 'Дробное число');
+		INSERT INTO public._field_type (_field_type_id, name)
+		VALUES (3, 'Строка');
+		INSERT INTO public._field_type (_field_type_id, name)
+		VALUES (4, 'Дата');
 		
 		CREATE TABLE public._field
 		(

@@ -2,10 +2,23 @@
 //use this definition in order not to inherit classes:
 //
 //export class _FieldFilter { 
+//    public id: number;
+//    public name: string;
+//    public databaseName: string;
 //    public _EntityId: number;
+//    public pageSize: number;
+//    public pageNumber: number;
 //}*/
 
 export class _FieldFilter {
+public constructor(init?: Partial<_FieldFilter>) {
+        Object.assign(this, init);
+    }
+    public id: number;
+    public name: string;
+    public databaseName: string;
     public _EntityId: number;
+    public pageSize: number;
+    public pageNumber: number;
 }
 

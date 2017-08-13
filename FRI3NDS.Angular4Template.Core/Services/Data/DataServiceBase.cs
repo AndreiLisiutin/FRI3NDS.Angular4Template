@@ -25,10 +25,19 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data
         /// <summary>
         /// Создать единицу работы с подключением к базе данных.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Единица работы.</returns>
         protected IUnitOfWork CreateUnitOfWork()
         {
             return this._unitOfWorkFactory.Create();
+        }
+
+        /// <summary>
+        /// Создать единицу работы с подключением к базе данных для Админов.
+        /// </summary>
+        /// <returns>Админская единица работы.</returns>
+        protected IAdminUnitOfWork CreateAdminUnitOfWork()
+        {
+            return this._unitOfWorkFactory.CreateAdmin();
         }
     }
 }

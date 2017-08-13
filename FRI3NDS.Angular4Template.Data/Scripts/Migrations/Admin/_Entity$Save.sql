@@ -1,4 +1,5 @@
 ﻿-- Сохранение сущностей.
+SELECT Service$DropFunction('_Entity$Save');
 CREATE OR REPLACE FUNCTION _Entity$Save(
 	_id INT --идентификатор пользователя
 	, _name TEXT --имя пользователя

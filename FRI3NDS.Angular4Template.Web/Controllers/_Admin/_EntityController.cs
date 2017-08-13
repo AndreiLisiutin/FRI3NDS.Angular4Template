@@ -1,4 +1,6 @@
-﻿using FRI3NDS.Angular4Template.Core.Models.Domain;
+﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin;
+using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Core.Services.Data._Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,69 +14,40 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
     [Authorize]
     public class _EntityController : SecureControllerBase
     {
-        public _EntityController()
+        public I_EntityService EntityService { get; set; }
+
+        public _EntityController(I_EntityService entityService)
         {
+            this.EntityService = entityService;
         }
-
-        static List<_Entity> _entities = new List<_Entity>()
-        {
-            new _Entity()
-            {
-                Id = 1,
-                Name = "Test entity",
-                DatabaseName = "_test_entity",
-                DatabaseScheme = "public"
-            },
-            new _Entity()
-            {
-                Id = 2,
-                Name = "Test subentity",
-                DatabaseName = "_test_subentity",
-                DatabaseScheme = "public"
-            }
-        };
-
+        
         [Route("")]
         [HttpGet]
         public List<_Entity> GetEntities()
         {
-            return _entities;
+            return EntityService.Query();
         }
 
         [Route("{id}")]
         [HttpGet]
         public _Entity GetEntityById(int id)
         {
-            return _entities.FirstOrDefault(e => e.Id == id);
+            return EntityService.GetById(id);
         }
 
         [Route("")]
         [HttpPost]
-        public _Entity Save([FromBody]_EntityBase entity)
+        public _EntityBase Save([FromBody]_EntityBase entity)
         {
-            if (entity.Id == 0)
-            {
-                entity.Id = _entities.Select(e => e.Id).Max() + 1;
-            }
-            _entities = _entities.Where(e => e.Id != entity.Id).ToList();
-            var newEntity = new _Entity()
-            {
-                Id = entity.Id,
-                DatabaseName = entity.DatabaseName,
-                DatabaseScheme = entity.DatabaseScheme,
-                Name = entity.Name
-            };
-            _entities.Add(newEntity);
-            return newEntity;
+            int userId = this.GetCurrentUserId();
+            return EntityService.Save(entity, userId);
         }
 
         [Route("{id}")]
         [HttpDelete]
-        public _Entity Delete(int id)
+        public int Delete(int id)
         {
-            var oldEntity = _entities.Where(e => e.Id == id).FirstOrDefault();
-            _entities.Remove(oldEntity);
-            return oldEntity;
+            return EntityService.Delete(id);
         }
     }
 }

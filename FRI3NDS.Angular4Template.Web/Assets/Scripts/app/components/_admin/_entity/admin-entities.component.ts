@@ -65,8 +65,8 @@ export class AdminEntitiesComponent implements OnInit {
             this.notificationService.error('Ошибка', 'Выберите сущность для удаления.');
             return;
         }
-        this._entityService.delete(this.selectedEntityId).subscribe((entity: _EntityBase) => {
-            this.entities = this.entities.filter(e => e.id != entity.id);
+        this._entityService.delete(this.selectedEntityId).subscribe((entityId: number) => {
+            this.entities = this.entities.filter(e => e.id != entityId);
             this.selectedEntityId = null;
         }, (error) => {
             this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');

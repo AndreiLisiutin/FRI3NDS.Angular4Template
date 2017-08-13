@@ -17,6 +17,9 @@
 
 
 export class _EntityBase {
+public constructor(init?: Partial<_EntityBase>) {
+        Object.assign(this, init);
+    }
     public id: number;
     public name: string;
     public databaseName: string;
@@ -24,5 +27,9 @@ export class _EntityBase {
 }
 
 
-export class _Entity extends _EntityBase { 
+export class _Entity extends _EntityBase {
+public constructor(init?: Partial<_Entity>) {
+        super(init);
+        Object.assign(this, init);
+    }
 }

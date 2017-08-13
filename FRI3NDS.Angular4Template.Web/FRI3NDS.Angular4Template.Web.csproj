@@ -88,6 +88,9 @@
     <None Update="Assets\Scripts\app\components\_admin\_field\admin-field.component.ts">
       <DependentUpon>admin-field.component.html</DependentUpon>
     </None>
+    <None Update="Assets\Scripts\app\models\domain\User.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\User.cs</CustomToolNamespace>
+    </None>
     <None Update="Assets\Scripts\app\models\domain\_Entity.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_Entity.cs</CustomToolNamespace>
     </None>
@@ -96,6 +99,9 @@
     </None>
     <None Update="Assets\Scripts\app\models\domain\_FieldType.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_FieldType.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\domain\_TestEntity.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_TestEntity.cs</CustomToolNamespace>
     </None>
     <None Update="Assets\Scripts\app\models\viewModels\AuthenticationViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\AuthenticationViewModels.cs</CustomToolNamespace>

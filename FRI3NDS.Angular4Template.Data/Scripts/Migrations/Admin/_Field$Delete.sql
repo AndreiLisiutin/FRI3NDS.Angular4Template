@@ -1,4 +1,5 @@
 ﻿-- Удаление пользователей.
+SELECT Service$DropFunction('_Field$Delete');
 CREATE OR REPLACE FUNCTION _Field$Delete(
 	_id INT --идентификатор пользователя
 ) 

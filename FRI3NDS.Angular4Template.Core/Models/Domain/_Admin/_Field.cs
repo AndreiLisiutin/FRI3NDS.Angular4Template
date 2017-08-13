@@ -10,7 +10,15 @@ namespace FRI3NDS.Angular4Template.Core.Models.Domain
     /// </summary>
     public class _Field : _FieldBase
     {
+        /// <summary>
+        /// Название сущности, к которой относится поле.
+        /// </summary>
         public string _EntityName { get; set; }
+
+        /// <summary>
+        /// Название типа значения поля.
+        /// </summary>
+        public string _FieldTypeName { get; set; }
     }
 
     /// <summary>

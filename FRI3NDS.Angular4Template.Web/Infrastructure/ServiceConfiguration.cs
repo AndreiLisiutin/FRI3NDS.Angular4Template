@@ -1,6 +1,8 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Data;
 using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data;
+using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Core.Services.Data;
+using FRI3NDS.Angular4Template.Core.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Data.UnitOfWork;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,8 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
             services.AddTransient<I_TestDataService, _TestDataService>();
             services.AddTransient<IAuthenticationDataService, AuthenticationDataService>();
             services.AddTransient<IUserDataService, UserDataService>();
+            services.AddTransient<I_EntityService, _EntityService>();
+            services.AddTransient<I_FieldService, _FieldService>();
         }
 
         /// <summary>

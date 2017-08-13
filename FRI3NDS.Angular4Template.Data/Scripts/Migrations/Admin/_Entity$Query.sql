@@ -1,4 +1,5 @@
 ﻿-- Выборка сущностей.
+SELECT Service$DropFunction('_Entity$Query');
 CREATE OR REPLACE FUNCTION _Entity$Query(
 	_id INTEGER --идентификатор пользователя
 	, _name TEXT --логин пользователя

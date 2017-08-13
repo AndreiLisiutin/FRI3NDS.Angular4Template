@@ -23,11 +23,18 @@
 //    public $name: $Type;]
 //}]*/$Classes(FRI3NDS.Angular4Template.Core.Models.Domain*)[
 $HasNotBaseClass[
-export class $Name {$Properties[
+export class $Name {
+public constructor(init?: Partial<$Name>) {
+        Object.assign(this, init);
+    }$Properties[
     public $name: $Type;]
 }]]
 $Classes(FRI3NDS.Angular4Template.Core.Models.Domain*)[
 $HasBaseClass[
-export class $Name extends $BaseClass { $Properties[
+export class $Name extends $BaseClass {
+public constructor(init?: Partial<$Name>) {
+        super(init);
+        Object.assign(this, init);
+    }$Properties[
     public $name: $Type;]
 }]]

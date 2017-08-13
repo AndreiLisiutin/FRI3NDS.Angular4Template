@@ -9,6 +9,7 @@
 //    public name: string;
 //    public databaseName: string;
 //    public _EntityName: string;
+//    public _FieldTypeName: string;
 //}
 //export class _FieldBase { 
 //    public id: number;
@@ -20,6 +21,9 @@
 
 
 export class _FieldBase {
+public constructor(init?: Partial<_FieldBase>) {
+        Object.assign(this, init);
+    }
     public id: number;
     public _FieldTypeId: number;
     public _EntityId: number;
@@ -28,6 +32,11 @@ export class _FieldBase {
 }
 
 
-export class _Field extends _FieldBase { 
+export class _Field extends _FieldBase {
+public constructor(init?: Partial<_Field>) {
+        super(init);
+        Object.assign(this, init);
+    }
     public _EntityName: string;
+    public _FieldTypeName: string;
 }

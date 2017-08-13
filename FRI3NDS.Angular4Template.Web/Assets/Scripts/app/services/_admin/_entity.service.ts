@@ -34,9 +34,9 @@ export class _EntityService {
             });
     }
 
-    delete(id: number): Observable<_EntityBase> {
+    delete(id: number): Observable<number> {
         return this.dataAdapter.delete(`/api/Admin/_Entity/${id}`)
-            .map(response => response.json() as _EntityBase)
+            .map(response => response.json() as number)
             .catch(error => {
                 this.handleError(error);
                 return Observable.throw(error);

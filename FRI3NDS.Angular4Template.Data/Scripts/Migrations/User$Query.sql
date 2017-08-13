@@ -1,4 +1,5 @@
 ﻿-- Выборка пользователей.
+SELECT Service$DropFunction('User$Query');
 CREATE OR REPLACE FUNCTION User$Query(
 	_id INTEGER --идентификатор пользователя
 	, _login TEXT --логин пользователя

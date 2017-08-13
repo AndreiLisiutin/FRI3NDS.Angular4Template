@@ -53,10 +53,10 @@ export class AdminEntityComponent implements OnInit {
             }, (error) => {
                 this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
             });
-
-            this._fieldService.query({
+            
+            this._fieldService.query(new _FieldFilter({
                 _EntityId: id
-            }).subscribe((fields: _Field[]) => {
+            })).subscribe((fields: _Field[]) => {
                 this.fields = fields;
             }, (error) => {
                 this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
@@ -96,8 +96,8 @@ export class AdminEntityComponent implements OnInit {
             this.notificationService.error('Ошибка', 'Выберите поле для удаления.');
             return;
         }
-        this._fieldService.delete(this.selectedFieldId).subscribe((field: _FieldBase) => {
-            this.fields = this.fields.filter(f => f.id != field.id);
+        this._fieldService.delete(this.selectedFieldId).subscribe((fieldId: number) => {
+            this.fields = this.fields.filter(f => f.id != fieldId);
         }, (error) => {
             this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
         });

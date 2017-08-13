@@ -1,4 +1,6 @@
-﻿using FRI3NDS.Angular4Template.Core.Models.Domain;
+﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin;
+using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Core.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Web.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,139 +13,55 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
 {
     [Route("api/Admin/_Field")]
     [Authorize]
-    public class _FieldController: SecureControllerBase
+    public class _FieldController : SecureControllerBase
     {
-        public _FieldController()
+        public I_FieldService FieldService { get; set; }
+        public _FieldController(I_FieldService fieldService)
         {
+            this.FieldService = fieldService;
         }
-
-        static List<_FieldType> _fieldTypes = new List<_FieldType>()
-        {
-            new _FieldType()
-            {
-                Id = 1,
-                Name = "Integer"
-            },
-            new _FieldType()
-            {
-                Id = 2,
-                Name = "String"
-            },
-            new _FieldType()
-            {
-                Id = 3,
-                Name = "Date"
-            },
-            new _FieldType()
-            {
-                Id = 4,
-                Name = "Anything else"
-            },
-        };
-
-        static List<_Field> _fields = new List<_Field>()
-        {
-            new _Field()
-            {
-                Id = 1,
-                _EntityId = 1,
-                _FieldTypeId = 1,
-                Name = "_test_entity_id",
-                DatabaseName = "_test_entity_id"
-            },
-            new _Field()
-            {
-                Id = 2,
-                _EntityId = 1,
-                _FieldTypeId = 2,
-                Name = "name",
-                DatabaseName = "name"
-            },
-            new _Field()
-            {
-                Id = 3,
-                _EntityId = 1,
-                _FieldTypeId = 3,
-                Name = "date",
-                DatabaseName = "date"
-            },
-            new _Field()
-            {
-                Id = 4,
-                _EntityId = 2,
-                _FieldTypeId = 2,
-                Name = "name",
-                DatabaseName = "name"
-            },
-            new _Field()
-            {
-                Id = 5,
-                _EntityId = 2,
-                _FieldTypeId = 1,
-                Name = "_test_entity_id",
-                DatabaseName = "_test_entity_id"
-            },
-            new _Field()
-            {
-                Id = 6,
-                _EntityId = 2,
-                _FieldTypeId = 1,
-                Name = "_test_subentity_id",
-                DatabaseName = "_test_subentity_id"
-            },
-        };
 
         [Route("")]
         [HttpGet]
         public List<_Field> GetFields([FromQuery]_FieldFilter filter)
         {
-            return _fields
-                .Where(e => filter?._EntityId == null || e._EntityId == filter._EntityId)
-                .ToList();
+            filter = filter ?? new _FieldFilter();
+            return FieldService.Query(
+                id: filter.Id,
+                name: filter.Name,
+                databaseName: filter.DatabaseName,
+                entityId: filter._EntityId,
+                pageSize: filter.PageSize,
+                pageNumber: filter.PageNumber);
         }
 
         [Route("GetFieldTypes")]
         [HttpGet]
         public List<_FieldType> GetFieldTypes()
         {
-            return _fieldTypes;
+            return FieldService.QueryFieldTypes();
         }
 
         [Route("{id}")]
         [HttpGet]
         public _Field GetFieldById(int id)
         {
-            return _fields.FirstOrDefault(e => e.Id == id);
+            return FieldService.GetById(id);
         }
 
         [Route("")]
         [HttpPost]
-        public _Field Save([FromBody]_FieldBase field)
+        public _FieldBase Save([FromBody]_FieldBase field)
         {
-            if (field.Id == 0)
-            {
-                field.Id = _fields.Select(e => e.Id).Max() + 1;
-            }
-            _fields = _fields.Where(e => e.Id != field.Id).ToList();
-            var newField = new _Field()
-            {
-                Id = field.Id,
-                DatabaseName = field.DatabaseName,
-                _EntityId = field._EntityId,
-                _FieldTypeId = field._FieldTypeId,
-                Name = field.Name
-            };
-            _fields.Add(newField);
-            return newField;
+            int userId = GetCurrentUserId();
+            return FieldService.Save(field, userId);
         }
 
         [Route("{id}")]
         [HttpDelete]
-        public _Field Delete(int id)
+        public int Delete(int id)
         {
-            var oldField = _fields.Where(e => e.Id == id).FirstOrDefault();
-            _fields.Remove(oldField);
-            return oldField;
+            return FieldService.Delete(id);
         }
     }
 }

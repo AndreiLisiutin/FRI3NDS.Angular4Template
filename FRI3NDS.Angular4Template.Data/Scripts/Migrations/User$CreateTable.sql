@@ -1,4 +1,5 @@
 ﻿-- Процедура создания сущности пользователя в БД.
+SELECT Service$DropFunction('User$CreateTable');
 CREATE OR REPLACE FUNCTION User$CreateTable() RETURNS VOID AS 
 $$
 	BEGIN
