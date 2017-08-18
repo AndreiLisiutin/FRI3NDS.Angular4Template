@@ -51,6 +51,8 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
 
         I_FieldTypeRepository _FieldTypeRepository { get; }
 
+        I_DynamicRepository _DynamicRepository { get; }
+
         #endregion
     }
 

@@ -5,6 +5,7 @@ using System.Text;
 using FRI3NDS.Angular4Template.Core.Interfaces.Data;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
 using FRI3NDS.Angular4Template.Util;
+using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 
 namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 {

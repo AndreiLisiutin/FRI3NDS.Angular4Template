@@ -88,6 +88,15 @@
     <None Update="Assets\Scripts\app\components\_admin\_field\admin-field.component.ts">
       <DependentUpon>admin-field.component.html</DependentUpon>
     </None>
+    <None Update="Assets\Scripts\app\components\_admin\_generic-entity\admin-generic-entity-form.component.scss">
+      <DependentUpon>admin-generic-entity-form.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\models\business\_GenericEntity.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Business\_Admin\_GenericEntity.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\business\_GenericEntityField.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Business\_Admin\_GenericEntityField.cs</CustomToolNamespace>
+    </None>
     <None Update="Assets\Scripts\app\models\domain\User.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\User.cs</CustomToolNamespace>
     </None>
@@ -100,14 +109,32 @@
     <None Update="Assets\Scripts\app\models\domain\_FieldType.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_FieldType.cs</CustomToolNamespace>
     </None>
+    <None Update="Assets\Scripts\app\models\domain\_Form.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_Form.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\domain\_FormField.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_Admin\_FormField.cs</CustomToolNamespace>
+    </None>
     <None Update="Assets\Scripts\app\models\domain\_TestEntity.ts">
       <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Domain\_TestEntity.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\enums\SortDirections.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Enums\SortDirections.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\enums\_FieldTypes.ts">
+      <CustomToolNamespace>..\FRI3NDS.Angular4Template.Core\Models\Enums\_Admin\_FieldTypes.cs</CustomToolNamespace>
     </None>
     <None Update="Assets\Scripts\app\models\viewModels\AuthenticationViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\AuthenticationViewModels.cs</CustomToolNamespace>
     </None>
     <None Update="Assets\Scripts\app\models\viewModels\_FieldViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\_Admin\_FieldViewModels.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\viewModels\_FormFieldViewModels.ts">
+      <CustomToolNamespace>Models\ViewModels\_Admin\_FormFieldViewModels.cs</CustomToolNamespace>
+    </None>
+    <None Update="Assets\Scripts\app\models\viewModels\_GenericEntityViewModels.ts">
+      <CustomToolNamespace>Models\ViewModels\_Admin\_GenericEntityViewModels.cs</CustomToolNamespace>
     </None>
   </ItemGroup>
 

@@ -41,6 +41,7 @@ namespace FRI3NDS.Angular4Template.Web.Infrastructure
             services.AddTransient<IUserDataService, UserDataService>();
             services.AddTransient<I_EntityService, _EntityService>();
             services.AddTransient<I_FieldService, _FieldService>();
+            services.AddTransient<I_GenericEntityDataService, _GenericEntityDataService>();
         }
 
         /// <summary>

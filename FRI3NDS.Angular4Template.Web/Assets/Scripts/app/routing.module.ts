@@ -12,34 +12,36 @@ import { AdminEntityComponent } from "components/_admin/_entity/admin-entity.com
 import { AdminEntityEditComponent } from "components/_admin/_entity/admin-entity-edit.component";
 import { AdminFieldComponent } from "components/_admin/_field/admin-field.component";
 import { AdminFieldEditComponent } from "components/_admin/_field/admin-field-edit.component";
+import { AdminGenericEntityFormComponent } from "components/_admin/_generic-entity/admin-generic-entity-form.component";
 
 /**
  * Маршруты приложения.
  */
 const _routes: Routes = [
-    { path: '', pathMatch: 'full', redirectTo: 'login' },
-    { path: 'register', component: RegistrationComponent },
-    { path: 'login', component: LoginComponent },
-    { path: 'profile', component: ProfileComponent },
-    {
-        path: 'admin', component: AdminPanelComponent, children: [
-            { path: 'viewer', component: AdminViewerComponent },
-            { path: 'entity', component: AdminEntitiesComponent },
-            { path: 'entity/new', component: AdminEntityEditComponent },
-            { path: 'entity/:id', component: AdminEntityComponent },
-            { path: 'entity/:id/edit', component: AdminEntityEditComponent },
-            { path: 'entity/field/new/:entityId', component: AdminFieldEditComponent },
-            { path: 'entity/field/:id', component: AdminFieldComponent },
-            { path: 'entity/field/:id/edit', component: AdminFieldEditComponent }
-        ]
-    }
+	{ path: '', pathMatch: 'full', redirectTo: 'login' },
+	{ path: 'register', component: RegistrationComponent },
+	{ path: 'login', component: LoginComponent },
+	{ path: 'profile', component: ProfileComponent },
+	{
+		path: 'admin', component: AdminPanelComponent, children: [
+			{ path: 'entity', component: AdminEntitiesComponent },
+			{ path: 'entity/new', component: AdminEntityEditComponent },
+			{ path: 'entity/:id', component: AdminEntityComponent },
+			{ path: 'entity/:id/edit', component: AdminEntityEditComponent },
+			{ path: 'entity/field/new/:entityId', component: AdminFieldEditComponent },
+			{ path: 'entity/field/:id', component: AdminFieldComponent },
+			{ path: 'entity/field/:id/edit', component: AdminFieldEditComponent },
+			{ path: 'viewer', component: AdminViewerComponent },
+			{ path: 'viewer/form/:formId/:entityInstanceId', component: AdminGenericEntityFormComponent }
+		]
+	}
 ];
 
 /**
  * Модуль навигации.
  */
 @NgModule({
-    imports: [RouterModule.forRoot(_routes, { useHash: true })],
-    exports: [RouterModule]
+	imports: [RouterModule.forRoot(_routes, { useHash: true })],
+	exports: [RouterModule]
 })
 export class RoutingModule { }

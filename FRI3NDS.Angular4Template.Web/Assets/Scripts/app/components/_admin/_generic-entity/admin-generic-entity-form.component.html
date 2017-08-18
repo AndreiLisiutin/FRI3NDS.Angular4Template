@@ -1,0 +1,24 @@
+﻿<form novalidate #genericEntityForm="ngForm">
+	<div class="vertical-form">
+		<div *ngFor="let row of getFormRows()" class="vertical-form-row">
+			<div *ngFor="let field of row.fields" class="col-md-{{field.length * 100 / getWidthPerRow()}}">
+				_FieldId: {{field._FieldId}}, column:{{field.column}}, row:{{field.row}}, length:{{field.length}}
+				<div *ngIf="!isFieldDate(field._FieldTypeId)">
+					<div class="vertical-form-column">
+						<md-input-container>
+							<input mdInput placeholder="{{field.label}}" id="f_{{field.id}}" name="f_{{field.id}}" [(ngModel)]="entityInstanceModel['f_' + field._FieldId]" required />
+						</md-input-container>
+					</div>
+				</div>
+				<div *ngIf="isFieldDate(field._FieldTypeId)">
+
+				</div>
+			</div>
+		</div>
+
+		<div class="">
+			<button md-raised-button [disabled]="genericEntityForm.invalid" (click)="saveForm()">Сохранить</button>
+			<button md-raised-button (click)="goBack()">Отмена</button>
+		</div>
+	</div>
+</form>

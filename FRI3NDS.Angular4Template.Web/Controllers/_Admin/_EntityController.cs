@@ -1,6 +1,8 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 using FRI3NDS.Angular4Template.Core.Services.Data._Admin;
+using FRI3NDS.Angular4Template.Data.UnitOfWork;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,9 +18,12 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
     {
         public I_EntityService EntityService { get; set; }
 
-        public _EntityController(I_EntityService entityService)
+        public I_GenericEntityDataService GenericEntityDataService { get; set; }
+
+        public _EntityController(I_EntityService entityService, I_GenericEntityDataService genericEntityDataService)
         {
             this.EntityService = entityService;
+            this.GenericEntityDataService = genericEntityDataService;
         }
         
         [Route("")]

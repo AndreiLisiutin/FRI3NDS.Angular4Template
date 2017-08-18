@@ -5,6 +5,8 @@ using System.Text;
 using FRI3NDS.Angular4Template.Core.Interfaces.Data;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
 using FRI3NDS.Angular4Template.Util;
+using System.Linq;
+using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 
 namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 {
@@ -73,6 +75,9 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
         {
             using (var uow = this.CreateAdminUnitOfWork())
             {
+                bool areFieldsAlive = uow._FieldRepository.Query(entityId: id).Any();
+                Argument.Require(!areFieldsAlive, "Нельзя удалить сущность, в которой остались поля. Сначала удалите поля сущности.");
+
                 return uow._EntityRepository.Delete(id);
             }
         }

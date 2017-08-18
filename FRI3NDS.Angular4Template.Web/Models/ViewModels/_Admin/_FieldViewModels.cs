@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FRI3NDS.Angular4Template.Web.Models.ViewModels
+namespace FRI3NDS.Angular4Template.Web.Models.ViewModels._Admin
 {
 
     public class _FieldFilter

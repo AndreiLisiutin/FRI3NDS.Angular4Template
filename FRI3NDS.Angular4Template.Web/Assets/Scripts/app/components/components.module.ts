@@ -8,10 +8,13 @@ import { TranslateModule } from "@ngx-translate/core";
 import { SimpleNotificationsModule } from "angular4-notifications";
 
 import {
-    MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule,
-    MdPaginatorModule
+	MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule,
+	MdPaginatorModule
 } from '@angular/material';
 
+import { CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule } from '@covalent/core';
+
+import { CommonModule } from '@angular/common';
 import { MdDataTableModule } from 'ng2-md-datatable';
 import { CdkTableModule } from '@angular/cdk';
 import { RootComponent } from 'components/root.component';
@@ -27,56 +30,62 @@ import { AdminEntityComponent } from "components/_admin/_entity/admin-entity.com
 import { AdminEntityEditComponent } from "components/_admin/_entity/admin-entity-edit.component";
 import { AdminFieldComponent } from "components/_admin/_field/admin-field.component";
 import { AdminFieldEditComponent } from "components/_admin/_field/admin-field-edit.component";
+import { AdminGenericEntityFormComponent } from "components/_admin/_generic-entity/admin-generic-entity-form.component";
 
 /**
  * Модуль регистрации компонентов приложения.
  */
 @NgModule({
-    imports: [
-        MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule, 
-        MdPaginatorModule,
+	imports: [
+		CommonModule,
+		MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule,
+		MdPaginatorModule,
 
-        MdDataTableModule,
-        CdkTableModule,
-        SimpleNotificationsModule.forRoot(),
+		CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule,
+
+		MdDataTableModule,
+		CdkTableModule,
+		SimpleNotificationsModule.forRoot(),
 		FormsModule,
 		HttpModule,
 		BrowserModule,
-        RoutingModule,
-        TranslateModule,
+		RoutingModule,
+		TranslateModule,
 		CustomFormsModule
 	],
 	exports: [
 		RootComponent,
 		LoginComponent,
-        RegistrationComponent,
-        ToastComponent,
-        ProfileComponent,
-        ValidationMessagesComponent,
+		RegistrationComponent,
+		ToastComponent,
+		ProfileComponent,
+		ValidationMessagesComponent,
 
-        AdminPanelComponent,
-        AdminViewerComponent,
-        AdminEntitiesComponent,
-        AdminEntityComponent,
-        AdminEntityEditComponent,
-        AdminFieldComponent,
-        AdminFieldEditComponent
+		AdminPanelComponent,
+		AdminViewerComponent,
+		AdminEntitiesComponent,
+		AdminEntityComponent,
+		AdminEntityEditComponent,
+		AdminFieldComponent,
+		AdminFieldEditComponent,
+		AdminGenericEntityFormComponent
 	],
 	declarations: [
 		RootComponent,
 		LoginComponent,
-        RegistrationComponent,
-        ToastComponent,
-        ProfileComponent,
-        ValidationMessagesComponent,
+		RegistrationComponent,
+		ToastComponent,
+		ProfileComponent,
+		ValidationMessagesComponent,
 
-        AdminPanelComponent,
-        AdminViewerComponent,
-        AdminEntitiesComponent,
-        AdminEntityComponent,
-        AdminEntityEditComponent,
-        AdminFieldComponent,
-        AdminFieldEditComponent
+		AdminPanelComponent,
+		AdminViewerComponent,
+		AdminEntitiesComponent,
+		AdminEntityComponent,
+		AdminEntityEditComponent,
+		AdminFieldComponent,
+		AdminFieldEditComponent,
+		AdminGenericEntityFormComponent
 	],
 	providers: []
 })

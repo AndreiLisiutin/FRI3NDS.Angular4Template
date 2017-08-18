@@ -1,4 +1,5 @@
 ﻿using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 using System;
 using System.Collections.Generic;
 using System.Text;

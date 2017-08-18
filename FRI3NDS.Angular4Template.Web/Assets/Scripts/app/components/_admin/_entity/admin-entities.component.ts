@@ -10,66 +10,81 @@ import { _Entity, _EntityBase } from "models/domain/_Entity";
 import { DataSource } from "@angular/cdk";
 import { Observable } from "rxjs/Observable";
 import { IDatatableSelectionEvent, IDatatableSortEvent } from "ng2-md-datatable";
+import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder } from "@covalent/core";
 
 @Component({
-    selector: 'admin-entities',
-    providers: [],
-    moduleId: module.id,
-    templateUrl: 'admin-entities.component.html',
-    styleUrls: ['admin-entities.component.css']
+	selector: 'admin-entities',
+	providers: [],
+	moduleId: module.id,
+	templateUrl: 'admin-entities.component.html',
+	styleUrls: ['admin-entities.component.css']
 })
 export class AdminEntitiesComponent implements OnInit {
 
-    constructor(
-        private _entityService: _EntityService,
-        private notificationService: ToastService,
-        private router: Router
-    ) {
-    }
+	constructor(
+		private _entityService: _EntityService,
+		private notificationService: ToastService,
+		private router: Router
+	) {
+	}
+	
+	private entities: {
+		list?: _Entity[],
+		count?: number
+		selectedEntityId?: number,
+		sortBy?: string,
+		sortDirection?: string,
+		pageSize?: number,
+		pageNumber?: number,
+	} = {
+		pageSize: 10,
+		pageNumber: 0
+	};
 
-    private entities: _Entity[];
-    private selectedEntityId: number;
+	ngOnInit(): void {
+		this._entityService.query().subscribe((entities) => {
+			this.entities.list = entities;
+		}, (error) => {
+			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+		});
+	}
 
-    ngOnInit(): void {
-        this._entityService.query().subscribe((entities) => {
-            this.entities = entities;
-        }, (error) => {
-            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-        });
-    }
+	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
+		this.entities.sortBy = sortEvent.name;
+		this.entities.sortDirection = sortEvent.order === TdDataTableSortingOrder.Ascending ? 'DESC' : 'ASC';
+		this.entities.list = this.entities.list.sort((a, b) => a[sortEvent.name] > b[sortEvent.name]
+			? (sortEvent.order == TdDataTableSortingOrder.Ascending ? 1 : -1)
+			: (sortEvent.order == TdDataTableSortingOrder.Ascending ? -1 : 1));
+	}
 
-    onTableSortChange(event: IDatatableSortEvent): void {
-        this.entities = this.entities.sort((a, b) => a[event.sortBy] > b[event.sortBy] ? (event.sortType == 1 ? 1 : -1) : (event.sortType == 1 ? -1 : 1));
-    }
+	onTableSelectionChange(event: IDatatableSelectionEvent): void {
+		this.entities.selectedEntityId = event.selectedValues.length == 1
+			? parseInt(event.selectedValues[0])
+			: null;
+	}
 
-    onTableSelectionChange(event: IDatatableSelectionEvent): void {
-        this.selectedEntityId = event.selectedValues.length == 1
-            ? parseInt(event.selectedValues[0])
-            : null;
-    }
+	goEditEntity(): void {
+		if (!this.entities.selectedEntityId) {
+			this.notificationService.error('Ошибка', 'Выберите сущность для редактирования.');
+			return;
+		}
+		this.router.navigate(['/admin/entity', this.entities.selectedEntityId]);
+	}
 
-    goEditEntity(): void {
-        if (!this.selectedEntityId) {
-            this.notificationService.error('Ошибка', 'Выберите сущность для редактирования.');
-            return;
-        }
-        this.router.navigate(['/admin/entity', this.selectedEntityId]);
-    }
+	goCreateEntity(): void {
+		this.router.navigate(['/admin/entity/new']);
+	}
 
-    goCreateEntity(): void {
-        this.router.navigate(['/admin/entity/new']);
-    }
-
-    deleteEntity(): void {
-        if (!this.selectedEntityId) {
-            this.notificationService.error('Ошибка', 'Выберите сущность для удаления.');
-            return;
-        }
-        this._entityService.delete(this.selectedEntityId).subscribe((entityId: number) => {
-            this.entities = this.entities.filter(e => e.id != entityId);
-            this.selectedEntityId = null;
-        }, (error) => {
-            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-        });
-    }
+	deleteEntity(): void {
+		if (!this.entities.selectedEntityId) {
+			this.notificationService.error('Ошибка', 'Выберите сущность для удаления.');
+			return;
+		}
+		this._entityService.delete(this.entities.selectedEntityId).subscribe((entityId: number) => {
+			this.entities.list = this.entities.list.filter(e => e.id != entityId);
+			this.entities.selectedEntityId = null;
+		}, (error) => {
+			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+		});
+	}
 }

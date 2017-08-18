@@ -1,4 +1,5 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using FRI3NDS.Angular4Template.Data.UnitOfWork;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,16 @@ namespace FRI3NDS.Angular4Template.Data.Repositories
     /// Базовый репозиторий.
     /// </summary>
     /// <typeparam name="TBase">Базовая модель сущности.</typeparam>
-    public class RepositoryBase<TBase>
+    public class RepositoryBase<TBase> : UnsafeRepositoryBase
         where TBase : class
     {
-        /// <summary>
-        /// Контекст подключения к базе данных.
-        /// </summary>
-        protected DataContext _dataContext;
-
         /// <summary>
         /// Конструктор репозитория.
         /// </summary>
         /// <param name="dataContext">Контекст данных (подключение к базе и транзакция).</param>
         public RepositoryBase(DataContext dataContext)
+            : base(dataContext)
         {
-            this._dataContext = dataContext;
         }
 
         /// <summary>
@@ -73,6 +69,38 @@ namespace FRI3NDS.Angular4Template.Data.Repositories
         public virtual TBase GetByIDBase(int id)
         {
             return _dataContext.Connection.Get<TBase>(id);
+        }
+    }
+
+    /// <summary>
+    /// Еще более базовый репозиторий. Но небезопасный.
+    /// </summary>
+    public class UnsafeRepositoryBase
+    {
+        /// <summary>
+        /// Контекст подключения к базе данных.
+        /// </summary>
+        protected DataContext _dataContext;
+
+        /// <summary>
+        /// Конструктор репозитория.
+        /// </summary>
+        /// <param name="dataContext">Контекст данных (подключение к базе и транзакция).</param>
+        public UnsafeRepositoryBase(DataContext dataContext)
+        {
+            this._dataContext = dataContext;
+        }
+
+        /// <summary>
+        /// Сделать что-то страшное. Не использовать, не понимая, зачем это.
+        /// </summary>
+        /// <param name="query">Страшное.</param>
+        /// <returns>Зло.</returns>
+        protected List<IDictionary<string, object>> _ExecuteQuery(string query)
+        {
+            return _dataContext.Connection.Query(query, null, _dataContext.Transaction)
+                .Select(e => (IDictionary<string, object>)e)
+                .ToList();
         }
     }
 }

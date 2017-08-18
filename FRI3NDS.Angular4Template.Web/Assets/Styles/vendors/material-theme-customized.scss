@@ -1,4 +1,5 @@
 ﻿@import '_theming';
+@import 'all-theme';
 @import 'main.scss';
 @import 'datatable-theme';
 
@@ -7,13 +8,12 @@
 /*Глянь сюда http://mcg.mbitson.com     Основано на #34a7fa.*/
 $custom-primary: mat-palette($palette-primary);
 $custom-accent: mat-palette($palette-accent);
-
 $custom-warn: mat-palette($mat-red);
 
 $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 
 @include angular-material-theme($custom-theme);
-
+@include covalent-theme($custom-theme);
 
 /*Фикс косяков в таблице angular md*/
 ng2-md-datatable th,

@@ -1,1 +1,20 @@
-﻿<div *ngFor="let e of entities">{{e.name}}</div>
+﻿<div *ngFor="let e of entities" (click)="loadEntityInstances(e.id)">{{e.name}}</div>
+
+<div *ngIf="currentEntityId">
+	<ng2-md-datatable (sortChange)="onEntityInstancesStateChange($event, null)">
+		<ng2-md-datatable-header>
+			<ng2-md-datatable-column *ngFor="let field of fields" sortableValue="f_{{field.id}}">{{field.name}}</ng2-md-datatable-column>
+		</ng2-md-datatable-header>
+		<tbody>
+			<ng2-md-datatable-row *ngFor="let entity of entityInstances.list">
+				<td *ngFor="let field of fields">
+					<a (click)="goToForm(entity)">{{getEntityInstanceValue(field.id, entity)}}</a>
+				</td>
+			</ng2-md-datatable-row>
+		</tbody>
+	</ng2-md-datatable>
+	<ng2-md-datatable-pagination [currentPage]="entityInstances.pageNumber" [itemsPerPage]="entityInstances.pageSize" [itemsCount]="entityInstances.count" [itemsPerPageChoices]="[5,10,20,50]"
+								 [itemsPerPageFirstChoice]="entityInstances.pageSize" [needShowFirstArrow]="true" [needShowLastArrow]="true" ofText="из" rowsPerPageText="по:"
+								 (paginationChange)="onEntityInstancesStateChange(null, $event)">
+	</ng2-md-datatable-pagination>
+</div>

@@ -14,12 +14,14 @@ import { ServicesModule } from 'services/services.module';
 import { RoutingModule } from 'routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { CommonModule } from "@angular/common";
 
 /**
  * Главный модуль приложения.
  */
 @NgModule({
-    imports: [
+	imports: [
+		CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         HttpModule,

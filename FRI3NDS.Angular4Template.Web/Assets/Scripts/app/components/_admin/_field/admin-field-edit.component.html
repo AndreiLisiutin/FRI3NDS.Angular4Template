@@ -1,6 +1,6 @@
 ﻿<form novalidate #fieldForm="ngForm">
     <div class="vertical-form">
-        <div class="vertical-form-row">
+        <div class="vertical-form-column">
             <md-input-container>
                 <input mdInput placeholder="Название поля" id="name" name="name" [(ngModel)]="field.name" #name="ngModel" required />
             </md-input-container>
@@ -8,7 +8,7 @@
                 <validation-messages [control]="name"></validation-messages>
             </md-error>
         </div>
-        <div class="vertical-form-row">
+        <div class="vertical-form-column">
             <md-input-container>
                 <input mdInput placeholder="Название поля в базе данных" id="databaseName" name="databaseName" [(ngModel)]="field.databaseName" #databaseName="ngModel" required />
             </md-input-container>
@@ -16,7 +16,7 @@
                 <validation-messages [control]="databaseName"></validation-messages>
             </md-error>
         </div>
-        <div class="vertical-form-row">
+        <div class="vertical-form-column">
             <md-select placeholder="Тип значения поля" id="_FieldTypeId" name="_FieldTypeId" [(ngModel)]="field._FieldTypeId" #_FieldTypeId="ngModel" color="accent" required>
                 <md-option *ngFor="let fieldType of fieldTypes" [value]="fieldType.id" color="accent">{{ fieldType.name }}</md-option>
             </md-select>

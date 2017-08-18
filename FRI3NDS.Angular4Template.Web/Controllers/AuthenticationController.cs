@@ -76,8 +76,11 @@ namespace FRI3NDS.Angular4Template.Web.Controllers
             Argument.Require(splittedData.Length == 2, "Некорректный формат токена для обновления токенов.");
             Argument.Require(Int32.TryParse(splittedData[1], out int userId), "Некорректный формат идентификатора пользователя в токене для обновления токенов.");
             var tokenId = splittedData[0];
-			Argument.Require(this.TokensStorage.Get(userId) == refreshTokenRequest.RefreshToken, "Некорректный токен обновления токенов.");
 
+			if (this.TokensStorage.Get(userId) != refreshTokenRequest.RefreshToken)
+			{
+				Argument.Require(this.TokensStorage.Get(userId) == refreshTokenRequest.RefreshToken, "Некорректный токен обновления токенов.");
+			}
 			UserBase existUser = this.AuthenticationDataService.GetUserById(userId);
             Argument.Require(existUser != null, "Не найден пользователь-владелец токена.");
             TokenInfo token = this._GenerateToken(existUser);

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRI3NDS.Angular4Template.Core.Models.Domain
+namespace FRI3NDS.Angular4Template.Core.Models.Domain._Admin
 {
     /// <summary>
     /// Расширенная модель типа поля сущности БД.

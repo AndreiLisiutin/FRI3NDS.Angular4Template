@@ -2,6 +2,7 @@
 using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories;
 using FRI3NDS.Angular4Template.Core.Interfaces.Data.Repositories._Admin;
 using FRI3NDS.Angular4Template.Data.Repositories;
+using FRI3NDS.Angular4Template.Data.Repositories._Admin;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
@@ -142,6 +143,11 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
         /// Репозиторий полей сущностей.
         /// </summary>
         public I_FieldRepository _FieldRepository => new _FieldRepository(this._dataContext.Value);
+
+        /// <summary>
+        /// Репозиторий динамический, страшный.
+        /// </summary>
+        public I_DynamicRepository _DynamicRepository => new _DynamicRepository(this._dataContext.Value);
 
         #endregion
     }

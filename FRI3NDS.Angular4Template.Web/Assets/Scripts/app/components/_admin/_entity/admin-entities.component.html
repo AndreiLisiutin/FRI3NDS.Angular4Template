@@ -1,15 +1,43 @@
-﻿<ng2-md-datatable selectable="true" (sortChange)="onTableSortChange($event)" (selectionChange)="onTableSelectionChange($event)">
-    <ng2-md-datatable-header>
-        <ng2-md-datatable-column sortableValue="id">ID</ng2-md-datatable-column>
-        <ng2-md-datatable-column sortableValue="name">Name</ng2-md-datatable-column>
-    </ng2-md-datatable-header>
-    <tbody>
-        <ng2-md-datatable-row *ngFor="let e of entities" selectableValue="{{e.id}}">
-            <td>{{e.id}}</td>
-            <td>{{e.name}}</td>
-        </ng2-md-datatable-row>
-    </tbody>
-</ng2-md-datatable>
+﻿<!--<ng2-md-datatable selectable="true" (sortChange)="onTableSortChange($event)" (selectionChange)="onTableSelectionChange($event)">
+	<ng2-md-datatable-header>
+		<ng2-md-datatable-column sortableValue="id">ID</ng2-md-datatable-column>
+		<ng2-md-datatable-column sortableValue="name">Name</ng2-md-datatable-column>
+	</ng2-md-datatable-header>
+	<tbody>
+		<ng2-md-datatable-row *ngFor="let e of entities" selectableValue="{{e.id}}">
+			<td>{{e.id}}</td>
+			<td>{{e.name}}</td>
+		</ng2-md-datatable-row>
+	</tbody>
+</ng2-md-datatable>-->
+
+
+
+<table td-data-table>
+	<th td-data-table-column
+		[sortable]="true"
+		[sortOrder]="entities.sortDirection"
+		(sortChange)="onTableSortChange($event)"
+		[active]="entities.sortBy == 'id'"
+		[name]="'id'">
+		ID
+	</th>
+	<th td-data-table-column
+		[sortable]="true"
+		[sortOrder]="entities.sortDirection"
+		(sortChange)="onTableSortChange($event)"
+		[active]="entities.sortBy == 'name'"
+		[name]="'name'">
+		Name
+	</th>
+	<tr td-data-table-row *ngFor="let e of entities.list">
+		<td td-data-table-cell>{{e.id}}</td>
+		<td td-data-table-cell>{{e.name}}</td>
+	</tr>
+</table>
+
+
+
 <button md-raised-button color="accent" [disabled]="!selectedEntityId" (click)="goEditEntity()">Редактировать</button>
 <button md-raised-button color="accent" (click)="goCreateEntity()">Новая</button>
 <button md-raised-button color="accent" [disabled]="!selectedEntityId" (click)="deleteEntity()">Удалить</button>

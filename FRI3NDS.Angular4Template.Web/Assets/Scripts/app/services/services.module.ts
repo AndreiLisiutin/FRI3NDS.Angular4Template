@@ -13,6 +13,9 @@ import { ToastService } from "services/toast.service";
 import { UserService } from "services/user.service";
 import { _EntityService } from "services/_admin/_entity.service";
 import { _FieldService } from "services/_admin/_field.service";
+import { _GenericEntityService } from "services/_admin/_generic-entity.service";
+import { _FormService } from "services/_admin/_form.service";
+import { _FormFieldService } from "services/_admin/_form-field.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -36,7 +39,10 @@ import { _FieldService } from "services/_admin/_field.service";
         UserService,
         ToastService,
         _EntityService,
-        _FieldService
+        _FieldService,
+        _GenericEntityService,
+        _FormService,
+        _FormFieldService
 	]
 })
 export class ServicesModule { }

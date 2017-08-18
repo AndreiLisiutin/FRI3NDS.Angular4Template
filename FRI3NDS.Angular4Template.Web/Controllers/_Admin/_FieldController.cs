@@ -1,7 +1,9 @@
 ﻿using FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Core.Models.Domain;
+using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 using FRI3NDS.Angular4Template.Core.Services.Data._Admin;
 using FRI3NDS.Angular4Template.Web.Models.ViewModels;
+using FRI3NDS.Angular4Template.Web.Models.ViewModels._Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
