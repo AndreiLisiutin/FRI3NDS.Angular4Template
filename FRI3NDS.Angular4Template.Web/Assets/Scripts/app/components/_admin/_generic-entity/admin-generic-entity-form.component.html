@@ -1,21 +1,22 @@
 ﻿<form novalidate #genericEntityForm="ngForm">
 	<div class="vertical-form">
-		<div *ngFor="let row of getFormRows()" class="vertical-form-row">
-			<div *ngFor="let field of row.fields" class="col-md-{{field.length * 100 / getWidthPerRow()}}">
-				_FieldId: {{field._FieldId}}, column:{{field.column}}, row:{{field.row}}, length:{{field.length}}
-				<div *ngIf="!isFieldDate(field._FieldTypeId)">
-					<div class="vertical-form-column">
-						<md-input-container>
-							<input mdInput placeholder="{{field.label}}" id="f_{{field.id}}" name="f_{{field.id}}" [(ngModel)]="entityInstanceModel['f_' + field._FieldId]" required />
-						</md-input-container>
-					</div>
+		<div *ngFor="let row of formRows" class="vertical-form-row">
+			<div *ngFor="let field of row.fields; let in = index" class="col-xs-100 col-md-{{field.length * 100 / getWidthPerRow()}}">
+				<div *ngIf="!isFieldDate(field._FieldTypeId)" class="vertical-form-column">
+					<md-input-container>
+						<input mdInput placeholder="{{field.label}}" id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" />
+					</md-input-container>
 				</div>
-				<div *ngIf="isFieldDate(field._FieldTypeId)">
-
+				<div *ngIf="isFieldDate(field._FieldTypeId)" class="vertical-form-column">
+					<md-input-container>
+						<input mdInput [mdDatepicker]="picker" placeholder="{{field.label}}" id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" >
+						<button mdSuffix [mdDatepickerToggle]="picker"></button>
+					</md-input-container>
+					<md-datepicker #picker></md-datepicker>
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="">
 			<button md-raised-button [disabled]="genericEntityForm.invalid" (click)="saveForm()">Сохранить</button>
 			<button md-raised-button (click)="goBack()">Отмена</button>

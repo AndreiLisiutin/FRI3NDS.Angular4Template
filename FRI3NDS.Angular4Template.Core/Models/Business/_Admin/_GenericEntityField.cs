@@ -15,6 +15,11 @@ namespace FRI3NDS.Angular4Template.Core.Models.Business._Admin
         public int FieldId { get; set; }
 
         /// <summary>
+        /// Идентификатор типа поля.
+        /// </summary>
+        public int _FieldTypeId { get; set; }
+
+        /// <summary>
         /// Сериализованное значение поля.
         /// </summary>
         public string Value { get; set; }

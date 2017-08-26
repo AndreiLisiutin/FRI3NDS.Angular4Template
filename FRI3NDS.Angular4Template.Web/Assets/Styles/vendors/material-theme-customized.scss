@@ -13,6 +13,12 @@ $custom-warn: mat-palette($mat-red);
 $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 
 @include angular-material-theme($custom-theme);
+
+
+md-pseudo-checkbox::before, 
+md-pseudo-checkbox::after {
+	box-sizing: content-box;
+}
 @include covalent-theme($custom-theme);
 
 /*Фикс косяков в таблице angular md*/

@@ -36,6 +36,15 @@ export class _GenericEntityService {
 			});
 	}
 
+	saveEntitiyInstance(entity: _GenericEntity): Observable<number> {
+		return this.dataAdapter.post(`/api/Admin/_GenericEntity/SaveEntity`, entity)
+			.map(response => response.json() as number)
+			.catch(error => {
+				this.handleError(error);
+				return Observable.throw(error);
+			});
+	}
+
 	private handleError(error: any) {
 	}
 }

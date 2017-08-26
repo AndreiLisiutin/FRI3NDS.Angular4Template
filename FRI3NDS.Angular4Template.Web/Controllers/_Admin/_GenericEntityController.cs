@@ -51,5 +51,13 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
 			return this.GetEntitiesList(new _GenericEntityFilter() { _EntityId = entityId })
 				.FirstOrDefault();
 		}
+
+		[Route("SaveEntity")]
+		[HttpPost]
+		public int SaveEntity([FromBody]_GenericEntity entity)
+		{
+			var userId = this.GetCurrentUserId();
+			return GenericEntityDataService.SaveEntity(entity, userId);
+		}
 	}
 }

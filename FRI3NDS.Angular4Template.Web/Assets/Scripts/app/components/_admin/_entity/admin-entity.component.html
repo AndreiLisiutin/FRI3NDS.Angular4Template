@@ -1,38 +1,43 @@
 ﻿<div class="">
-    <div class="">
-        <div class="">
-            Название сущности: {{entity.name}}
-        </div>
-        <div class="">
-            Название сущности в базе данных: {{entity.databaseName}}
-        </div>
-        <div class="">
-            Схема в базе данных: {{entity.databaseScheme}}
-        </div>
-    </div>
-    <div class="">
-        <button md-raised-button (click)="goEditEntity()">Редактировать</button>
-        <button md-raised-button (click)="goBack()">Отмена</button>
-    </div>
-    <h3>Поля сущности</h3>
-    <div class="">
-        <ng2-md-datatable selectable="true" (sortChange)="onTableSortChange($event)" (selectionChange)="onTableSelectionChange($event)">
-            <ng2-md-datatable-header>
-                <ng2-md-datatable-column sortableValue="id">ID</ng2-md-datatable-column>
-                <ng2-md-datatable-column sortableValue="name">Name</ng2-md-datatable-column>
-            </ng2-md-datatable-header>
-            <tbody>
-                <ng2-md-datatable-row *ngFor="let e of fields" selectableValue="{{e.id}}">
-                    <td>{{e.id}}</td>
-                    <td>{{e.name}}</td>
-                </ng2-md-datatable-row>
-            </tbody>
-        </ng2-md-datatable>
-        <div class="">
-            <button md-raised-button (click)="goCreateField()">Добавить</button>
-            <button md-raised-button [disabled]="!selectedFieldId" (click)="goViewField()">Редактировать</button>
-            <button md-raised-button [disabled]="!selectedFieldId" (click)="deleteField()">Удалить</button>
-        </div>
-    </div>
+	<div class="">
+		<div class="">
+			Название сущности: {{entity.name}}
+		</div>
+		<div class="">
+			Название сущности в базе данных: {{entity.databaseName}}
+		</div>
+		<div class="">
+			Схема в базе данных: {{entity.databaseScheme}}
+		</div>
+	</div>
+	<div class="">
+		<button md-raised-button (click)="goEditEntity()">Редактировать</button>
+		<button md-raised-button (click)="goBack()">Отмена</button>
+	</div>
+	<h3>Поля сущности</h3>
+	<div class="">
+		<td-data-table #dataTable
+					   [data]="fields.list"
+					   [columns]="[{ name: 'id', label: 'id'}, { name: 'name', label: 'name'}]"
+					   [selectable]="true"
+					   [compareWith]="fields.rowCompareFunction"
+					   [clickable]="true"
+					   [multiple]="false"
+					   [sortable]="true"
+					   [sortBy]="fields.sortBy"
+					   [(ngModel)]="fields.selectedFieldId"
+					   [sortOrder]="fields.sortingOrder"
+					   (sortChange)="onTableSortChange($event)">
+		</td-data-table>
+		<td-paging-bar #pagingBar [pageSizes]="[1, 5, 10, 15, 20]" [pageSize]="fields.pageSize" [total]="fields.count" (change)="onTablePageChange($event)">
+			<span td-paging-bar-label hide-xs>по:</span>
+			{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
+		</td-paging-bar>
+		<div class="">
+			<button md-raised-button (click)="goCreateField()">Добавить</button>
+			<button md-raised-button [disabled]="fields.selectedFieldId.length != 1" (click)="goViewField()">Редактировать</button>
+			<button md-raised-button [disabled]="fields.selectedFieldId.length != 1" (click)="deleteField()">Удалить</button>
+		</div>
+	</div>
 
 </div>

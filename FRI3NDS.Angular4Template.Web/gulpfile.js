@@ -72,6 +72,8 @@ gulp.task('lib:copy', function () {
 		paths.src.lib + '/@ngx-translate/http-loader/bundles/http-loader.umd.js',
 		paths.src.lib + '/tslib/tslib.js',
 		paths.src.lib + '/@covalent/core/core.umd.js',
+		paths.src.lib + '/@covalent/core/common/platform.css',
+		paths.src.lib + '/moment/moment.js',
 		paths.src.lib + '/ng2-md-datatable/ng2-md-datatable.umd.js',
 	], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
 		.pipe(newer(paths.dest.lib))

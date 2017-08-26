@@ -16,6 +16,7 @@ import { Location } from '@angular/common';
 import { _FieldTypes } from "models/enums/_FieldTypes";
 import { _GenericEntityService } from "services/_admin/_generic-entity.service";
 import { _GenericEntity } from "models/business/_GenericEntity";
+import { ConvertService } from "services/utils/convert.service";
 
 @Component({
 	selector: 'admin-generic-entity-form',
@@ -31,6 +32,7 @@ export class AdminGenericEntityFormComponent implements OnInit {
 		private formFieldService: _FormFieldService,
 		private genericEntityService: _GenericEntityService,
 		private formService: _FormService,
+		private convertService: ConvertService,
 		private _location: Location,
 		private route: ActivatedRoute,
 		private router: Router
@@ -40,13 +42,17 @@ export class AdminGenericEntityFormComponent implements OnInit {
 	private formFields: _FormField[];
 	private form: _Form;
 	private entityInstance: _GenericEntity;
-	private entityInstanceModel;
+	private entityInstanceModel = {};
+	private formRows: any[] = [];
+	
+	private getEntityInstanceFieldName(fieldId: number): string {
+		return 'f_' + fieldId;
+	}
+	private getEntityInstanceFieldId(fieldName: string): number {
+		return parseInt(fieldName.substr(2));
+	}
 
 	ngOnInit(): void {
-		this.entityInstanceModel = {
-			f_1: 'hello'
-		};
-
 		this.route.params.subscribe(params => {
 			if (!params['formId']) {
 				//создание нового поля
@@ -66,13 +72,16 @@ export class AdminGenericEntityFormComponent implements OnInit {
 			this.formService.getById(formId).subscribe((form: _Form) => {
 				this.form = form;
 
-				//this.genericEntityService.getEntitiyInstance(form._EntityId, entityInstanceId).subscribe((entityInstance: _GenericEntity) => {
-				//	debugger;
-				//	this.entityInstance = entityInstance;
-				//	//this.entityInstance.fields.forEach(f => this.entityInstanceModel["f_" + f.fieldId] = f.value);
-				//}, (error) => {
-				//	this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-				//});
+				this.genericEntityService.getEntitiyInstance(form._EntityId, entityInstanceId).subscribe((entityInstance: _GenericEntity) => {
+					this.entityInstance = entityInstance;
+					this.entityInstance.fields.forEach(f => {
+						var fieldName = this.getEntityInstanceFieldName(f.fieldId);
+						var fieldValue = this.convertService.deserialize(f.value, f._FieldTypeId);
+						this.entityInstanceModel[fieldName] = fieldValue;
+					});
+				}, (error) => {
+					this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+				});
 
 			}, (error) => {
 				this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
@@ -82,14 +91,15 @@ export class AdminGenericEntityFormComponent implements OnInit {
 				_FormId: formId
 			})).subscribe((fields: _FormField[]) => {
 				this.formFields = fields;
+				this.formRows = this.getFormRows();
 			}, (error) => {
 				this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
 			});
 		});
 	}
 
-	isFieldDate(_formFieldId: number): boolean {
-		return _formFieldId == _FieldTypes.DateTime;
+	isFieldDate(fieldTypeId: number): boolean {
+		return fieldTypeId == _FieldTypes.DateTime;
 	}
 
 	getWidthPerRow(): number {
@@ -116,13 +126,19 @@ export class AdminGenericEntityFormComponent implements OnInit {
 		return formRows;
 	}
 
-	saveField(): void {
-		//this._fieldService.save(this.field).subscribe((field: _FieldBase) => {
-		//	this.field.id = field.id;
-		//	this._location.back();
-		//}, (error) => {
-		//	this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		//});
+	saveForm(): void {
+		this.entityInstance.fields.forEach(f => {
+			var fieldName = this.getEntityInstanceFieldName(f.fieldId);
+			var fildValuue = this.entityInstanceModel[fieldName];
+			var serializedValue = this.convertService.serialize(fildValuue, f._FieldTypeId);
+			f.value = serializedValue;
+		});
+		
+		this.genericEntityService.saveEntitiyInstance(this.entityInstance).subscribe((field: number) => {
+			this._location.back();
+		}, (error) => {
+			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+		});
 	}
 
 	goBack(): void {

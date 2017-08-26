@@ -16,6 +16,7 @@ import { _FieldService } from "services/_admin/_field.service";
 import { _GenericEntityService } from "services/_admin/_generic-entity.service";
 import { _FormService } from "services/_admin/_form.service";
 import { _FormFieldService } from "services/_admin/_form-field.service";
+import { ConvertService } from "services/utils/convert.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -23,9 +24,9 @@ import { _FormFieldService } from "services/_admin/_form-field.service";
 @NgModule({
 	imports: [
 		FormsModule,
-        HttpModule,
-        TranslateModule,
-        SimpleNotificationsModule
+		HttpModule,
+		TranslateModule,
+		SimpleNotificationsModule
 	],
 	exports: [
 
@@ -33,16 +34,17 @@ import { _FormFieldService } from "services/_admin/_form-field.service";
 	declarations: [
 	],
 	providers: [
-        ValidationService,
-        AuthenticationService,
-        DataAdapter,
-        UserService,
-        ToastService,
-        _EntityService,
-        _FieldService,
-        _GenericEntityService,
-        _FormService,
-        _FormFieldService
+		ValidationService,
+		AuthenticationService,
+		DataAdapter,
+		UserService,
+		ToastService,
+		ConvertService,
+		_EntityService,
+		_FieldService,
+		_GenericEntityService,
+		_FormService,
+		_FormFieldService
 	]
 })
 export class ServicesModule { }

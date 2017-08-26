@@ -8,6 +8,7 @@
 //    public _EntityId: number;
 //    public name: string;
 //    public databaseName: string;
+//    public isIdentity: boolean;
 //    public _EntityName: string;
 //    public _FieldTypeName: string;
 //}
@@ -17,6 +18,7 @@
 //    public _EntityId: number;
 //    public name: string;
 //    public databaseName: string;
+//    public isIdentity: boolean;
 //}*/
 
 
@@ -29,6 +31,7 @@ public constructor(init?: Partial<_FieldBase>) {
     public _EntityId: number;
     public name: string;
     public databaseName: string;
+    public isIdentity: boolean;
 }
 
 

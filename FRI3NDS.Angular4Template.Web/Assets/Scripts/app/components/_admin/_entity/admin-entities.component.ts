@@ -10,7 +10,10 @@ import { _Entity, _EntityBase } from "models/domain/_Entity";
 import { DataSource } from "@angular/cdk";
 import { Observable } from "rxjs/Observable";
 import { IDatatableSelectionEvent, IDatatableSortEvent } from "ng2-md-datatable";
-import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder } from "@covalent/core";
+import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent } from "@covalent/core";
+import { SortDirections } from "models/enums/SortDirections";
+import { _EntityFilter } from "models/viewModels/_EntityViewModels";
+import { ConvertService } from "services/utils/convert.service";
 
 @Component({
 	selector: 'admin-entities',
@@ -24,6 +27,7 @@ export class AdminEntitiesComponent implements OnInit {
 	constructor(
 		private _entityService: _EntityService,
 		private notificationService: ToastService,
+		private convertService: ConvertService,
 		private router: Router
 	) {
 	}
@@ -31,44 +35,64 @@ export class AdminEntitiesComponent implements OnInit {
 	private entities: {
 		list?: _Entity[],
 		count?: number
-		selectedEntityId?: number,
+		selectedEntityId?: any[],
 		sortBy?: string,
-		sortDirection?: string,
+		sortingOrder?: TdDataTableSortingOrder,
 		pageSize?: number,
 		pageNumber?: number,
+		rowCompareFunction: Function
 	} = {
-		pageSize: 10,
-		pageNumber: 0
+		pageSize: 1,
+		pageNumber: 1,
+		count: 0,
+		rowCompareFunction: (row: any, model: any) => row.id === model.id,
+		selectedEntityId: []
 	};
 
 	ngOnInit(): void {
-		this._entityService.query().subscribe((entities) => {
+		this.loadEntities();
+		this.countEntities();
+	}
+
+	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
+		this.entities.sortBy = sortEvent.name;
+		this.entities.sortingOrder = sortEvent.order;
+		this.loadEntities();
+	}
+	
+	onTablePageChange(pagingEvent: IPageChangeEvent): void {
+		this.entities.pageNumber = pagingEvent.page;
+		this.entities.pageSize = pagingEvent.pageSize;
+		this.loadEntities();
+	}
+
+	loadEntities(): void {
+		this._entityService.query(new _EntityFilter({
+			pageNumber: this.entities.pageNumber - 1,
+			pageSize: this.entities.pageSize,
+			sortDirection: this.convertService.sortingOrderToSortDirection(this.entities.sortingOrder),
+			sortField: this.entities.sortBy
+		})).subscribe((entities) => {
 			this.entities.list = entities;
 		}, (error) => {
 			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
 		});
 	}
 
-	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
-		this.entities.sortBy = sortEvent.name;
-		this.entities.sortDirection = sortEvent.order === TdDataTableSortingOrder.Ascending ? 'DESC' : 'ASC';
-		this.entities.list = this.entities.list.sort((a, b) => a[sortEvent.name] > b[sortEvent.name]
-			? (sortEvent.order == TdDataTableSortingOrder.Ascending ? 1 : -1)
-			: (sortEvent.order == TdDataTableSortingOrder.Ascending ? -1 : 1));
+	countEntities(): void {
+		this._entityService.count(new _EntityFilter({})).subscribe((count: number) => {
+			this.entities.count = count;
+		}, (error) => {
+			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
+		});
 	}
-
-	onTableSelectionChange(event: IDatatableSelectionEvent): void {
-		this.entities.selectedEntityId = event.selectedValues.length == 1
-			? parseInt(event.selectedValues[0])
-			: null;
-	}
-
+	
 	goEditEntity(): void {
-		if (!this.entities.selectedEntityId) {
+		if (this.entities.selectedEntityId.length != 1) {
 			this.notificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
-		this.router.navigate(['/admin/entity', this.entities.selectedEntityId]);
+		this.router.navigate(['/admin/entity', this.entities.selectedEntityId[0].id]);
 	}
 
 	goCreateEntity(): void {
@@ -76,11 +100,11 @@ export class AdminEntitiesComponent implements OnInit {
 	}
 
 	deleteEntity(): void {
-		if (!this.entities.selectedEntityId) {
+		if (this.entities.selectedEntityId.length != 1) {
 			this.notificationService.error('Ошибка', 'Выберите сущность для удаления.');
 			return;
 		}
-		this._entityService.delete(this.entities.selectedEntityId).subscribe((entityId: number) => {
+		this._entityService.delete(this.entities.selectedEntityId[0].id).subscribe((entityId: number) => {
 			this.entities.list = this.entities.list.filter(e => e.id != entityId);
 			this.entities.selectedEntityId = null;
 		}, (error) => {

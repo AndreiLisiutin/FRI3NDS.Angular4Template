@@ -17,12 +17,13 @@ namespace FRI3NDS.Angular4Template.Data.Repositories._Admin
         {
         }
 
-        /// <summary>
-        /// Сделать что-то страшное.
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public List<IDictionary<string, object>> Sql(string query)
+		/// <summary>
+		/// Сделать что-то страшное.
+		/// </summary>
+		/// <param name="query"></param>
+		/// <param name="parameters"></param>
+		/// <returns></returns>
+		public List<IDictionary<string, object>> Sql(string query, object parameters = null)
         {
             return this._ExecuteQuery(query);
         }

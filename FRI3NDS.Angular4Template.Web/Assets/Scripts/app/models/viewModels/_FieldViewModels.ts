@@ -8,6 +8,8 @@
 //    public _EntityId: number;
 //    public pageSize: number;
 //    public pageNumber: number;
+//    public sortField: string;
+//    public sortDirection: number;
 //}*/
 
 export class _FieldFilter {
@@ -20,5 +22,7 @@ public constructor(init?: Partial<_FieldFilter>) {
     public _EntityId: number;
     public pageSize: number;
     public pageNumber: number;
+    public sortField: string;
+    public sortDirection: number;
 }
 

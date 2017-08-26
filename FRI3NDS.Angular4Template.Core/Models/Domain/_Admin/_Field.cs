@@ -50,5 +50,10 @@ namespace FRI3NDS.Angular4Template.Core.Models.Domain._Admin
         /// Название поля в базе данных.
         /// </summary>
         public string DatabaseName { get; set; }
+
+        /// <summary>
+        /// Является ли поле идентификатором.
+        /// </summary>
+        public bool IsIdentity { get; set; }
     }
 }

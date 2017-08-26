@@ -36,6 +36,7 @@
 			'@ngx-translate/core': 'npm:@ngx-translate/core/bundles/core.umd.js',
 			'@ngx-translate/http-loader': 'npm:@ngx-translate/http-loader/bundles/http-loader.umd.js',
 			'tslib': 'npm:tslib/tslib.js',
+			'moment': 'npm:moment',
 			'ng2-md-datatable': 'npm:ng2-md-datatable/ng2-md-datatable.umd.js'
 		},
 
@@ -49,6 +50,9 @@
 				defaultExtension: 'js'
 			},
 			rxjs: {
+				defaultExtension: 'js'
+			},
+			moment: {
 				defaultExtension: 'js'
 			}
 		}

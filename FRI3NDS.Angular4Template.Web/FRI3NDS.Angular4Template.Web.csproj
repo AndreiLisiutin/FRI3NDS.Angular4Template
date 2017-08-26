@@ -127,6 +127,9 @@
     <None Update="Assets\Scripts\app\models\viewModels\AuthenticationViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\AuthenticationViewModels.cs</CustomToolNamespace>
     </None>
+    <None Update="Assets\Scripts\app\models\viewModels\_EntityViewModels.ts">
+      <CustomToolNamespace>Models\ViewModels\_Admin\_EntityViewModels.cs</CustomToolNamespace>
+    </None>
     <None Update="Assets\Scripts\app\models\viewModels\_FieldViewModels.ts">
       <CustomToolNamespace>Models\ViewModels\_Admin\_FieldViewModels.cs</CustomToolNamespace>
     </None>
