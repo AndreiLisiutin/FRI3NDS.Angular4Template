@@ -55,6 +55,12 @@
     <None Update="Assets\Scripts\app\components\root.component.scss">
       <DependentUpon>root.component.html</DependentUpon>
     </None>
+    <None Update="Assets\Scripts\app\components\_admin\viewer\admin-viewer-entity-instances.component.scss">
+      <DependentUpon>admin-viewer-entity-instances.component.html</DependentUpon>
+    </None>
+    <None Update="Assets\Scripts\app\components\_admin\viewer\admin-viewer.component.scss">
+      <DependentUpon>admin-viewer.component.html</DependentUpon>
+    </None>
     <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entity-edit.component.scss">
       <DependentUpon>admin-entity-edit.component.html</DependentUpon>
     </None>
@@ -75,9 +81,6 @@
     </None>
     <None Update="Assets\Scripts\app\components\_admin\_entity\admin-entities.component.ts">
       <DependentUpon>admin-entities.component.html</DependentUpon>
-    </None>
-    <None Update="Assets\Scripts\app\components\_admin\admin-viewer.component.scss">
-      <DependentUpon>admin-viewer.component.html</DependentUpon>
     </None>
     <None Update="Assets\Scripts\app\components\_admin\_field\admin-field-edit.component.scss">
       <DependentUpon>admin-field-edit.component.html</DependentUpon>

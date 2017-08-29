@@ -157,8 +157,9 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 
 				var identityFieldWithValue = genericEntity.Fields.FirstOrDefault(e => e.FieldId == identityField.Id);
 				Argument.Require(identityFieldWithValue != null, "Не найдено значение поля-идентификатора в сохраняемых данных.");
-				bool isEdit = string.IsNullOrWhiteSpace(identityFieldWithValue.Value)
-					|| Int32.TryParse(identityFieldWithValue.Value, out int id) && id == 0;
+
+				bool isEdit = !string.IsNullOrWhiteSpace(identityFieldWithValue.Value)
+					&& Int32.TryParse(identityFieldWithValue.Value, out int id) && id != 0;
 
 				if (isEdit)
 				{
@@ -204,7 +205,13 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 						$"{Environment.NewLine}RETURNING {identityField.DatabaseName};";
 				}
 				var result = uow._DynamicRepository.Sql(upsertQuery);
-				return 1;
+				var resultRow = result.FirstOrDefault();
+				if (resultRow == null || resultRow.Values.Count == 0) {
+					return 0;
+				}
+
+				int newId = (result.FirstOrDefault().Values.FirstOrDefault() as int?) ?? 0;
+				return newId;
 			}
 		}
 

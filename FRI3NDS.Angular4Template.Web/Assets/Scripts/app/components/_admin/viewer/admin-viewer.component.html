@@ -1,0 +1,20 @@
+﻿<td-data-table #dataTable
+			   [data]="entities.list"
+			   [columns]="[{ name: 'id', label: 'id'}, { name: 'name', label: 'name'}]"
+			   [selectable]="true"
+			   [clickable]="true"
+			   [multiple]="false"
+			   [sortable]="true"
+			   [compareWith]="entities.rowCompareFunction"
+			   [sortBy]="entities.sortBy"
+			   [(ngModel)]="entities.selectedEntityId"
+			   [sortOrder]="entities.sortingOrder"
+			   (sortChange)="onTableSortChange($event)">
+</td-data-table>
+<td-paging-bar #pagingBar [pageSizes]="[1, 5, 10, 15, 20]" [pageSize]="entities.pageSize" [total]="entities.count" (change)="onTablePageChange($event)">
+	<span td-paging-bar-label hide-xs>по:</span>
+	{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
+</td-paging-bar>
+<div class="">
+	<button md-raised-button (click)="goToEntityInstances()">Перейти</button>
+</div>

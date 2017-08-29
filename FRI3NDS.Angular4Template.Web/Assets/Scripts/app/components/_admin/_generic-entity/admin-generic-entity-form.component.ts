@@ -12,6 +12,10 @@ import { _GenericEntityService } from "services/_admin/_generic-entity.service";
 import { _GenericEntity } from "models/business/_GenericEntity";
 import { BaseComponent } from "components/base.component";
 import { ActivatedRoute } from "@angular/router";
+import { _FieldService } from "services/_admin/_field.service";
+import { _FieldFilter } from "models/viewModels/_FieldViewModels";
+import { _Field } from "models/domain/_Field";
+import { _GenericEntityField } from "models/business/_GenericEntityField";
 
 @Component({
 	selector: 'admin-generic-entity-form',
@@ -27,9 +31,13 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 		private formFieldService: _FormFieldService,
 		private genericEntityService: _GenericEntityService,
 		private formService: _FormService,
+		private fileldService: _FieldService,
 	) {
 		super();
 	}
+
+	private formId: number;
+	private entityInstanceId: number;
 
 	private formFields: _FormField[];
 	private form: _Form;
@@ -45,44 +53,64 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 	}
 
 	ngOnInit(): void {
-		debugger;
 		this.ActivatedRoute.params.subscribe(params => {
-			debugger;
 			if (!params['formId']) {
 				//создание нового поля
 				this.NotificationService.error('Ошибка', 'Не задан идентификатор формы.');
 				return;
 			}
-			if (!params['entityInstanceId']) {
-				//создание нового поля
-				this.NotificationService.error('Ошибка', 'Не задан идентификатор экземпляра сущности.');
-				return;
-			}
 
-			var formId: number = parseInt(params['formId']);
-			var entityInstanceId: number = parseInt(params['entityInstanceId']);
+			this.formId = parseInt(params['formId']);
+			this.entityInstanceId = parseInt(params['entityInstanceId']) || 0;
 
+			this.loadEntityInstance();
+			this.loadFormFields();
+		});
 
-			this.formService.getById(formId).subscribe((form: _Form) => {
-				this.form = form;
+	}
 
-				this.genericEntityService.getEntitiyInstance(form._EntityId, entityInstanceId).subscribe((entityInstance: _GenericEntity) => {
+	loadFormFields(): void {
+		this.formFieldService.query(new _FormFieldFilter({
+			_FormId: this.formId
+		})).subscribe((fields: _FormField[]) => {
+			this.formFields = fields;
+			this.formRows = this.getFormRows();
+		}, this.handleError);
+	}
+
+	loadEntityInstance(): void {
+		this.formService.getById(this.formId).subscribe((form: _Form) => {
+			this.form = form;
+			var entityId: number = form._EntityId;
+
+			if (this.entityInstanceId) {
+				this.genericEntityService.getEntitiyInstance(entityId, this.entityInstanceId).subscribe((entityInstance: _GenericEntity) => {
 					this.entityInstance = entityInstance;
-					this.entityInstance.fields.forEach(f => {
-						var fieldName = this.getEntityInstanceFieldName(f.fieldId);
-						var fieldValue = this.ConvertService.deserialize(f.value, f._FieldTypeId);
-						this.entityInstanceModel[fieldName] = fieldValue;
-					});
+					this.fillEntityInstanceModel();
 				}, this.handleError);
+			} else {
+				this.fileldService.query(new _FieldFilter({
+					_EntityId: entityId
+				})).subscribe((fields: _Field[]) => {
+					this.entityInstance = new _GenericEntity({
+						entityId: entityId,
+						fields: fields.map(f => new _GenericEntityField({
+							fieldId: f.id,
+							_FieldTypeId: f._FieldTypeId,
+							value: null
+						}))
+					});
+					this.fillEntityInstanceModel();
+				}, this.handleError);
+			}
+		}, this.handleError);
+	}
 
-			}, this.handleError);
-
-			this.formFieldService.query(new _FormFieldFilter({
-				_FormId: formId
-			})).subscribe((fields: _FormField[]) => {
-				this.formFields = fields;
-				this.formRows = this.getFormRows();
-			}, this.handleError);
+	fillEntityInstanceModel(): void {
+		this.entityInstance.fields.forEach(f => {
+			var fieldName = this.getEntityInstanceFieldName(f.fieldId);
+			var fieldValue = this.ConvertService.deserialize(f.value, f._FieldTypeId);
+			this.entityInstanceModel[fieldName] = fieldValue;
 		});
 	}
 

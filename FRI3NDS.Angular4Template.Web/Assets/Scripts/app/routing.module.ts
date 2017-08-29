@@ -6,13 +6,14 @@ import { LoginComponent } from 'components/login.component';
 import { RegistrationComponent } from 'components/registration.component';
 import { ProfileComponent } from "components/profile/profile.component";
 import { AdminPanelComponent } from "components/_admin/admin-panel.component";
-import { AdminViewerComponent } from "components/_admin/admin-viewer.component";
+import { AdminViewerComponent } from "components/_admin/viewer/admin-viewer.component";
 import { AdminEntitiesComponent } from "components/_admin/_entity/admin-entities.component";
 import { AdminEntityComponent } from "components/_admin/_entity/admin-entity.component";
 import { AdminEntityEditComponent } from "components/_admin/_entity/admin-entity-edit.component";
 import { AdminFieldComponent } from "components/_admin/_field/admin-field.component";
 import { AdminFieldEditComponent } from "components/_admin/_field/admin-field-edit.component";
 import { AdminGenericEntityFormComponent } from "components/_admin/_generic-entity/admin-generic-entity-form.component";
+import { AdminViewerEntityInstancesComponent } from "components/_admin/viewer/admin-viewer-entity-instances.component";
 
 /**
  * Маршруты приложения.
@@ -32,6 +33,7 @@ const _routes: Routes = [
 			{ path: 'entity/field/:id', component: AdminFieldComponent },
 			{ path: 'entity/field/:id/edit', component: AdminFieldEditComponent },
 			{ path: 'viewer', component: AdminViewerComponent },
+			{ path: 'viewer/entityInstances/:entityId', component: AdminViewerEntityInstancesComponent },
 			{ path: 'viewer/form/:formId/:entityInstanceId', component: AdminGenericEntityFormComponent }
 		]
 	}
