@@ -9,11 +9,11 @@ import { _EntityService } from "services/_admin/_entity.service";
 import { _Entity, _EntityBase } from "models/domain/_Entity";
 import { DataSource } from "@angular/cdk";
 import { Observable } from "rxjs/Observable";
-import { IDatatableSelectionEvent, IDatatableSortEvent } from "ng2-md-datatable";
 import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent } from "@covalent/core";
 import { SortDirections } from "models/enums/SortDirections";
 import { _EntityFilter } from "models/viewModels/_EntityViewModels";
 import { ConvertService } from "services/utils/convert.service";
+import { BaseComponent } from "components/base.component";
 
 @Component({
 	selector: 'admin-entities',
@@ -22,16 +22,14 @@ import { ConvertService } from "services/utils/convert.service";
 	templateUrl: 'admin-entities.component.html',
 	styleUrls: ['admin-entities.component.css']
 })
-export class AdminEntitiesComponent implements OnInit {
+export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 
 	constructor(
 		private _entityService: _EntityService,
-		private notificationService: ToastService,
-		private convertService: ConvertService,
-		private router: Router
 	) {
+		super();
 	}
-	
+
 	private entities: {
 		list?: _Entity[],
 		count?: number
@@ -59,7 +57,7 @@ export class AdminEntitiesComponent implements OnInit {
 		this.entities.sortingOrder = sortEvent.order;
 		this.loadEntities();
 	}
-	
+
 	onTablePageChange(pagingEvent: IPageChangeEvent): void {
 		this.entities.pageNumber = pagingEvent.page;
 		this.entities.pageSize = pagingEvent.pageSize;
@@ -70,45 +68,39 @@ export class AdminEntitiesComponent implements OnInit {
 		this._entityService.query(new _EntityFilter({
 			pageNumber: this.entities.pageNumber - 1,
 			pageSize: this.entities.pageSize,
-			sortDirection: this.convertService.sortingOrderToSortDirection(this.entities.sortingOrder),
+			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.entities.sortingOrder),
 			sortField: this.entities.sortBy
 		})).subscribe((entities) => {
 			this.entities.list = entities;
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 
 	countEntities(): void {
 		this._entityService.count(new _EntityFilter({})).subscribe((count: number) => {
 			this.entities.count = count;
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
-	
+
 	goEditEntity(): void {
 		if (this.entities.selectedEntityId.length != 1) {
-			this.notificationService.error('Ошибка', 'Выберите сущность для редактирования.');
+			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
-		this.router.navigate(['/admin/entity', this.entities.selectedEntityId[0].id]);
+		this.Router.navigate(['/admin/entity', this.entities.selectedEntityId[0].id]);
 	}
 
 	goCreateEntity(): void {
-		this.router.navigate(['/admin/entity/new']);
+		this.Router.navigate(['/admin/entity/new']);
 	}
 
 	deleteEntity(): void {
 		if (this.entities.selectedEntityId.length != 1) {
-			this.notificationService.error('Ошибка', 'Выберите сущность для удаления.');
+			this.NotificationService.error('Ошибка', 'Выберите сущность для удаления.');
 			return;
 		}
 		this._entityService.delete(this.entities.selectedEntityId[0].id).subscribe((entityId: number) => {
 			this.entities.list = this.entities.list.filter(e => e.id != entityId);
 			this.entities.selectedEntityId = null;
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 }

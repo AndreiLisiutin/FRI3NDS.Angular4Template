@@ -1,5 +1,6 @@
 ﻿import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { MainModule } from 'main.module';
+import { AppInjector } from "infrastructure/app-injector";
 
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/first';

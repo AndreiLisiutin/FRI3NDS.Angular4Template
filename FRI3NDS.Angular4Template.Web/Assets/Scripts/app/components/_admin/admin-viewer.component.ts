@@ -1,10 +1,5 @@
-﻿import { Component } from '@angular/core';
-import { OnInit, ViewChild } from '@angular/core';
-import { MdSidenav } from "@angular/material";
-import { TranslateService } from "@ngx-translate/core";
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from "services/authentication.service";
-import { Router } from "@angular/router";
-import { ToastService } from "services/toast.service";
 import { _EntityService } from "services/_admin/_entity.service";
 import { _Entity } from "models/domain/_Entity";
 import { _GenericEntityService } from "services/_admin/_generic-entity.service";
@@ -17,6 +12,7 @@ import { _GenericEntityField } from "models/business/_GenericEntityField";
 import { _GenericEntityFilter } from "models/viewModels/_GenericEntityViewModels";
 import { ConvertService } from "services/utils/convert.service";
 import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent, TdPagingBarComponent } from "@covalent/core";
+import { BaseComponent } from "components/base.component";
 
 @Component({
 	selector: 'admin-viewer',
@@ -25,16 +21,14 @@ import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent,
 	templateUrl: 'admin-viewer.component.html',
 	styleUrls: ['admin-viewer.component.css']
 })
-export class AdminViewerComponent implements OnInit {
+export class AdminViewerComponent extends BaseComponent implements OnInit {
 
 	constructor(
 		private _entityService: _EntityService,
 		private _fieldService: _FieldService,
-		private notificationService: ToastService,
 		private _genericEntityService: _GenericEntityService,
-		private convertService: ConvertService,
-		private router: Router
 	) {
+		super();
 	}
 
 	@ViewChild('pagingBar') viewPagingBar: TdPagingBarComponent;
@@ -88,9 +82,7 @@ export class AdminViewerComponent implements OnInit {
 	ngOnInit(): void {
 		this._entityService.query().subscribe((entities) => {
 			this.entities = entities;
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 
 	onShowEntityInstancesClick(entityId: number): void {
@@ -124,7 +116,7 @@ export class AdminViewerComponent implements OnInit {
 		this._genericEntityService.getEntitiesList(new _GenericEntityFilter({
 			_EntityId: this.currentEntityId,
 			sort_FieldId: this.entityInstances.sort_FieldId,
-			sortDirection: this.convertService.sortingOrderToSortDirection(this.entityInstances.sortingOrder),
+			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.entityInstances.sortingOrder),
 			pageNumber: this.entityInstances.pageNumber - 1,
 			pageSize: this.entityInstances.pageSize || null
 		})).subscribe((entities) => {
@@ -135,9 +127,7 @@ export class AdminViewerComponent implements OnInit {
 				});
 				return anyEntity;
 			});
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 
 	countEntityInstances(): void {
@@ -145,9 +135,7 @@ export class AdminViewerComponent implements OnInit {
 			_EntityId: this.currentEntityId
 		})).subscribe((count: number) => {
 			this.entityInstances.count = count;
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 
 	loadFields(): void {
@@ -161,20 +149,25 @@ export class AdminViewerComponent implements OnInit {
 					label: f.name
 				};
 			});
-		}, (error) => {
-			this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-		});
+		}, this.handleError);
 	}
 
-	goToForm() {
+	goEditForm() {
 		if (this.entityInstances.selectedEntityId.length != 1) {
-			this.notificationService.error('Ошибка', 'Выберите сущность для редактирования.');
+			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
 
 		var entityInstanceId = this.getEntityInstanceIdenty(this.entityInstances.selectedEntityId[0]);
 		var formId = 1;
 
-		this.router.navigate(['admin/viewer/form', formId, entityInstanceId]);
+		this.Router.navigate(['admin/viewer/form', formId, entityInstanceId]);
+	}
+
+	goCreateForm() {
+		var entityInstanceId = 0;
+		var formId = 1;
+
+		this.Router.navigate(['admin/viewer/form', formId, entityInstanceId]);
 	}
 }

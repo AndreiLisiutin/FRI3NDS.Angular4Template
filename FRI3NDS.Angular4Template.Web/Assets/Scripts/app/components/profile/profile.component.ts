@@ -1,9 +1,8 @@
-﻿import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { ToastService } from "services/toast.service";
 import { User } from "models/domain/User";
 import { UserService } from "services/user.service";
+import { BaseComponent } from "components/base.component";
 
 /**
  * Компонент формы профиля.
@@ -14,15 +13,16 @@ import { UserService } from "services/user.service";
     templateUrl: 'profile.component.html',
     styleUrls: []
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent extends BaseComponent implements OnInit {
 	/**
 	 * Модель пользователя.
 	 */
     private user: User;
 
     constructor(
-        private userService: UserService,
-        private notificationService: ToastService) {
+		private userService: UserService
+	) {
+		super();
     }
 
 	/**
@@ -34,20 +34,14 @@ export class ProfileComponent implements OnInit {
         this.userService.getCurrentUser().subscribe(
             user => {
                 this.user = user;
-            },
-            error => {
-                this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-            });
+			}, this.handleError);
     }
 
     onSaveBtnClick(): void {
         this.userService.saveUser(this.user).subscribe(
             user => {
                 this.user.id = user.id;
-                this.notificationService.success('Успех', 'Учетная запись успешно изменена.');
-            },
-            error => {
-                this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-            });
+                this.NotificationService.success('Успех', 'Учетная запись успешно изменена.');
+			}, this.handleError);
     }
 }

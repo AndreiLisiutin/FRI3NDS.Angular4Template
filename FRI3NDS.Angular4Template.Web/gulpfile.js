@@ -74,7 +74,6 @@ gulp.task('lib:copy', function () {
 		paths.src.lib + '/@covalent/core/core.umd.js',
 		paths.src.lib + '/@covalent/core/common/platform.css',
 		paths.src.lib + '/moment/moment.js',
-		paths.src.lib + '/ng2-md-datatable/ng2-md-datatable.umd.js',
 	], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
 		.pipe(newer(paths.dest.lib))
 		.pipe(gulp.dest(paths.dest.lib));
@@ -109,7 +108,6 @@ gulp.task('material:compile:copy', function () {
 			includePaths: [
 				paths.src.sassBase,
 				paths.src.lib + '/@angular/material',
-				paths.src.lib + '/ng2-md-datatable',
 				paths.src.lib + '/@covalent/core/theming'
 			]
 		}))

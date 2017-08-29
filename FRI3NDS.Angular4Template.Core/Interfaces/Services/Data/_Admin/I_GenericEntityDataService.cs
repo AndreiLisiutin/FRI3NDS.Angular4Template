@@ -14,15 +14,19 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Services.Data._Admin
 		/// <param name="_entityId">Идентификатор сущности.</param>
 		/// <param name="sort_FieldId">Идентификатор поля для сортировки.</param>
 		/// <param name="sortDirection">Идентификатор направления сортировки.</param>
+		/// <param name="filters">Фильтры.</param>
 		/// <param name="pageSize">Размер страницы.</param>
 		/// <param name="pageNumber">Номер страницы.</param>
 		/// <returns>Список обобщенных сущностей.</returns>
 		List<_GenericEntity> GetEntitiesList(
 			int _entityId,
-			int? sort_FieldId,
-			SortDirections sortDirection,
+			int? sort_FieldId = null,
+			SortDirections sortDirection = SortDirections.Ascending,
+			List<_GenericEntityFieldFilter> filters = null,
 			int pageSize = 1000,
 			int pageNumber = 0);
+
+		_GenericEntity GetEntityById(int entityId, int entityInstanceId);
 
 		/// <summary>
 		/// Получить количество экземпляров сущности.

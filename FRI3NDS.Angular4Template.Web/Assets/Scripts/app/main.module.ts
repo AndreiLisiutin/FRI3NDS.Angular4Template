@@ -1,4 +1,4 @@
-﻿import { NgModule } from '@angular/core';
+﻿import { NgModule, APP_INITIALIZER, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
@@ -15,6 +15,7 @@ import { RoutingModule } from 'routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CommonModule } from "@angular/common";
+import { AppInjector } from "infrastructure/app-injector";
 
 /**
  * Главный модуль приложения.
@@ -41,6 +42,15 @@ import { CommonModule } from "@angular/common";
     ],
     declarations: [],
 	bootstrap: [RootComponent],
-	providers: []
+	providers: [{
+		'provide': APP_INITIALIZER,
+		'useFactory': function init(config: Injector) {
+			return () => {
+				AppInjector(config);
+			};
+		},
+		'deps': [Injector],
+		'multi': true
+	}]
 })
 export class MainModule { }

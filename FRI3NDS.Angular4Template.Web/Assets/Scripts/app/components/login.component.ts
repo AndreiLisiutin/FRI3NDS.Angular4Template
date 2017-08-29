@@ -1,10 +1,8 @@
-﻿import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from "services/authentication.service";
 import { FormsModule, NgForm } from '@angular/forms';
 import { TokenInfo, UserLoginModel } from 'models/viewModels/AuthenticationViewModels';
-import { ToastService } from "services/toast.service";
-import { Router } from "@angular/router";
+import { BaseComponent } from "components/base.component";
 
 /**
  * Компонент формы входа.
@@ -15,7 +13,7 @@ import { Router } from "@angular/router";
     templateUrl: 'login.component.html',
     styleUrls: []
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent implements OnInit {
 	/**
 	 * Модель логина.
 	 */
@@ -23,13 +21,11 @@ export class LoginComponent implements OnInit {
 	/**
 	 * Конструктор компонента формы входа.
 	 * @param authService Сервис аутентификации.
-	 * @param _notificationService Сервис тостера.
-	 * @param router Роутер.
 	 */
     constructor(
-        private authService: AuthenticationService,
-        private _notificationService: ToastService,
-        private router: Router) {
+		private authService: AuthenticationService
+	) {
+		super();
     }
 
 	/**
@@ -46,10 +42,8 @@ export class LoginComponent implements OnInit {
 
         this.authService.login(this.userLoginModel)
             .subscribe((result: TokenInfo) => {
-                this.router.navigate(['profile']);
-            }, (error) => {
-                this._notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-            });
+                this.Router.navigate(['profile']);
+			}, this.handleError);
     }
 
 	/**

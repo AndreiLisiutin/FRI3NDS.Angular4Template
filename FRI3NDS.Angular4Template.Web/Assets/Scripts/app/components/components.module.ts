@@ -15,7 +15,6 @@ import {
 import { CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule } from '@covalent/core';
 
 import { CommonModule } from '@angular/common';
-import { MdDataTableModule } from 'ng2-md-datatable';
 import { CdkTableModule } from '@angular/cdk';
 import { RootComponent } from 'components/root.component';
 import { LoginComponent } from 'components/login.component';
@@ -43,7 +42,6 @@ import { AdminGenericEntityFormComponent } from "components/_admin/_generic-enti
 
 		CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule,
 
-		MdDataTableModule,
 		CdkTableModule,
 		SimpleNotificationsModule.forRoot(),
 		FormsModule,

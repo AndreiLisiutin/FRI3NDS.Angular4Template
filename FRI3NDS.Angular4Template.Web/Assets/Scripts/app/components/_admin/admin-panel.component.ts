@@ -1,12 +1,8 @@
-﻿import { Component } from '@angular/core';
-import { OnInit, ViewChild } from '@angular/core';
-import { MdSidenav } from "@angular/material";
-import { TranslateService } from "@ngx-translate/core";
+﻿import { Component,OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from "services/authentication.service";
-import { Router } from "@angular/router";
-import { ToastService } from "services/toast.service";
 import { _EntityService } from "services/_admin/_entity.service";
 import { _Entity } from "models/domain/_Entity";
+import { BaseComponent } from "components/base.component";
 
 /**
  * Корневой компонент приложения.
@@ -18,12 +14,11 @@ import { _Entity } from "models/domain/_Entity";
     templateUrl: 'admin-panel.component.html',
     styleUrls: ['admin-panel.component.css']
 })
-export class AdminPanelComponent implements OnInit {
+export class AdminPanelComponent extends BaseComponent implements OnInit {
 
     constructor(
-        private notificationService: ToastService,
-        private router: Router
-    ) {
+	) {
+		super();
     }
     
 

@@ -18,7 +18,7 @@
 	{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
 </td-paging-bar>
 <div class="">
-	<button md-raised-button (click)="goCreateField()">Добавить</button>
-	<button md-raised-button [disabled]="entityInstances.selectedEntityId.length != 1" (click)="goToForm()">Редактировать</button>
+	<button md-raised-button (click)="goToCreateForm()">Добавить</button>
+	<button md-raised-button [disabled]="entityInstances.selectedEntityId.length != 1" (click)="goEditForm()">Редактировать</button>
 	<button md-raised-button [disabled]="entityInstances.selectedEntityId.length != 1" (click)="deleteField()">Удалить</button>
 </div>

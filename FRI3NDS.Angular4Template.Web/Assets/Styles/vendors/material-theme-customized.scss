@@ -1,7 +1,6 @@
 ﻿@import '_theming';
 @import 'all-theme';
 @import 'main.scss';
-@import 'datatable-theme';
 
 @include mat-core();
 
@@ -21,14 +20,3 @@ md-pseudo-checkbox::after {
 }
 @include covalent-theme($custom-theme);
 
-/*Фикс косяков в таблице angular md*/
-ng2-md-datatable th,
-ng2-md-datatable td {
-    vertical-align: middle;
-}
-
-ng2-md-datatable label {
-    margin-bottom: 1px;
-}
-
-@include mat-datatable-theme($custom-theme);

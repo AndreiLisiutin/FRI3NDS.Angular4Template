@@ -20,6 +20,9 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 	/// </summary>
 	public class _GenericEntityDataService : DataServiceBase, I_GenericEntityDataService
 	{
+		private readonly string SQL_DATE_TIME_FORMAT = "DD.MM.YYYY HH24:MI:SS";
+		private readonly string DOT_NET_DATE_TIME_FORMAT = "dd.MM.yyyy HH:mm:ss";
+
 		/// <summary>
 		/// Конструктор сервиса, работающего с метаданными сущностей и делающего по метаданным выборки для админки.
 		/// </summary>
@@ -35,13 +38,15 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 		/// <param name="_entityId">Идентификатор сущности.</param>
 		/// <param name="sort_FieldId">Идентификатор поля для сортировки.</param>
 		/// <param name="sortDirection">Идентификатор направления сортировки.</param>
+		/// <param name="filters">Фильтры.</param>
 		/// <param name="pageSize">Размер страницы.</param>
 		/// <param name="pageNumber">Номер страницы.</param>
 		/// <returns>Список обобщенных сущностей.</returns>
 		public List<_GenericEntity> GetEntitiesList(
 			int _entityId,
-			int? sort_FieldId,
-			SortDirections sortDirection,
+			int? sort_FieldId = null,
+			SortDirections sortDirection = SortDirections.Ascending,
+			List<_GenericEntityFieldFilter> filters = null,
 			int pageSize = 1000,
 			int pageNumber = 0)
 		{
@@ -51,7 +56,7 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 				List<_Field> fields = uow._FieldRepository.Query(entityId: _entityId);
 				_Field sortField = fields.FirstOrDefault(f => f.Id == sort_FieldId) ?? fields.First();
 
-				IEnumerable<string> selectString = fields.Select(f =>
+				IEnumerable<string> selectList = fields.Select(f =>
 				{
 					switch (f._FieldTypeId)
 					{
@@ -59,17 +64,28 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 						case (int)_FieldTypes.Decimal:
 							return $"CAST({f.DatabaseName} AS TEXT) AS f_{f.Id}";
 						case (int)_FieldTypes.DateTime:
-							return $"TO_CHAR({f.DatabaseName}, 'DD.MM.YYYY HH24:MI:SS') AS f_{f.Id}";
+							return $"TO_CHAR({f.DatabaseName}, '{SQL_DATE_TIME_FORMAT}') AS f_{f.Id}";
 						default:
 							return $"{f.DatabaseName} AS f_{f.Id}";
 					}
 				});
 
+				filters = filters ?? new List<_GenericEntityFieldFilter>();
+				IEnumerable<string> filterList = filters.Select(f =>
+				{
+					var field = fields.FirstOrDefault(x => x.Id == f._FieldId);
+					Argument.Require(field != null, "Не найдено поле сущности для фильтра.");
+					object deserializedValue = _DeserializeField(f.Value, field._FieldTypeId);
+					string sqlValue = _ToSqlField(deserializedValue, field._FieldTypeId);
+					return $"{field.DatabaseName} = {sqlValue}";
+				});
+
 
 				string query =
 					$"SELECT " +
-					$"{Environment.NewLine}{string.Join($"{Environment.NewLine}, ", selectString)} " +
+					$"{Environment.NewLine}{string.Join($"{Environment.NewLine}, ", selectList)} " +
 					$"{Environment.NewLine}FROM {entity.DatabaseScheme}.\"{entity.DatabaseName}\" " +
+					(!filterList.Any() ? "" : $"{Environment.NewLine}WHERE {string.Join($"{Environment.NewLine} AND ", filterList)} ") +
 					$"{Environment.NewLine}ORDER BY {sortField.DatabaseName} {sortDirection.GetDescription()} " +
 					$"{Environment.NewLine}OFFSET {pageNumber} * {pageSize} LIMIT {pageSize};";
 
@@ -101,6 +117,28 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 			}
 		}
 
+		public _GenericEntity GetEntityById(int entityId, int entityInstanceId)
+		{
+			Argument.Require(entityId > 0, "Идентификатор сущности пустой.");
+			Argument.Require(entityInstanceId > 0, "Идентификатор экземпляра сущности пустой.");
+
+			using (var uow = this.CreateAdminUnitOfWork())
+			{
+				List<_Field> fields = uow._FieldRepository.Query(entityId: entityId);
+				_Field identityField = fields.FirstOrDefault(f => f.IsIdentity);
+				Argument.Require(identityField != null, "В сущности не найдено поле-идентификатор.");
+
+				return this.GetEntitiesList(
+					_entityId: entityId,
+					pageSize: 1,
+					filters: new List<_GenericEntityFieldFilter>()
+					{
+						new _GenericEntityFieldFilter() { _FieldId = identityField.Id, Value = entityInstanceId.ToString() }
+					})
+					.FirstOrDefault();
+			}
+		}
+
 		public int SaveEntity(_GenericEntity genericEntity, int userId)
 		{
 			Argument.Require(genericEntity != null, "Сущность пустая.");
@@ -117,35 +155,90 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 				_Field identityField = fields.FirstOrDefault(f => f.IsIdentity);
 				Argument.Require(identityField != null, "В сущности не найдено поле-идентификатор.");
 
-				//string query =
-				//	$"INSERT INTO  {entity.DatabaseScheme}.\"{entity.DatabaseName}\" " +
-				//	"(" +
-				//	$"{Environment.NewLine}{string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => f.DatabaseName))}" +
-				//	")" +
-				//	$"{Environment.NewLine}VALUES ({string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => "@" + f.DatabaseName))});";
-				string updateQuery =
+				var identityFieldWithValue = genericEntity.Fields.FirstOrDefault(e => e.FieldId == identityField.Id);
+				Argument.Require(identityFieldWithValue != null, "Не найдено значение поля-идентификатора в сохраняемых данных.");
+				bool isEdit = string.IsNullOrWhiteSpace(identityFieldWithValue.Value)
+					|| Int32.TryParse(identityFieldWithValue.Value, out int id) && id == 0;
+
+				if (isEdit)
+				{
+					_GenericEntity existingEntityInstance = this.GetEntitiesList(
+					_entityId: entity.Id,
+					filters: new List<_GenericEntityFieldFilter>() { new _GenericEntityFieldFilter() { _FieldId = identityField.Id, Value = identityFieldWithValue.Value } },
+					pageSize: 1).FirstOrDefault();
+					Argument.Require(existingEntityInstance != null, "Обновляемая сущность не найдена.");
+				}
+
+				Dictionary<int, string> fieldSqlValues = new Dictionary<int, string>();
+				foreach (var field in fields)
+				{
+					_GenericEntityField fieldWithValue = genericEntity.Fields.FirstOrDefault(x => x.FieldId == field.Id);
+					object deserializedValue = _DeserializeField(fieldWithValue?.Value, field._FieldTypeId);
+					string sqlValue = _ToSqlField(deserializedValue, field._FieldTypeId);
+					fieldSqlValues[field.Id] = sqlValue;
+				}
+
+				string fieldNames = string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => f.DatabaseName));
+				string fieldValues = string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => fieldSqlValues[f.Id]));
+
+				string upsertQuery = null;
+				if (isEdit)
+				{
+					upsertQuery =
 					$"UPDATE  {entity.DatabaseScheme}.\"{entity.DatabaseName}\" " +
 					"SET (" +
-					$"{Environment.NewLine}{string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => f.DatabaseName))}" +
+					$"{Environment.NewLine}{fieldNames}" +
 					")" +
-					$"{Environment.NewLine}= ({string.Join($"{Environment.NewLine}, ", fields.Where(f => !f.IsIdentity).Select(f => ":" + f.DatabaseName))})" +
-					$"{Environment.NewLine}WHERE {identityField.DatabaseName} = :{identityField.DatabaseName};";
-
-				Dictionary<string, object> parameters = new Dictionary<string, object>();
-				foreach (var field in fields.Where(f => !f.IsIdentity))
-				{
-					_GenericEntityField fieldWithValue = genericEntity.Fields.FirstOrDefault(f => f.FieldId == field.Id);
-					parameters[":" + field.DatabaseName] = _DeserializeField(fieldWithValue?.Value, field._FieldTypeId);
+					$"{Environment.NewLine}= ({fieldValues})" +
+					$"{Environment.NewLine}WHERE {identityField.DatabaseName} = {fieldSqlValues[identityField.Id]};";
 				}
-				_GenericEntityField identityFieldWithValue = genericEntity.Fields.FirstOrDefault(f => f.FieldId == identityField.Id);
-				parameters[":" + identityField.DatabaseName] = _DeserializeField(identityFieldWithValue?.Value, identityFieldWithValue._FieldTypeId);
-				var result = uow._DynamicRepository.Sql(updateQuery, parameters);
+				else
+				{
+					upsertQuery =
+						$"INSERT INTO  {entity.DatabaseScheme}.\"{entity.DatabaseName}\" " +
+						$"{Environment.NewLine}(" +
+						$"{Environment.NewLine}{fieldNames}" +
+						$"{Environment.NewLine}) VALUES (" +
+						$"{Environment.NewLine}{fieldValues}" +
+						$"{Environment.NewLine}) " +
+						$"{Environment.NewLine}RETURNING {identityField.DatabaseName};";
+				}
+				var result = uow._DynamicRepository.Sql(upsertQuery);
 				return 1;
 			}
 		}
 
+		private string _ToSqlField(object fieldValue, int fieldTypeId)
+		{
+			if (string.IsNullOrEmpty(fieldValue?.ToString()))
+			{
+				return "NULL";
+			}
+			string sqlValue = null;
+			switch (fieldTypeId)
+			{
+				case (int)_FieldTypes.Integer:
+					sqlValue = ((int)fieldValue).ToString();
+					break;
+				case (int)_FieldTypes.Decimal:
+					sqlValue = ((decimal)fieldValue).ToString().Replace(",", ".");
+					break;
+				case (int)_FieldTypes.DateTime:
+					sqlValue = $"to_timestamp('{((DateTime)fieldValue).ToString(DOT_NET_DATE_TIME_FORMAT)}', '{SQL_DATE_TIME_FORMAT}')";
+					break;
+				default:
+					sqlValue = $"'{fieldValue}'";
+					break;
+			}
+			return sqlValue;
+		}
+
 		private object _DeserializeField(string fieldSerializedValue, int fieldTypeId)
 		{
+			if (string.IsNullOrEmpty(fieldSerializedValue))
+			{
+				return null;
+			}
 			object fieldValue = null;
 			switch (fieldTypeId)
 			{
@@ -162,7 +255,7 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 					}
 					break;
 				case (int)_FieldTypes.DateTime:
-					if (DateTime.TryParseExact(fieldSerializedValue, "dd.MM.yyyy HH:mm:ss",
+					if (DateTime.TryParseExact(fieldSerializedValue, DOT_NET_DATE_TIME_FORMAT,
 						CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime fieldDateValue))
 					{
 						fieldValue = fieldDateValue;

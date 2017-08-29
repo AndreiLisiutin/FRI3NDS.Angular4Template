@@ -1,10 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit, ViewChild } from '@angular/core';
-import { MdSidenav } from "@angular/material";
-import { TranslateService } from "@ngx-translate/core";
 import { AuthenticationService } from "services/authentication.service";
-import { Router } from "@angular/router";
-import { ToastService } from "services/toast.service";
+import { BaseComponent } from "components/base.component";
 
 /**
  * Корневой компонент приложения.
@@ -16,17 +13,15 @@ import { ToastService } from "services/toast.service";
     templateUrl: 'root.component.html',
     styleUrls: ['root.component.css']
 })
-export class RootComponent {
+export class RootComponent extends BaseComponent {
 
     private languages: any[];
     private selectedLanguageId: string;
 
-    constructor(
-        private translate: TranslateService,
-        private authService: AuthenticationService,
-        private notificationService: ToastService,
-        private router: Router
-    ) {
+	constructor(
+        private authService: AuthenticationService
+	) {
+		super();
         this.languages = [{
             id: 'ru',
             name: 'Русский'
@@ -36,9 +31,9 @@ export class RootComponent {
         }];
 
         this.selectedLanguageId = this.languages[0].id;
-        translate.addLangs(this.languages.map(l => l.id));
-        translate.setDefaultLang(this.selectedLanguageId);
-        translate.use(this.selectedLanguageId);
+		this.TranslateService.addLangs(this.languages.map(l => l.id));
+		this.TranslateService.setDefaultLang(this.selectedLanguageId);
+		this.TranslateService.use(this.selectedLanguageId);
     }
 
     isAuthenticated(): boolean {
@@ -47,13 +42,11 @@ export class RootComponent {
 
     onLogoutClick(): void {
         this.authService.logout().subscribe(() => {
-            this.router.navigate(['login']);
-        }, (error) => {
-            this.notificationService.error('Ошибка', error.text && error.text() || 'Ошибка.');
-        });
+			this.Router.navigate(['login']);
+		}, this.handleError);
     }
 
     onLanguageChange(lang: string) {
-        this.translate.use(lang);
+		this.TranslateService.use(lang);
     }
 }

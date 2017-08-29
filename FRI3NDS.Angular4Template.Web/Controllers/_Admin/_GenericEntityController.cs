@@ -48,8 +48,7 @@ namespace FRI3NDS.Angular4Template.Web.Controllers._Admin
 		[HttpGet]
 		public _GenericEntity GetEntityById(int entityId, int entityInstanceId)
 		{
-			return this.GetEntitiesList(new _GenericEntityFilter() { _EntityId = entityId })
-				.FirstOrDefault();
+			return GenericEntityDataService.GetEntityById(entityId, entityInstanceId);
 		}
 
 		[Route("SaveEntity")]
