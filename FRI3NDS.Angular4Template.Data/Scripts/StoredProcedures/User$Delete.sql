@@ -7,7 +7,7 @@ RETURNS INT
 AS 
 $$
 	BEGIN
-		DELETE FROM public."user" WHERE _id = _id;
+		DELETE FROM public."user" WHERE user_id = _id;
 		RETURN _id;
 	END;
 $$ 

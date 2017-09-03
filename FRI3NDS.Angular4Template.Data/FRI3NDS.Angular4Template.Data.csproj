@@ -5,19 +5,47 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Scripts\Migrations\User%24CreateTable.sql" />
     <None Remove="Scripts\Migrations\User%24Delete.sql" />
     <None Remove="Scripts\Migrations\User%24Query.sql" />
     <None Remove="Scripts\Migrations\User%24Save.sql" />
-    <None Remove="Scripts\Migrations\_TestEntity%24CreateTable.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Entity%24Count.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Entity%24Delete.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Entity%24Query.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Entity%24Save.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Field%24Count.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Field%24Delete.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Field%24Query.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_Field%24Save.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_FieldType%24Delete.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_FieldType%24Query.sql" />
+    <None Remove="Scripts\StoredProcedures\Admin\_FieldType%24Save.sql" />
+    <None Remove="Scripts\_Service\000_Service%24DropFunction.sql" />
+    <None Remove="Scripts\_Service\001_Service%24Versions.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\Migrations\User$CreateTable.sql" />
-    <EmbeddedResource Include="Scripts\Migrations\User$Delete.sql" />
-    <EmbeddedResource Include="Scripts\Migrations\User$Query.sql" />
-    <EmbeddedResource Include="Scripts\Migrations\User$Save.sql" />
-    <EmbeddedResource Include="Scripts\Migrations\_TestEntity$CreateTable.sql" />
+    <EmbeddedResource Include="Scripts\_Service\000_Service$DropFunction.sql" />
+    <EmbeddedResource Include="Scripts\_Service\001_Service$Versions.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\Migrations\0_0_2_User%24CreateTable.sql" />
+    <EmbeddedResource Include="Scripts\Migrations\0_0_1_Admin%24CreateTables.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Entity$Count.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Entity$Delete.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Entity$Query.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Entity$Save.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Field$Count.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Field$Delete.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Field$Query.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_Field$Save.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_FieldType$Delete.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_FieldType$Query.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\Admin\_FieldType$Save.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\User%24Delete.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\User%24Query.sql" />
+    <EmbeddedResource Include="Scripts\StoredProcedures\User%24Save.sql" />
+    <EmbeddedResource Include="Scripts\Migrations\0_0_0_TestEntity%24CreateTable.sql" />
   </ItemGroup>
 
   <ItemGroup>

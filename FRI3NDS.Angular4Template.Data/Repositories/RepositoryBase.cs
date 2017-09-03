@@ -1,8 +1,10 @@
 ﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using FRI3NDS.Angular4Template.Data.UnitOfWork;
+using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 

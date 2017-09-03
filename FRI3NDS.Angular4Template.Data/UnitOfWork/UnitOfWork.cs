@@ -125,14 +125,14 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
         public AdminUnitOfWork(IConfiguration configuration) 
             : base(configuration)
         {
-        }
+		}
 
-        #region Repositories
+		#region Repositories
 
-        /// <summary>
-        /// Репозиторий сущностей.
-        /// </summary>
-        public I_EntityRepository _EntityRepository => new _EntityRepository(this._dataContext.Value);
+		/// <summary>
+		/// Репозиторий сущностей.
+		/// </summary>
+		public I_EntityRepository _EntityRepository => new _EntityRepository(this._dataContext.Value);
 
         /// <summary>
         /// Репозиторий типов полей сущностей.
@@ -148,6 +148,11 @@ namespace FRI3NDS.Angular4Template.Data.UnitOfWork
         /// Репозиторий динамический, страшный.
         /// </summary>
         public I_DynamicRepository _DynamicRepository => new _DynamicRepository(this._dataContext.Value);
+
+        /// <summary>
+        /// Репозиторий версий базы данных.
+        /// </summary>
+        public I_VersionRepository _VersionRepository => new _VersionRepository(this._dataContext.Value);
 
         #endregion
     }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.14
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Web", "FRI3NDS.Angular4Template.Web\FRI3NDS.Angular4Template.Web.csproj", "{BC1A17F3-7AF5-40FA-9964-D6384649E9BE}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,16 +10,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Util", "FRI3NDS.Angular4Template.Util\FRI3NDS.Angular4Template.Util.csproj", "{2987989B-C66B-4F11-808E-58B6A363C600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRI3NDS.Angular4Template.Core", "FRI3NDS.Angular4Template.Core\FRI3NDS.Angular4Template.Core.csproj", "{A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Core", "FRI3NDS.Angular4Template.Core\FRI3NDS.Angular4Template.Core.csproj", "{A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2987989B-C66B-4F11-808E-58B6A363C600} = {2987989B-C66B-4F11-808E-58B6A363C600}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRI3NDS.Angular4Template.Data", "FRI3NDS.Angular4Template.Data\FRI3NDS.Angular4Template.Data.csproj", "{74482890-D1DD-4E9C-956A-2319C9B4B73E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Data", "FRI3NDS.Angular4Template.Data\FRI3NDS.Angular4Template.Data.csproj", "{74482890-D1DD-4E9C-956A-2319C9B4B73E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{2987989B-C66B-4F11-808E-58B6A363C600} = {2987989B-C66B-4F11-808E-58B6A363C600}
 		{A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320} = {A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320}
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRI3NDS.Angular4Template.Migrator", "FRI3NDS.Angular4Template.Migrator\FRI3NDS.Angular4Template.Migrator.csproj", "{FC6E3A1E-C027-4624-AA29-B628AA7D180C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{74482890-D1DD-4E9C-956A-2319C9B4B73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74482890-D1DD-4E9C-956A-2319C9B4B73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74482890-D1DD-4E9C-956A-2319C9B4B73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

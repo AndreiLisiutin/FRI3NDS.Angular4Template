@@ -53,7 +53,12 @@ namespace FRI3NDS.Angular4Template.Core.Interfaces.Data
 
         I_DynamicRepository _DynamicRepository { get; }
 
-        #endregion
-    }
+		/// <summary>
+		/// Репозиторий версий базы данных.
+		/// </summary>
+		I_VersionRepository _VersionRepository { get; }
+
+		#endregion
+	}
 
 }
