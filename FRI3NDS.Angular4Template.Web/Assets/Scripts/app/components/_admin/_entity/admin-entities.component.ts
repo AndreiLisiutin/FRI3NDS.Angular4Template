@@ -72,13 +72,13 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 			sortField: this.entities.sortBy
 		})).subscribe((entities) => {
 			this.entities.list = entities;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	countEntities(): void {
 		this._entityService.count(new _EntityFilter({})).subscribe((count: number) => {
 			this.entities.count = count;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	goEditEntity(): void {
@@ -101,6 +101,6 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 		this._entityService.delete(this.entities.selectedEntityId[0].id).subscribe((entityId: number) => {
 			this.entities.list = this.entities.list.filter(e => e.id != entityId);
 			this.entities.selectedEntityId = null;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 }

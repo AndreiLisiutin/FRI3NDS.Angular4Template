@@ -40,7 +40,7 @@ export class RegistrationComponent extends BaseComponent implements OnInit {
         this.authService.register(this.userLoginModel)
 			.subscribe((tokenInfo: TokenInfo) => {
 				this.NotificationService.success('Регистрация успешна', 'Регистрация успешна: ' + JSON.stringify(tokenInfo));
-			}, this.handleError);
+			}, (error) => this.handleError(error));
 	}
 
 	/**

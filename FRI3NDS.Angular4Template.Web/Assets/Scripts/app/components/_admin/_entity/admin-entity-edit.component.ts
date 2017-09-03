@@ -36,7 +36,7 @@ export class AdminEntityEditComponent extends BaseComponent implements OnInit {
 
 			this._entityService.getById(id).subscribe((entity: _Entity) => {
 				this.entity = entity;
-			}, this.handleError);
+			}, (error) => this.handleError(error));
 		});
 	}
 
@@ -44,7 +44,7 @@ export class AdminEntityEditComponent extends BaseComponent implements OnInit {
 		this._entityService.save(this.entity).subscribe((entity: _EntityBase) => {
 			this.entity.id = entity.id;
 			this.Location.back();
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	goBack(): void {

@@ -130,7 +130,7 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 				});
 				return anyEntity;
 			});
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	countEntityInstances(): void {
@@ -138,7 +138,7 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 			_EntityId: this.currentEntityId
 		})).subscribe((count: number) => {
 			this.entityInstances.count = count;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	loadFields(): void {
@@ -152,7 +152,7 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 					label: f.name
 				};
 			});
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	goEditForm() {

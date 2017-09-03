@@ -75,7 +75,7 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 		})).subscribe((fields: _FormField[]) => {
 			this.formFields = fields;
 			this.formRows = this.getFormRows();
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	loadEntityInstance(): void {
@@ -87,7 +87,7 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 				this.genericEntityService.getEntitiyInstance(entityId, this.entityInstanceId).subscribe((entityInstance: _GenericEntity) => {
 					this.entityInstance = entityInstance;
 					this.fillEntityInstanceModel();
-				}, this.handleError);
+				}, (error) => this.handleError(error));
 			} else {
 				this.fileldService.query(new _FieldFilter({
 					_EntityId: entityId
@@ -101,9 +101,9 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 						}))
 					});
 					this.fillEntityInstanceModel();
-				}, this.handleError);
+				}, (error) => this.handleError(error));
 			}
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	fillEntityInstanceModel(): void {
@@ -152,7 +152,7 @@ export class AdminGenericEntityFormComponent extends BaseComponent implements On
 
 		this.genericEntityService.saveEntitiyInstance(this.entityInstance).subscribe((field: number) => {
 			this.Location.back();
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	goBack(): void {

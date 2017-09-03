@@ -34,7 +34,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
         this.userService.getCurrentUser().subscribe(
             user => {
                 this.user = user;
-			}, this.handleError);
+			}, (error) => this.handleError(error));
     }
 
     onSaveBtnClick(): void {
@@ -42,6 +42,6 @@ export class ProfileComponent extends BaseComponent implements OnInit {
             user => {
                 this.user.id = user.id;
                 this.NotificationService.success('Успех', 'Учетная запись успешно изменена.');
-			}, this.handleError);
+			}, (error) => this.handleError(error));
     }
 }

@@ -45,19 +45,19 @@ export class AdminFieldEditComponent extends BaseComponent implements OnInit {
 
             this._fieldService.getById(id).subscribe((field: _Field) => {
 				this.field = field;
-			}, this.handleError);
+			}, (error) => this.handleError(error));
         });
 
         this._fieldService.GetFieldTypes().subscribe((fieldTypes: _FieldType[]) => {
             this.fieldTypes = fieldTypes;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
     }
     
     saveField(): void {
         this._fieldService.save(this.field).subscribe((field: _FieldBase) => {
             this.field.id = field.id;
             this.Location.back();
-		}, this.handleError);
+		}, (error) => this.handleError(error));
     }
 
     goBack(): void {

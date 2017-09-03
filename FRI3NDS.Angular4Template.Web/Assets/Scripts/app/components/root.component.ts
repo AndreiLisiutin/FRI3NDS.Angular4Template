@@ -43,7 +43,7 @@ export class RootComponent extends BaseComponent {
     onLogoutClick(): void {
         this.authService.logout().subscribe(() => {
 			this.Router.navigate(['login']);
-		}, this.handleError);
+		}, (error) => this.handleError(error));
     }
 
     onLanguageChange(lang: string) {

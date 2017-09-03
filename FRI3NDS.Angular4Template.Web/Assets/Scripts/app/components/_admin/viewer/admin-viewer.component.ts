@@ -66,14 +66,14 @@ export class AdminViewerComponent extends BaseComponent implements OnInit {
 			pageSize: this.entities.pageSize || null
 		})).subscribe((entities) => {
 			this.entities.list = entities;
-		}, this.handleError);
+		}, (error) => this.handleError(error));
 	}
 
 	countEntities(): void {
 		this._entityService.count(new _EntityFilter({}))
 			.subscribe((count: number) => {
 				this.entities.count = count;
-			}, this.handleError);
+			}, (error) => this.handleError(error));
 	}
 	
 	goToEntityInstances() {

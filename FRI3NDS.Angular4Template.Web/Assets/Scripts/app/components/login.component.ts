@@ -43,7 +43,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.authService.login(this.userLoginModel)
             .subscribe((result: TokenInfo) => {
                 this.Router.navigate(['profile']);
-			}, this.handleError);
+			}, (error) => this.handleError(error));
     }
 
 	/**

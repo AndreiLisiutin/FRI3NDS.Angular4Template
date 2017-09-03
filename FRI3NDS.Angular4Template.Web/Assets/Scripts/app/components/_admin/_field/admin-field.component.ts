@@ -39,7 +39,7 @@ export class AdminFieldComponent extends BaseComponent implements OnInit {
 
 			this._fieldService.getById(id).subscribe((field: _Field) => {
 				this.field = field;
-			}, this.handleError);
+			}, (error) => this.handleError(error));
 		});
 	}
 
