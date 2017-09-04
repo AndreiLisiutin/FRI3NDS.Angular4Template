@@ -7,6 +7,7 @@ using FRI3NDS.Angular4Template.Core.Models.Domain;
 using FRI3NDS.Angular4Template.Util;
 using FRI3NDS.Angular4Template.Core.Models.Domain._Admin;
 using FRI3NDS.Angular4Template.Core.Models.Enums;
+using System.Linq;
 
 namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 {
@@ -90,8 +91,18 @@ namespace FRI3NDS.Angular4Template.Core.Services.Data._Admin
 		{
 			{
 				Argument.Require(currentUserId != 0, "Текущий пользователь не определен.");
+				Argument.Require(field != null, "Поле пустое.");
+				Argument.Require(field._EntityId > 0, "Идентификатор сущности пустой.");
 				using (var uow = this.CreateAdminUnitOfWork())
 				{
+					if (field.IsIdentity)
+					{
+						List<_Field> entityFields = uow._FieldRepository.Query(entityId: field._EntityId);
+						_Field identity = entityFields.FirstOrDefault(f => f.IsIdentity);
+						Argument.Require(identity == null || identity.Id == field.Id, 
+							$"У сущности должно быть единственное поле-идентификатор. " +
+							$"В сущности \"{identity._EntityName}\" поле-идентификатор \"{identity.Name}\".");
+					}
 					return uow._FieldRepository.Save(field);
 				}
 			}

@@ -31,7 +31,7 @@ CREATE TABLE public._field
 	name text NOT NULL,
 	db_name text NOT NULL,
 	_entity_id integer NOT NULL,
-	is_identity BOOLEAN NOT NULL,
+	is_identity BOOLEAN NOT NULL DEFAULT FALSE,
 	CONSTRAINT _field_pkey PRIMARY KEY (_field_id),
 	CONSTRAINT _field__entity_id_fkey FOREIGN KEY (_entity_id)
 		REFERENCES public._entity (_entity_id) MATCH SIMPLE

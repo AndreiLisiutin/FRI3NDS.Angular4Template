@@ -1,33 +1,38 @@
 ﻿<form novalidate #fieldForm="ngForm">
-    <div class="vertical-form">
-        <div class="vertical-form-column">
-            <md-input-container>
-                <input mdInput placeholder="Название поля" id="name" name="name" [(ngModel)]="field.name" #name="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="name.invalid">
-                <validation-messages [control]="name"></validation-messages>
-            </md-error>
-        </div>
-        <div class="vertical-form-column">
-            <md-input-container>
-                <input mdInput placeholder="Название поля в базе данных" id="databaseName" name="databaseName" [(ngModel)]="field.databaseName" #databaseName="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="databaseName.invalid">
-                <validation-messages [control]="databaseName"></validation-messages>
-            </md-error>
-        </div>
-        <div class="vertical-form-column">
-            <md-select placeholder="Тип значения поля" id="_FieldTypeId" name="_FieldTypeId" [(ngModel)]="field._FieldTypeId" #_FieldTypeId="ngModel" color="accent" required>
-                <md-option *ngFor="let fieldType of fieldTypes" [value]="fieldType.id" color="accent">{{ fieldType.name }}</md-option>
-            </md-select>
-            <md-error *ngIf="_FieldTypeId.invalid">
-                <validation-messages [control]="_FieldTypeId"></validation-messages>
-            </md-error>
-        </div>
-
-        <div class="">
-            <button md-raised-button [disabled]="fieldForm.invalid" (click)="saveField()">Сохранить</button>
-            <button md-raised-button (click)="goBack()">Отмена</button>
-        </div>
-    </div>
+	<div class="vertical-form">
+		<div class="vertical-form-column">
+			<md-input-container>
+				<input mdInput placeholder="Название поля" id="name" name="name" [(ngModel)]="field.name" #name="ngModel" required />
+			</md-input-container>
+			<md-error *ngIf="name.invalid">
+				<validation-messages [control]="name"></validation-messages>
+			</md-error>
+		</div>
+		<div class="vertical-form-column">
+			<md-input-container>
+				<input mdInput placeholder="Название поля в базе данных" id="databaseName" name="databaseName" [(ngModel)]="field.databaseName" #databaseName="ngModel" required />
+			</md-input-container>
+			<md-error *ngIf="databaseName.invalid">
+				<validation-messages [control]="databaseName"></validation-messages>
+			</md-error>
+		</div>
+		<div class="vertical-form-column">
+			<md-select placeholder="Тип значения поля" id="_FieldTypeId" name="_FieldTypeId" [(ngModel)]="field._FieldTypeId" #_FieldTypeId="ngModel" color="accent" required>
+				<md-option *ngFor="let fieldType of fieldTypes" [value]="fieldType.id" color="accent">{{ fieldType.name }}</md-option>
+			</md-select>
+			<md-error *ngIf="_FieldTypeId.invalid">
+				<validation-messages [control]="_FieldTypeId"></validation-messages>
+			</md-error>
+		</div>
+		<div class="vertical-form-column">
+			<md-checkbox id="isIdentity" name="isIdentity" [(ngModel)]="field.isIdentity" #isIdentity="ngModel">Идентификатор сущности</md-checkbox>
+			<md-error *ngIf="isIdentity.invalid">
+				<validation-messages [control]="isIdentity"></validation-messages>
+			</md-error>
+		</div>
+		<div class="">
+			<button md-raised-button [disabled]="fieldForm.invalid" (click)="saveField()">Сохранить</button>
+			<button md-raised-button (click)="goBack()">Отмена</button>
+		</div>
+	</div>
 </form>

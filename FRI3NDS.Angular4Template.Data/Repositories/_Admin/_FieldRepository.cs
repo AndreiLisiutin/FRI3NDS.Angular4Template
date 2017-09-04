@@ -73,6 +73,7 @@ namespace FRI3NDS.Angular4Template.Data.Repositories._Admin
 			@params.Add("_name", item.Name, DbType.String);
 			@params.Add("_db_name", item.DatabaseName, DbType.String);
 			@params.Add("__entity_id", item._EntityId, DbType.Int32);
+			@params.Add("_is_identity", item.IsIdentity, DbType.Boolean);
 
 			item.Id = this._dataContext.Connection.ExecuteScalar<int>("_Field$Save", @params, this._dataContext.Transaction, commandType: CommandType.StoredProcedure);
 			return item;

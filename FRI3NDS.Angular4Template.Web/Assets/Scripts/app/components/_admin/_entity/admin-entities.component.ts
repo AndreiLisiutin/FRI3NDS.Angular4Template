@@ -40,7 +40,7 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 		pageNumber?: number,
 		rowCompareFunction: Function
 	} = {
-		pageSize: 1,
+		pageSize: 10,
 		pageNumber: 1,
 		count: 0,
 		rowCompareFunction: (row: any, model: any) => row.id === model.id,
