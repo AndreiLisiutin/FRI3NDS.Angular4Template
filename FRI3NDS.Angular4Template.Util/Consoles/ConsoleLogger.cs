@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRI3NDS.Angular4Template.Migrator.Infrastructure
+namespace FRI3NDS.Angular4Template.Util.Consoles
 {
 	/// <summary>
 	/// Логер.
@@ -31,51 +31,31 @@ namespace FRI3NDS.Angular4Template.Migrator.Infrastructure
 		/// <param name="formatter"></param>
 		public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
 		{
-			Console.OutputEncoding = Console.OutputEncoding;
+			System.Console.OutputEncoding = System.Console.OutputEncoding;
 			switch (logLevel)
 			{
 
 				case LogLevel.Critical:
-					Console.ForegroundColor = ConsoleColor.Red;
+					System.Console.ForegroundColor = ConsoleColor.Red;
 					break;
 				case LogLevel.Error:
-					Console.ForegroundColor = ConsoleColor.DarkRed;
+					System.Console.ForegroundColor = ConsoleColor.DarkRed;
 					break;
 				case LogLevel.Warning:
-					Console.ForegroundColor = ConsoleColor.DarkGray;
+					System.Console.ForegroundColor = ConsoleColor.DarkGray;
 					break;
 				case LogLevel.Information:
-					Console.ForegroundColor = ConsoleColor.Green;
+					System.Console.ForegroundColor = ConsoleColor.Green;
 					break;
 				case LogLevel.None:
 				case LogLevel.Debug:
 				case LogLevel.Trace:
-					Console.ForegroundColor = ConsoleColor.White;
+					System.Console.ForegroundColor = ConsoleColor.White;
 					break;
 			}
 
-			Console.WriteLine(formatter(state, exception));
-			Console.ForegroundColor = ConsoleColor.White;
-		}
-	}
-
-	/// <summary>
-	/// Провайдер для логера.
-	/// </summary>
-	public class ConsoleLoggerProvider : ILoggerProvider
-	{
-		/// <summary>
-		/// Создать логер.
-		/// </summary>
-		/// <param name="categoryName"></param>
-		/// <returns></returns>
-		public ILogger CreateLogger(string categoryName)
-		{
-			return new ConsoleLogger();
-		}
-
-		public void Dispose()
-		{
+			System.Console.WriteLine(formatter(state, exception));
+			System.Console.ResetColor();
 		}
 	}
 }

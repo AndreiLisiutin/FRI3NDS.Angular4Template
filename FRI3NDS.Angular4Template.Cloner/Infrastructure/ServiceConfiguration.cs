@@ -1,6 +1,4 @@
-﻿using FRI3NDS.Angular4Template.Core.Interfaces.Data;
-using FRI3NDS.Angular4Template.Data.UnitOfWork;
-using FRI3NDS.Angular4Template.Migrator.Migrator;
+﻿using FRI3NDS.Angular4Template.Cloner.Cloner;
 using FRI3NDS.Angular4Template.Util.Consoles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace FRI3NDS.Angular4Template.Migrator.Infrastructure
+namespace FRI3NDS.Angular4Template.Cloner.Infrastructure
 {
 	/// <summary>
 	/// Конфигуратор DI.
@@ -42,9 +40,7 @@ namespace FRI3NDS.Angular4Template.Migrator.Infrastructure
 		{
 			services.AddLogging();
 			services.AddSingleton<IConfiguration>((x) => configuration);
-			services.AddTransient<IUnitOfWorkFactory, UnitOfWorkFactory>();
-			services.AddTransient<IMigrator, Migrator.Migrator>();
-			services.AddTransient<IVersionComparer, VersionNumberComparer>();
+			services.AddTransient<ICloner, Cloner.Cloner>();
 		}
 	}
 }

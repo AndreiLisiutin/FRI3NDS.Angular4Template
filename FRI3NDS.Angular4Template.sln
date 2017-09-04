@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Web", "FRI3NDS.Angular4Template.Web\FRI3NDS.Angular4Template.Web.csproj", "{BC1A17F3-7AF5-40FA-9964-D6384649E9BE}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Da
 		{A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320} = {A9FDBBC7-134C-4C34-B4FD-3BBEDEAA7320}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRI3NDS.Angular4Template.Migrator", "FRI3NDS.Angular4Template.Migrator\FRI3NDS.Angular4Template.Migrator.csproj", "{FC6E3A1E-C027-4624-AA29-B628AA7D180C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FRI3NDS.Angular4Template.Migrator", "FRI3NDS.Angular4Template.Migrator\FRI3NDS.Angular4Template.Migrator.csproj", "{FC6E3A1E-C027-4624-AA29-B628AA7D180C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FRI3NDS.Angular4Template.Cloner", "FRI3NDS.Angular4Template.Cloner\FRI3NDS.Angular4Template.Cloner.csproj", "{AE98A590-A9E3-456E-B125-04518FCB5464}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC6E3A1E-C027-4624-AA29-B628AA7D180C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE98A590-A9E3-456E-B125-04518FCB5464}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE98A590-A9E3-456E-B125-04518FCB5464}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE98A590-A9E3-456E-B125-04518FCB5464}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE98A590-A9E3-456E-B125-04518FCB5464}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
