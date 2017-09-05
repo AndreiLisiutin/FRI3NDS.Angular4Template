@@ -74,6 +74,9 @@ gulp.task('lib:copy', function () {
 		paths.src.lib + '/@covalent/core/core.umd.js',
 		paths.src.lib + '/@covalent/core/common/platform.css',
 		paths.src.lib + '/moment/moment.js',
+		paths.src.lib + '/primeng/**',
+		paths.src.lib + '/font-awesome/css/font-awesome.min.css',
+		paths.src.lib + '/font-awesome/fonts/**',
 	], { since: gulp.lastRun('lib:copy'), base: paths.src.lib })
 		.pipe(newer(paths.dest.lib))
 		.pipe(gulp.dest(paths.dest.lib));

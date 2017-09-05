@@ -14,6 +14,8 @@ import {
 
 import { CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule } from '@covalent/core';
 
+import { DataTableModule, SharedModule } from 'primeng/primeng';
+
 import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk';
 import { RootComponent } from 'components/root.component';
@@ -42,6 +44,8 @@ import { AdminViewerEntityInstancesComponent } from "components/_admin/viewer/ad
 		MdPaginatorModule, MdDatepickerModule, MdNativeDateModule,
 
 		CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule,
+
+		DataTableModule, SharedModule,
 
 		CdkTableModule,
 		SimpleNotificationsModule.forRoot(),

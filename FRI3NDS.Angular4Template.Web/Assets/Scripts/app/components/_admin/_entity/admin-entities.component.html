@@ -16,6 +16,11 @@
 	{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
 </td-paging-bar>
 
+<p-dataTable [value]="entities.list" [rows]="entities.pageSize" [paginator]="true" [pageLinks]="10" [rowsPerPageOptions]="[5,10,20]" [totalRecords]="entities.count">
+	<p-column field="id" header="id"></p-column>
+	<p-column field="name" header="name"></p-column>
+</p-dataTable>
+
 
 <button md-raised-button color="accent" [disabled]="entities.selectedEntityId.length != 1" (click)="goEditEntity()">Редактировать</button>
 <button md-raised-button color="accent" (click)="goCreateEntity()">Новая</button>

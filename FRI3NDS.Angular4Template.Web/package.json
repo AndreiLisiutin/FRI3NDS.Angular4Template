@@ -30,6 +30,8 @@
 		"angular4-notifications": "~0.0.2",
 		"@ngx-translate/core": "~7.1.0",
 		"@ngx-translate/http-loader": "~1.0.1",
+		"primeng": "~4.2.0-rc.1",
+		"font-awesome": "~4.7.0",
 		"tslib": "~1.7.1",
 		"moment": "~2.18.1",
 

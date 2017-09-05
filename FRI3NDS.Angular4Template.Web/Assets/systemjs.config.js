@@ -36,7 +36,8 @@
 			'@ngx-translate/core': 'npm:@ngx-translate/core/bundles/core.umd.js',
 			'@ngx-translate/http-loader': 'npm:@ngx-translate/http-loader/bundles/http-loader.umd.js',
 			'tslib': 'npm:tslib/tslib.js',
-			'moment': 'npm:moment'
+			'moment': 'npm:moment',
+			'primeng': 'npm:primeng' 
 		},
 
 		packages: {
@@ -52,6 +53,9 @@
 				defaultExtension: 'js'
 			},
 			moment: {
+				defaultExtension: 'js'
+			},
+			primeng: {
 				defaultExtension: 'js'
 			}
 		}
