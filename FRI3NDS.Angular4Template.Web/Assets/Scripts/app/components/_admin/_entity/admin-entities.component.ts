@@ -86,11 +86,12 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
-		this.Router.navigate(['/admin/entity', this.entities.selectedEntityId[0].id]);
+		var entityId: number = this.entities.selectedEntityId[0].id;
+		this.ReverseRouter.entity(entityId);
 	}
 
 	goCreateEntity(): void {
-		this.Router.navigate(['/admin/entity/new']);
+		this.ReverseRouter.newEntity();
 	}
 
 	deleteEntity(): void {

@@ -17,6 +17,7 @@ import { _GenericEntityService } from "services/_admin/_generic-entity.service";
 import { _FormService } from "services/_admin/_form.service";
 import { _FormFieldService } from "services/_admin/_form-field.service";
 import { ConvertService } from "services/utils/convert.service";
+import { ReverseRoutingService } from "services/utils/reverse-routing.service";
 
 /**
  * Модуль регистрации сервисов приложения.
@@ -40,6 +41,7 @@ import { ConvertService } from "services/utils/convert.service";
 		UserService,
 		ToastService,
 		ConvertService,
+		ReverseRoutingService,
 		_EntityService,
 		_FieldService,
 		_GenericEntityService,
