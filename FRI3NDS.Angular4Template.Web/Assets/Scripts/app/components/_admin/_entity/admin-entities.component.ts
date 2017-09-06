@@ -33,18 +33,18 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 	private entities: {
 		list?: _Entity[],
 		count?: number
-		selectedEntityId?: any[],
+		selectedEntity?: _Entity,
 		sortBy?: string,
-		sortingOrder?: TdDataTableSortingOrder,
+		sortingOrder?: SortDirections,
 		pageSize?: number,
 		pageNumber?: number,
 		rowCompareFunction: Function
 	} = {
 		pageSize: 10,
-		pageNumber: 1,
+		pageNumber: 0,
 		count: 0,
 		rowCompareFunction: (row: any, model: any) => row.id === model.id,
-		selectedEntityId: []
+		selectedEntity: null
 	};
 
 	ngOnInit(): void {
@@ -52,23 +52,24 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 		this.countEntities();
 	}
 
-	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
-		this.entities.sortBy = sortEvent.name;
+	onSort(sortEvent: { field: string, order: number }): void {
+		this.entities.sortBy = sortEvent.field;
 		this.entities.sortingOrder = sortEvent.order;
+		this.entities.pageNumber = 0;
 		this.loadEntities();
 	}
 
-	onTablePageChange(pagingEvent: IPageChangeEvent): void {
-		this.entities.pageNumber = pagingEvent.page;
-		this.entities.pageSize = pagingEvent.pageSize;
+	onPage(e: any) {
+		this.entities.pageNumber = e.first / e.rows;
+		this.entities.pageSize = e.rows;
 		this.loadEntities();
 	}
 
 	loadEntities(): void {
 		this._entityService.query(new _EntityFilter({
-			pageNumber: this.entities.pageNumber - 1,
+			pageNumber: this.entities.pageNumber,
 			pageSize: this.entities.pageSize,
-			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.entities.sortingOrder),
+			sortDirection: this.entities.sortingOrder,
 			sortField: this.entities.sortBy
 		})).subscribe((entities) => {
 			this.entities.list = entities;
@@ -82,11 +83,11 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 	}
 
 	goEditEntity(): void {
-		if (this.entities.selectedEntityId.length != 1) {
+		if (this.entities.selectedEntity == null) {
 			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
-		var entityId: number = this.entities.selectedEntityId[0].id;
+		var entityId: number = this.entities.selectedEntity.id;
 		this.ReverseRouter.entity(entityId);
 	}
 
@@ -95,13 +96,13 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 	}
 
 	deleteEntity(): void {
-		if (this.entities.selectedEntityId.length != 1) {
+		if (this.entities.selectedEntity == null) {
 			this.NotificationService.error('Ошибка', 'Выберите сущность для удаления.');
 			return;
 		}
-		this._entityService.delete(this.entities.selectedEntityId[0].id).subscribe((entityId: number) => {
+		this._entityService.delete(this.entities.selectedEntity.id).subscribe((entityId: number) => {
 			this.entities.list = this.entities.list.filter(e => e.id != entityId);
-			this.entities.selectedEntityId = null;
+			this.entities.selectedEntity = null;
 		}, (error) => this.handleError(error));
 	}
 }
