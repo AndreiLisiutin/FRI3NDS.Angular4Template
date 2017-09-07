@@ -1,5 +1,5 @@
-﻿<p-dataTable [value]="entities.list" [rows]="entities.pageSize" [paginator]="true" [pageLinks]="10" [rowsPerPageOptions]="[5,10,20]" [totalRecords]="entities.count"
-			 resizableColumns="true"  [(selection)]="entities.selectedEntity" dataKey="id"
+﻿<p-dataTable [value]="entities.list" [rows]="entities.pageSize" [paginator]="true" [pageLinks]="10" [totalRecords]="entities.count" [lazy]="true"
+			 resizableColumns="true" [(selection)]="entities.selectedEntity" dataKey="id"
 			 (onPage)="onPage($event)" (onSort)="onSort($event)">
 	<p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
 	<p-column field="id" header="id" [sortable]="true"></p-column>
@@ -7,6 +7,6 @@
 </p-dataTable>
 
 
-<button md-raised-button color="accent" [disabled]="!entities.selectedEntity" (click)="goEditEntity()">Редактировать</button>
-<button md-raised-button color="accent" (click)="goCreateEntity()">Новая</button>
-<button md-raised-button color="accent" [disabled]="!entities.selectedEntity" (click)="deleteEntity()">Удалить</button>
+<button color="accent" [disabled]="!entities.selectedEntity" (click)="goEditEntity()">Редактировать</button>
+<button color="accent" (click)="goCreateEntity()">Новая</button>
+<button color="accent" [disabled]="!entities.selectedEntity" (click)="deleteEntity()">Удалить</button>

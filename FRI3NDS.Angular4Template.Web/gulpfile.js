@@ -71,8 +71,6 @@ gulp.task('lib:copy', function () {
 		paths.src.lib + '/@ngx-translate/core/bundles/core.umd.js',
 		paths.src.lib + '/@ngx-translate/http-loader/bundles/http-loader.umd.js',
 		paths.src.lib + '/tslib/tslib.js',
-		paths.src.lib + '/@covalent/core/core.umd.js',
-		paths.src.lib + '/@covalent/core/common/platform.css',
 		paths.src.lib + '/moment/moment.js',
 		paths.src.lib + '/primeng/**',
 		paths.src.lib + '/font-awesome/css/font-awesome.min.css',
@@ -97,24 +95,6 @@ gulp.task('bootstrap:compile:copy', function () {
 			]
 		}))
 		.pipe(rename('bootstrap.css'))
-		.pipe(gulp.dest(paths.dest.globalStyles));
-});
-gulp.task('material:compile:copy', function () {
-	return gulp
-		.src(paths.src.globalStyles + '/vendors/material-theme-customized.scss')
-		.pipe(gulpIf(isDevelopment, debug({ title: 'material-theme' })))
-		.pipe(sass({
-			outputStyle: 'nested',
-			importer: tildeImporter,
-			precison: 3,
-			errLogToConsole: true,
-			includePaths: [
-				paths.src.sassBase,
-				paths.src.lib + '/@angular/material',
-				paths.src.lib + '/@covalent/core/theming'
-			]
-		}))
-		.pipe(rename('material-theme.css'))
 		.pipe(gulp.dest(paths.dest.globalStyles));
 });
 gulp.task('images:copy', function () {
@@ -193,7 +173,7 @@ gulp.task('assets:clean', gulp.parallel('js:clean', 'styles:clean', 'images:clea
 gulp.task('assets:build',
 	gulp.series(
 		gulp.parallel('js:clean', 'styles:clean', 'images:clean', 'settings:clean'),
-		gulp.parallel('ts:compile:copy', 'bootstrap:compile:copy', 'material:compile:copy', 'images:copy', 'styles:copy', 'defaultStyles:copy', 'views:copy', 'settings:copy')
+		gulp.parallel('ts:compile:copy', 'bootstrap:compile:copy', 'images:copy', 'styles:copy', 'defaultStyles:copy', 'views:copy', 'settings:copy')
 	)
 );
 // Почистить и построить библиотеки
@@ -206,9 +186,8 @@ gulp.task('assets:watch', function () {
 	gulp.watch(paths.src.js + '/**/*.scss', gulp.series('styles:copy'));
 	gulp.watch(paths.src.defaultStyles + '/**/*.scss', gulp.series('defaultStyles:copy'));
 	gulp.watch(paths.src.images + '/**/*.*', gulp.series('images:copy'));
-	gulp.watch(paths.src.globalStyles + '/material-theme-customized.scss', gulp.series('material:compile:copy'));
 	gulp.watch(paths.src.globalStyles + '/bootstrap-customized.scss', gulp.series('bootstrap:compile:copy'));
-	gulp.watch(paths.src.sassBase + '/**/*.scss', gulp.parallel('styles:copy', 'material:compile:copy', 'bootstrap:compile:copy'));
+	gulp.watch(paths.src.sassBase + '/**/*.scss', gulp.parallel('styles:copy', 'bootstrap:compile:copy'));
 	gulp.watch(paths.src.root + '/*.{html,config.js}', gulp.series('settings:copy'));
 	gulp.watch(paths.src.localization + '/*.json', gulp.series('settings:copy'));
 });

@@ -1,6 +1,5 @@
 ﻿import { Component } from '@angular/core';
 import { OnInit, ViewChild } from '@angular/core';
-import { MdSidenav, MdSort, MdPaginator } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { AuthenticationService } from "services/authentication.service";
 import { Router } from "@angular/router";
@@ -9,7 +8,6 @@ import { _EntityService } from "services/_admin/_entity.service";
 import { _Entity, _EntityBase } from "models/domain/_Entity";
 import { DataSource } from "@angular/cdk";
 import { Observable } from "rxjs/Observable";
-import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent } from "@covalent/core";
 import { SortDirections } from "models/enums/SortDirections";
 import { _EntityFilter } from "models/viewModels/_EntityViewModels";
 import { ConvertService } from "services/utils/convert.service";
@@ -38,12 +36,10 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 		sortingOrder?: SortDirections,
 		pageSize?: number,
 		pageNumber?: number,
-		rowCompareFunction: Function
 	} = {
 		pageSize: 10,
 		pageNumber: 0,
 		count: 0,
-		rowCompareFunction: (row: any, model: any) => row.id === model.id,
 		selectedEntity: null
 	};
 
@@ -59,9 +55,9 @@ export class AdminEntitiesComponent extends BaseComponent implements OnInit {
 		this.loadEntities();
 	}
 
-	onPage(e: any) {
-		this.entities.pageNumber = e.first / e.rows;
-		this.entities.pageSize = e.rows;
+	onPage(pageEvent: { first: number, rows: number }) {
+		this.entities.pageNumber = pageEvent.first / pageEvent.rows;
+		this.entities.pageSize = pageEvent.rows;
 		this.loadEntities();
 	}
 

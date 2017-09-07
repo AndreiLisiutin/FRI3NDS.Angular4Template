@@ -23,9 +23,7 @@
 		"libphonenumber-js": "~0.4.22",
 
 		"bootstrap": "~4.0.0-alpha.6",
-		"@angular/material": "~v2.0.0-alpha.8",
 		"@angular/cdk": "~2.0.0-beta.8",
-		"@covalent/core": "~1.0.0-beta.6",
 		"hammerjs": "~2.0.8",
 		"angular4-notifications": "~0.0.2",
 		"@ngx-translate/core": "~7.1.0",

@@ -1,28 +1,26 @@
 ﻿<div class="root">
-    <div class="root_header">
-        <md-toolbar color="primary">
-            <a class="" href="#"><span>Приложуха</span></a>
+	<div class="root_header">
+		<div>
+			<a class="" href="#"><span>Приложуха</span></a>
 
-            <span class="root_remaining-space"></span>
-            <ul class="root_navigation">
-                <li><a *ngIf="isAuthenticated()" routerLink="/admin/viewer" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">Админка</a></li>
-                <li><a *ngIf="isAuthenticated()" routerLink="/profile" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "profile" | translate }}</a></li>
-                <li><a *ngIf="isAuthenticated()" href="#" (click)="onLogoutClick()" class="root_navigation-link"> {{ "logout" | translate }}</a></li>
-                <li><a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "login" | translate }}</a></li>
-                <li><a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">{{ "register" | translate }}</a></li>
-            </ul>
-            <div class="root_lang-bar">
-                <md-select placeholder="" [ngModel]="selectedLanguageId" (ngModelChange)="onLanguageChange($event)" color="accent">
-                    <md-option *ngFor="let language of languages" [value]="language.id" color="accent">{{ language.name }}</md-option>
-                </md-select>
-            </div>
-        </md-toolbar>
-    </div>
-    <div class="root_base">
-        <router-outlet></router-outlet>
-    </div>
-    <div class="root_footer">
-        Copyright
-    </div>
-    <toast></toast>
+			<span class="root_remaining-space"></span>
+			<ul class="root_navigation">
+				<li><a *ngIf="isAuthenticated()" routerLink="/admin/viewer" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">Админка</a></li>
+				<li><a *ngIf="isAuthenticated()" routerLink="/profile" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "profile" | translate }}</a></li>
+				<li><a *ngIf="isAuthenticated()" href="#" (click)="onLogoutClick()" class="root_navigation-link"> {{ "logout" | translate }}</a></li>
+				<li><a *ngIf="!isAuthenticated()" routerLink="/login" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link"> {{ "login" | translate }}</a></li>
+				<li><a *ngIf="!isAuthenticated()" routerLink="/register" routerLinkActive="root_navigation-link__is-active" class="root_navigation-link">{{ "register" | translate }}</a></li>
+			</ul>
+			<div class="root_lang-bar">
+				<p-dropdown [options]="languages" [dataKey]="value" [(ngModel)]="selectedLanguage" (onChange)="onLanguageChange($event)"></p-dropdown>
+			</div>
+		</div>
+	</div>
+	<div class="root_base">
+		<router-outlet></router-outlet>
+	</div>
+	<div class="root_footer">
+		Copyright
+	</div>
+	<toast></toast>
 </div>

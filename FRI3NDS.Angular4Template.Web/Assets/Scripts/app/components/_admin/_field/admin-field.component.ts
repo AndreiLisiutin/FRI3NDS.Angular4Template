@@ -44,7 +44,7 @@ export class AdminFieldComponent extends BaseComponent implements OnInit {
 	}
 
 	goEditField(): void {
-		this.Router.navigate(['/admin/entity/field', this.field.id, 'edit']);
+		this.ReverseRouter.editField(this.field.id);
 	}
 
 	goBack(): void {

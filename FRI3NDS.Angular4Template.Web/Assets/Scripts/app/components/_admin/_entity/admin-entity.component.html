@@ -11,32 +11,24 @@
 		</div>
 	</div>
 	<div class="">
-		<button md-raised-button (click)="goEditEntity()">Редактировать</button>
-		<button md-raised-button (click)="goBack()">Отмена</button>
+		<button (click)="goEditEntity()">Редактировать</button>
+		<button (click)="goBack()">Отмена</button>
 	</div>
 	<h3>Поля сущности</h3>
 	<div class="">
-		<td-data-table #dataTable
-					   [data]="fields.list"
-					   [columns]="[{ name: 'id', label: 'id'}, { name: 'name', label: 'name'}]"
-					   [selectable]="true"
-					   [compareWith]="fields.rowCompareFunction"
-					   [clickable]="true"
-					   [multiple]="false"
-					   [sortable]="true"
-					   [sortBy]="fields.sortBy"
-					   [(ngModel)]="fields.selectedFieldId"
-					   [sortOrder]="fields.sortingOrder"
-					   (sortChange)="onTableSortChange($event)">
-		</td-data-table>
-		<td-paging-bar #pagingBar [pageSizes]="[1, 5, 10, 15, 20]" [pageSize]="fields.pageSize" [total]="fields.count" (change)="onTablePageChange($event)">
-			<span td-paging-bar-label hide-xs>по:</span>
-			{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
-		</td-paging-bar>
+
+		<p-dataTable [value]="fields.list" [rows]="fields.pageSize" [paginator]="true" [pageLinks]="10" [totalRecords]="fields.count" [lazy]="true"
+					 resizableColumns="true" [(selection)]="fields.selectedField" dataKey="id"
+					 (onPage)="onPage($event)" (onSort)="onSort($event)">
+			<p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+			<p-column field="id" header="id" [sortable]="true"></p-column>
+			<p-column field="name" header="name" [sortable]="true"></p-column>
+		</p-dataTable>
+
 		<div class="">
-			<button md-raised-button (click)="goCreateField()">Добавить</button>
-			<button md-raised-button [disabled]="fields.selectedFieldId.length != 1" (click)="goViewField()">Редактировать</button>
-			<button md-raised-button [disabled]="fields.selectedFieldId.length != 1" (click)="deleteField()">Удалить</button>
+			<button (click)="goCreateField()">Добавить</button>
+			<button [disabled]="!fields.selectedField" (click)="goViewField()">Редактировать</button>
+			<button [disabled]="!fields.selectedField" (click)="deleteField()">Удалить</button>
 		</div>
 	</div>
 

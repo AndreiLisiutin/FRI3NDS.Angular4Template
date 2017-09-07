@@ -6,9 +6,9 @@ import { Observable } from "rxjs/Observable";
 import { _FieldService } from "services/_admin/_field.service";
 import { _FieldFilter } from "models/viewModels/_FieldViewModels";
 import { _Field, _FieldBase } from "models/domain/_Field";
-import { TdDataTableSortingOrder, ITdDataTableSortChangeEvent, IPageChangeEvent } from "@covalent/core";
 import { BaseComponent } from "components/base.component";
 import { ActivatedRoute } from "@angular/router";
+import { SortDirections } from "models/enums/SortDirections";
 
 @Component({
 	selector: 'admin-entity',
@@ -33,19 +33,17 @@ export class AdminEntityComponent extends BaseComponent implements OnInit {
 	private fields: {
 		list?: _Field[],
 		count?: number
-		selectedFieldId?: any[],
+		selectedField?: _Field,
 		sortBy?: string,
-		sortingOrder?: TdDataTableSortingOrder,
+		sortingOrder?: SortDirections,
 		pageSize?: number,
 		pageNumber?: number,
-		rowCompareFunction: Function
 	} = {
 		pageSize: 10,
-		pageNumber: 1,
+		pageNumber: 0,
 		count: 0,
-		rowCompareFunction: (row: any, model: any) => row.id == model.id,
 		list: [],
-		selectedFieldId: []
+		selectedField: null
 	};
 
 
@@ -65,24 +63,25 @@ export class AdminEntityComponent extends BaseComponent implements OnInit {
 		});
 	}
 
-	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
-		this.fields.sortBy = sortEvent.name;
+	onSort(sortEvent: { field: string, order: number }): void {
+		this.fields.sortBy = sortEvent.field;
 		this.fields.sortingOrder = sortEvent.order;
+		this.fields.pageNumber = 0;
 		this.loadFields();
 	}
 
-	onTablePageChange(pagingEvent: IPageChangeEvent): void {
-		this.fields.pageNumber = pagingEvent.page;
-		this.fields.pageSize = pagingEvent.pageSize;
+	onPage(e: { first: number, rows: number }) {
+		this.fields.pageNumber = e.first / e.rows;
+		this.fields.pageSize = e.rows;
 		this.loadFields();
 	}
-
+	
 	loadFields(): void {
 		this._fieldService.query(new _FieldFilter({
 			_EntityId: this.entityId,
-			pageNumber: this.fields.pageNumber - 1,
+			pageNumber: this.fields.pageNumber,
 			pageSize: this.fields.pageSize,
-			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.fields.sortingOrder),
+			sortDirection: this.fields.sortingOrder,
 			sortField: this.fields.sortBy
 		})).subscribe((entities) => {
 			this.fields.list = entities;
@@ -104,27 +103,27 @@ export class AdminEntityComponent extends BaseComponent implements OnInit {
 	}
 
 	goEditEntity(): void {
-		this.Router.navigate(['/admin/entity', this.entity.id, 'edit']);
+		this.ReverseRouter.editEntity(this.entity.id);
 	}
 
 	goViewField(): void {
-		if (this.fields.selectedFieldId.length != 1) {
+		if (this.fields.selectedField == null) {
 			this.NotificationService.error('Ошибка', 'Выберите поле для редактирования.');
 			return;
 		}
-		this.Router.navigate(['/admin/entity/field', this.fields.selectedFieldId[0].id]);
+		this.ReverseRouter.field(this.fields.selectedField.id);
 	}
 
 	goCreateField(): void {
-		this.Router.navigate(['/admin/entity/field/new/', this.entity.id]);
+		this.ReverseRouter.newField(this.entity.id);
 	}
 
 	deleteField(): void {
-		if (this.fields.selectedFieldId.length != 1) {
+		if (this.fields.selectedField == null) {
 			this.NotificationService.error('Ошибка', 'Выберите поле для удаления.');
 			return;
 		}
-		this._fieldService.delete(this.fields.selectedFieldId[0].id).subscribe((fieldId: number) => {
+		this._fieldService.delete(this.fields.selectedField.id).subscribe((fieldId: number) => {
 			this.fields.list = this.fields.list.filter(f => f.id != fieldId);
 			this.fields.count--;
 		}, (error) => this.handleError(error));

@@ -1,22 +1,13 @@
-﻿<td-data-table #dataTable
-			   [data]="entityInstances.list"
-			   [columns]="fields.entityInstanceFieldsList"
-			   [selectable]="true"
-			   [clickable]="true"
-			   [multiple]="false"
-			   [sortable]="true"
-			   [compareWith]="entityInstances.rowCompareFunction"
-			   [sortBy]="entityInstances.sortBy"
-			   [(ngModel)]="entityInstances.selectedEntityId"
-			   [sortOrder]="entityInstances.sortingOrder"
-			   (sortChange)="onTableSortChange($event)">
-</td-data-table>
-<td-paging-bar #pagingBar [pageSizes]="[1, 5, 10, 15, 20]" [pageSize]="entityInstances.pageSize" [total]="entityInstances.count" (change)="onTablePageChange($event)">
-	<span td-paging-bar-label hide-xs>по:</span>
-	{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
-</td-paging-bar>
+﻿<p-dataTable *ngIf="fields.identityEntityInstanceFieldName" [value]="entityInstances.list" [rows]="entityInstances.pageSize" [paginator]="true" [totalRecords]="entityInstances.count" [lazy]="true"
+			 resizableColumns="true" [(selection)]="entityInstances.selectedEntityInstance" [dataKey]="fields.identityEntityInstanceFieldName"
+			 (onPage)="onPage($event)" (onSort)="onSort($event)">
+	<p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+	<p-column *ngFor="let field of fields.list" [field]="getEntityInstanceFieldName(field.id)" [header]="field.name" [sortable]="true"></p-column>
+</p-dataTable>
+
+
 <div class="">
-	<button md-raised-button (click)="goCreateForm()">Добавить</button>
-	<button md-raised-button [disabled]="entityInstances.selectedEntityId.length != 1" (click)="goEditForm()">Редактировать</button>
-	<button md-raised-button [disabled]="entityInstances.selectedEntityId.length != 1" (click)="deleteEntityInstance()">Удалить</button>
+	<button (click)="goCreateForm()">Добавить</button>
+	<button [disabled]="!entityInstances.selectedEntityInstance" (click)="goEditForm()">Редактировать</button>
+	<button [disabled]="!entityInstances.selectedEntityInstance" (click)="deleteEntityInstance()">Удалить</button>
 </div>

@@ -150,9 +150,9 @@ export class DataAdapter {
 	private request(options: DataServiceOptions): Observable<Response> {
 		if (this.tokenRefreshingObservable != null) {
 			//если токен обновляется прямо сейчас, подписаться на обновление и подождать, потом выполниться.
-			return this.tokenRefreshingObservable.do((response) => {
+			return this.tokenRefreshingObservable.flatMap((response) => {
 				return this._request(options);
-			})
+			});
 		} else if (this.getAuthToken() && this.isTokenExpired() && this.getRefreshToken()) {
 			//если истекло действие токена аутентификации, обновить его через токен обновления токена.
 			var refreshOptions: DataServiceOptions = new DataServiceOptions();

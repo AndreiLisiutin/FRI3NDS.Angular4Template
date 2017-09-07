@@ -11,9 +11,9 @@ import { _Field } from "models/domain/_Field";
 import { _GenericEntityField } from "models/business/_GenericEntityField";
 import { _GenericEntityFilter } from "models/viewModels/_GenericEntityViewModels";
 import { ConvertService } from "services/utils/convert.service";
-import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent, TdPagingBarComponent } from "@covalent/core";
 import { BaseComponent } from "components/base.component";
 import { ActivatedRoute } from "@angular/router";
+import { SortDirections } from "models/enums/SortDirections";
 
 @Component({
 	selector: 'admin-viewer-entity-instances',
@@ -33,37 +33,33 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 		super();
 	}
 
-	@ViewChild('pagingBar') viewPagingBar: TdPagingBarComponent;
-
 	private entities: _Entity[];
 	private currentEntityId: number;
 
 	private fields: {
 		list?: _Field[],
-		entityInstanceFieldsList?: any[],
+		identityField?: _Field,
+		identityEntityInstanceFieldName?: string
 	} = {
+		list: [],
+		identityField: null,
+		identityEntityInstanceFieldName: null
 	};
 
 	private entityInstances: {
 		list?: any[],
 		pageSize?: number,
 		pageNumber?: number,
-		selectedEntityId: any[],
+		selectedEntityInstance: any,
 		sort_FieldId?: number,
 		sortBy?: string,
-		sortingOrder?: TdDataTableSortingOrder,
-		count?: number,
-		rowCompareFunction: Function
+		sortingOrder?: SortDirections,
+		count?: number
 	} = {
 		pageSize: 10,
-		pageNumber: 1,
-		rowCompareFunction: (row: any, model: any) => {
-			var rowId = this.getEntityInstanceIdenty(row);
-			var modelId = this.getEntityInstanceIdenty(model);
-
-			return rowId && modelId && rowId == modelId;
-		},
-		selectedEntityId: []
+		pageNumber: 0,
+		count: 0,
+		selectedEntityInstance: null
 	};
 
 	private getEntityInstanceFieldName(fieldId: number): string {
@@ -73,12 +69,10 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 		return parseInt(fieldName.substr(2));
 	}
 	private getEntityInstanceIdenty(entityInstance: any): any {
-		var identityFields = this.fields.list.filter(f => f.isIdentity);
-		if (identityFields.length == 0) {
+		if (this.fields.identityEntityInstanceFieldName == null) {
 			return false;
 		}
-		var identityFieldName = this.getEntityInstanceFieldName(identityFields[0].id);
-		return entityInstance[identityFieldName];
+		return entityInstance[this.fields.identityEntityInstanceFieldName];
 	}
 
 	ngOnInit(): void {
@@ -90,37 +84,33 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 
 			this.currentEntityId = parseInt(params['entityId']);
 			
-			this.entityInstances.sortingOrder = null;
-			this.entityInstances.selectedEntityId = [];
-			this.entityInstances.pageNumber = 1;
-			this.entityInstances.sort_FieldId = null;
-			this.entityInstances.count = 0;
-
 			this.loadFields();
 			this.loadEntityInstances();
 			this.countEntityInstances();
 		});
 	}
-	
-	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
-		this.entityInstances.sortBy = sortEvent.name;
+
+	onSort(sortEvent: { field: string, order: number }): void {
+		this.entityInstances.sortBy = sortEvent.field;
 		this.entityInstances.sortingOrder = sortEvent.order;
-		this.entityInstances.sort_FieldId = this.getEntityInstanceFieldId(sortEvent.name);
+		this.entityInstances.sort_FieldId = this.getEntityInstanceFieldId(sortEvent.field);
+		this.entityInstances.pageNumber = 0;
 		this.loadEntityInstances();
 	}
 
-	onTablePageChange(pagingEvent: IPageChangeEvent): void {
-		this.entityInstances.pageNumber = pagingEvent.page;
-		this.entityInstances.pageSize = pagingEvent.pageSize;
+	onPage(pageEvent: { first: number, rows: number }) {
+		this.entityInstances.pageNumber = pageEvent.first / pageEvent.rows;
+		this.entityInstances.pageSize = pageEvent.rows;
 		this.loadEntityInstances();
 	}
+
 
 	loadEntityInstances(): void {
 		this._genericEntityService.getEntitiesList(new _GenericEntityFilter({
 			_EntityId: this.currentEntityId,
 			sort_FieldId: this.entityInstances.sort_FieldId,
-			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.entityInstances.sortingOrder),
-			pageNumber: this.entityInstances.pageNumber - 1,
+			sortDirection: this.entityInstances.sortingOrder,
+			pageNumber: this.entityInstances.pageNumber,
 			pageSize: this.entityInstances.pageSize || null
 		})).subscribe((entities) => {
 			this.entityInstances.list = entities.map(entity => {
@@ -146,32 +136,28 @@ export class AdminViewerEntityInstancesComponent extends BaseComponent implement
 			_EntityId: this.currentEntityId
 		})).subscribe((fields: _Field[]) => {
 			this.fields.list = fields;
-			this.fields.entityInstanceFieldsList = this.fields.list.map(f => {
-				return {
-					name: this.getEntityInstanceFieldName(f.id),
-					label: f.name
-				};
-			});
+			this.fields.identityField = fields.filter(f => f.isIdentity)[0];
+			this.fields.identityEntityInstanceFieldName = this.getEntityInstanceFieldName(this.fields.identityField.id);
 		}, (error) => this.handleError(error));
 	}
 
 	goEditForm() {
-		if (this.entityInstances.selectedEntityId.length != 1) {
+		if (this.entityInstances.selectedEntityInstance == null) {
 			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
 			return;
 		}
 
-		var entityInstanceId = this.getEntityInstanceIdenty(this.entityInstances.selectedEntityId[0]);
+		var entityInstanceId = this.getEntityInstanceIdenty(this.entityInstances.selectedEntityInstance);
 		var formId = 1;
-
-		this.Router.navigate(['admin/viewer/form', formId, entityInstanceId]);
+		
+		this.ReverseRouter.entityInstance(formId, entityInstanceId);
 	}
 
 	goCreateForm() {
 		var entityInstanceId = 0;
 		var formId = 1;
 
-		this.Router.navigate(['admin/viewer/form', formId, entityInstanceId]);
+		this.ReverseRouter.entityInstance(formId, entityInstanceId);
 	}
 
 	deleteEntityInstance(): void {

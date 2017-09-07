@@ -7,46 +7,46 @@ import { BaseComponent } from "components/base.component";
  * Корневой компонент приложения.
  */
 @Component({
-    selector: 'root',
-    providers: [],
-    moduleId: module.id,
-    templateUrl: 'root.component.html',
-    styleUrls: ['root.component.css']
+	selector: 'root',
+	providers: [],
+	moduleId: module.id,
+	templateUrl: 'root.component.html',
+	styleUrls: ['root.component.css']
 })
 export class RootComponent extends BaseComponent {
 
-    private languages: any[];
-    private selectedLanguageId: string;
+	private languages: any[];
+	private selectedLanguage: string;
 
 	constructor(
-        private authService: AuthenticationService
+		private authService: AuthenticationService
 	) {
 		super();
-        this.languages = [{
-            id: 'ru',
-            name: 'Русский'
-        }, {
-            id: 'en',
-            name: 'English'
-        }];
+		this.languages = [{
+			value: 'ru',
+			label: 'Русский'
+		}, {
+			value: 'en',
+			label: 'English'
+		}];
 
-        this.selectedLanguageId = this.languages[0].id;
-		this.TranslateService.addLangs(this.languages.map(l => l.id));
-		this.TranslateService.setDefaultLang(this.selectedLanguageId);
-		this.TranslateService.use(this.selectedLanguageId);
-    }
+		this.selectedLanguage = this.languages[0].value;
+		this.TranslateService.addLangs(this.languages.map(l => l.value));
+		this.TranslateService.setDefaultLang(this.selectedLanguage);
+		this.TranslateService.use(this.selectedLanguage);
+	}
 
-    isAuthenticated(): boolean {
-        return this.authService.isAuthenticated();
-    }
+	isAuthenticated(): boolean {
+		return this.authService.isAuthenticated();
+	}
 
-    onLogoutClick(): void {
-        this.authService.logout().subscribe(() => {
-			this.Router.navigate(['login']);
+	onLogoutClick(): void {
+		this.authService.logout().subscribe(() => {
+			this.ReverseRouter.login();
 		}, (error) => this.handleError(error));
-    }
+	}
 
-    onLanguageChange(lang: string) {
-		this.TranslateService.use(lang);
-    }
+	onLanguageChange(changeEvent: { value: string }) {
+		this.TranslateService.use(changeEvent.value);
+	}
 }

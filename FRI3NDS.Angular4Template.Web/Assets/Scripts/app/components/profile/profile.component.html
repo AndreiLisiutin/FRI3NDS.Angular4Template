@@ -1,57 +1,50 @@
 ﻿<div class="container">
-    <h1>Профиль пользователя</h1>
-    <form novalidate #userForm="ngForm">
-
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Логин" id="login" name="login" [(ngModel)]="user.login" #login="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="login.invalid">
-                <validation-messages [control]="login"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Фамилия" id="surname" name="surname" [(ngModel)]="user.surname" #surname="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="surname.invalid">
-                <validation-messages [control]="surname"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Имя" id="name" name="name" [(ngModel)]="user.name" #name="ngModel" required />
-            </md-input-container>
-            <md-error *ngIf="name.invalid">
-                <validation-messages [control]="name"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Отчество" id="patronymic" name="patronymic" [(ngModel)]="user.patronymic" #patronymic="ngModel" />
-            </md-input-container>
-            <md-error *ngIf="patronymic.invalid">
-                <validation-messages [control]="patronymic"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Телефон" id="phone" name="phone" [(ngModel)]="user.phone" #phone="ngModel" />
-            </md-input-container>
-            <md-error *ngIf="phone.invalid">
-                <validation-messages [control]="phone"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <md-input-container color="accent">
-                <input mdInput placeholder="Email" id="email" name="email" [(ngModel)]="user.email" #email="ngModel" required email />
-            </md-input-container>
-            <md-error *ngIf="email.invalid">
-                <validation-messages [control]="email"></validation-messages>
-            </md-error>
-        </div>
-        <div class="row">
-            <button md-raised-button [disabled]="userForm.invalid" (click)="onSaveBtnClick()" color="accent">Сохранить</button>
-        </div>
-    </form>
+	<h1>Профиль пользователя</h1>
+	<form novalidate #userForm="ngForm">
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="login" name="login" [(ngModel)]="user.login" #login="ngModel" required>
+				<label for="login">Логин</label>
+			</div>
+			<validation-messages *ngIf="login.invalid" [control]="login"></validation-messages>
+		</div>
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="surname" name="surname" [(ngModel)]="user.surname" #surname="ngModel" required>
+				<label for="surname">Фамилия</label>
+			</div>
+			<validation-messages *ngIf="surname.invalid" [control]="surname"></validation-messages>
+		</div>
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="name" name="name" [(ngModel)]="user.name" #name="ngModel" required>
+				<label for="name">Имя</label>
+			</div>
+			<validation-messages *ngIf="name.invalid" [control]="name"></validation-messages>
+		</div>
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="patronymic" name="patronymic" [(ngModel)]="user.patronymic" #patronymic="ngModel" required>
+				<label for="patronymic">Отчество</label>
+			</div>
+			<validation-messages *ngIf="patronymic.invalid" [control]="patronymic"></validation-messages>
+		</div>
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="phone" name="phone" [(ngModel)]="user.phone" #phone="ngModel" required>
+				<label for="phone">Телефон</label>
+			</div>
+			<validation-messages *ngIf="phone.invalid" [control]="phone"></validation-messages>
+		</div>
+		<div class="row">
+			<div class="ui-float-label">
+				<input pInputText id="email" name="email" [(ngModel)]="user.email" #email="ngModel" required email>
+				<label for="email">Email</label>
+			</div>
+			<validation-messages *ngIf="email.invalid" [control]="email"></validation-messages>
+		</div>
+		<div class="row">
+			<button [disabled]="userForm.invalid" (click)="onSaveBtnClick()" color="accent">Сохранить</button>
+		</div>
+	</form>
 </div>

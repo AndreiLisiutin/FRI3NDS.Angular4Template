@@ -7,14 +7,7 @@ import { CustomFormsModule } from 'ng2-validation';
 import { TranslateModule } from "@ngx-translate/core";
 import { SimpleNotificationsModule } from "angular4-notifications";
 
-import {
-	MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule,
-	MdPaginatorModule, MdDatepickerModule, MdNativeDateModule
-} from '@angular/material';
-
-import { CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule } from '@covalent/core';
-
-import { DataTableModule, SharedModule } from 'primeng/primeng';
+import { DataTableModule, SharedModule, InputTextModule, DropdownModule, CheckboxModule, CalendarModule, TabViewModule } from 'primeng/primeng';
 
 import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk';
@@ -40,12 +33,8 @@ import { AdminViewerEntityInstancesComponent } from "components/_admin/viewer/ad
 @NgModule({
 	imports: [
 		CommonModule,
-		MdAutocompleteModule, MdButtonModule, MdCheckboxModule, MdInputModule, MdToolbarModule, MdSidenavModule, MdMenuModule, MdIconModule, MdSelectModule, MdTabsModule, MdTableModule, MdSortModule,
-		MdPaginatorModule, MdDatepickerModule, MdNativeDateModule,
 
-		CovalentLayoutModule, CovalentStepsModule, CovalentDataTableModule, CovalentPagingModule, CovalentCommonModule,
-
-		DataTableModule, SharedModule,
+		DataTableModule, SharedModule, InputTextModule, DropdownModule, CheckboxModule, CalendarModule, TabViewModule,
 
 		CdkTableModule,
 		SimpleNotificationsModule.forRoot(),

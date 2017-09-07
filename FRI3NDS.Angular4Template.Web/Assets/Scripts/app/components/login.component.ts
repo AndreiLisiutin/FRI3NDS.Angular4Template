@@ -41,8 +41,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
     doLogin(): void {
 
         this.authService.login(this.userLoginModel)
-            .subscribe((result: TokenInfo) => {
-                this.Router.navigate(['profile']);
+			.subscribe((result: TokenInfo) => {
+				this.ReverseRouter.profile();
 			}, (error) => this.handleError(error));
     }
 

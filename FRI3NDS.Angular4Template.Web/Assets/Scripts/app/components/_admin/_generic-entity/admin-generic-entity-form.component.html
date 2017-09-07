@@ -3,23 +3,24 @@
 		<div *ngFor="let row of formRows" class="vertical-form-row">
 			<div *ngFor="let field of row.fields; let in = index" class="col-xs-100 col-md-{{field.length * 100 / getWidthPerRow()}}">
 				<div *ngIf="!isFieldDate(field._FieldTypeId)" class="vertical-form-column">
-					<md-input-container>
-						<input mdInput placeholder="{{field.label}}" id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" />
-					</md-input-container>
+					<div class="ui-float-label">
+						<input pInputText id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" required>
+						<label for="id_{{field._FieldId}}">{{field.label}}</label>
+					</div>
 				</div>
 				<div *ngIf="isFieldDate(field._FieldTypeId)" class="vertical-form-column">
-					<md-input-container>
-						<input mdInput [mdDatepicker]="picker" placeholder="{{field.label}}" id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" >
-						<button mdSuffix [mdDatepickerToggle]="picker"></button>
-					</md-input-container>
-					<md-datepicker #picker></md-datepicker>
+
+					<div class="ui-float-label">
+						<p-calendar id="id_{{field._FieldId}}" name="name_{{field._FieldId}}" [(ngModel)]="this.entityInstanceModel[getEntityInstanceFieldName(field._FieldId)]" [showIcon]="true" dateFormat="dd.mm.yy"></p-calendar>
+						<label for="id_{{field._FieldId}}">{{field.label}}</label>
+					</div>
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="">
-			<button md-raised-button [disabled]="genericEntityForm.invalid" (click)="saveForm()">Сохранить</button>
-			<button md-raised-button (click)="goBack()">Отмена</button>
+			<button [disabled]="genericEntityForm.invalid" (click)="saveForm()">Сохранить</button>
+			<button (click)="goBack()">Отмена</button>
 		</div>
 	</div>
 </form>

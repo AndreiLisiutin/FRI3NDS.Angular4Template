@@ -1,7 +1,10 @@
 ﻿<div class="admin-panel">
-    <nav md-tab-nav-bar class="admin-panel_tabpanel">
-        <a md-tab-link class="admin-panel_link" routerLink="/admin/viewer" routerLinkActive #rlaViewer="routerLinkActive" [active]="rlaViewer.isActive">Админка</a>
-        <a md-tab-link class="admin-panel_link" routerLink="/admin/entity" routerLinkActive #rlaEntities="routerLinkActive" [active]="rlaEntities.isActive">Сущности</a>
-    </nav>
+	<p-tabView class="admin-panel_tabpanel" (onChange)="pageChange($event)">
+		<p-tabPanel header="Админка">
+		</p-tabPanel>
+		<p-tabPanel header="Сущности">
+		</p-tabPanel>
+	</p-tabView>
+
     <router-outlet class="admin-panel_content"></router-outlet>
 </div>

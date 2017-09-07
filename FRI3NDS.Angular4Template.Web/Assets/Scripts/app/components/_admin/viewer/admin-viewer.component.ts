@@ -4,9 +4,9 @@ import { _EntityService } from "services/_admin/_entity.service";
 import { _Entity } from "models/domain/_Entity";
 import { Observable } from 'rxjs/Rx';
 import { ConvertService } from "services/utils/convert.service";
-import { ITdDataTableSortChangeEvent, TdDataTableSortingOrder, IPageChangeEvent, TdPagingBarComponent } from "@covalent/core";
 import { BaseComponent } from "components/base.component";
 import { _EntityFilter } from "models/viewModels/_EntityViewModels";
+import { SortDirections } from "models/enums/SortDirections";
 
 @Component({
 	selector: 'admin-viewer',
@@ -23,48 +23,45 @@ export class AdminViewerComponent extends BaseComponent implements OnInit {
 		super();
 	}
 
-	@ViewChild('pagingBar') viewPagingBar: TdPagingBarComponent;
-
 	private entities: {
-		list?: any[],
+		list?: _Entity[],
 		pageSize?: number,
 		pageNumber?: number,
-		selectedEntityId: any[],
+		selectedEntity: _Entity,
 		sortBy?: string,
-		sortingOrder?: TdDataTableSortingOrder,
+		sortingOrder?: SortDirections,
 		count?: number,
-		rowCompareFunction: Function
 	} = {
 		pageSize: 10,
-		pageNumber: 1,
-		rowCompareFunction: (row: any, model: any) => row.id == model.id,
-		selectedEntityId: []
+		pageNumber: 0,
+		selectedEntity: null
 	};
 
 	ngOnInit(): void {
 		this.loadEntities();
 		this.countEntities();
 	}
-	
-	onTableSortChange(sortEvent: ITdDataTableSortChangeEvent): void {
-		this.entities.sortBy = sortEvent.name;
+
+	onSort(sortEvent: { field: string, order: number }): void {
+		this.entities.sortBy = sortEvent.field;
 		this.entities.sortingOrder = sortEvent.order;
+		this.entities.pageNumber = 0;
 		this.loadEntities();
 	}
 
-	onTablePageChange(pagingEvent: IPageChangeEvent): void {
-		this.entities.pageNumber = pagingEvent.page;
-		this.entities.pageSize = pagingEvent.pageSize;
+	onPage(e: { first: number, rows: number }) {
+		this.entities.pageNumber = e.first / e.rows;
+		this.entities.pageSize = e.rows;
 		this.loadEntities();
 	}
 
 	loadEntities(): void {
 		this._entityService.query(new _EntityFilter({
 			sortField: this.entities.sortBy,
-			sortDirection: this.ConvertService.sortingOrderToSortDirection(this.entities.sortingOrder),
-			pageNumber: this.entities.pageNumber - 1,
+			sortDirection: this.entities.sortingOrder,
+			pageNumber: this.entities.pageNumber,
 			pageSize: this.entities.pageSize || null
-		})).subscribe((entities) => {
+		})).subscribe((entities: _Entity[]) => {
 			this.entities.list = entities;
 		}, (error) => this.handleError(error));
 	}
@@ -77,11 +74,11 @@ export class AdminViewerComponent extends BaseComponent implements OnInit {
 	}
 	
 	goToEntityInstances() {
-		if (this.entities.selectedEntityId.length != 1) {
-			this.NotificationService.error('Ошибка', 'Выберите сущность для редактирования.');
+		if (this.entities.selectedEntity == null) {
+			this.NotificationService.error('Ошибка', 'Выберите сущность для просмотра экземпляров.');
 			return;
 		}
-		
-		this.Router.navigate(['admin/viewer/entityInstances', this.entities.selectedEntityId[0].id]);
+
+		this.ReverseRouter.entityInstances(this.entities.selectedEntity.id);
 	}
 }

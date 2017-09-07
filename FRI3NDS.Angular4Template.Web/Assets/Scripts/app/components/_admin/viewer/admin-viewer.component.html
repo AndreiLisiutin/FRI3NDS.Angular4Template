@@ -1,20 +1,12 @@
-﻿<td-data-table #dataTable
-			   [data]="entities.list"
-			   [columns]="[{ name: 'id', label: 'id'}, { name: 'name', label: 'name'}]"
-			   [selectable]="true"
-			   [clickable]="true"
-			   [multiple]="false"
-			   [sortable]="true"
-			   [compareWith]="entities.rowCompareFunction"
-			   [sortBy]="entities.sortBy"
-			   [(ngModel)]="entities.selectedEntityId"
-			   [sortOrder]="entities.sortingOrder"
-			   (sortChange)="onTableSortChange($event)">
-</td-data-table>
-<td-paging-bar #pagingBar [pageSizes]="[1, 5, 10, 15, 20]" [pageSize]="entities.pageSize" [total]="entities.count" (change)="onTablePageChange($event)">
-	<span td-paging-bar-label hide-xs>по:</span>
-	{{pagingBar.range}} <span hide-xs>из {{pagingBar.total}}</span>
-</td-paging-bar>
+﻿<p-dataTable [value]="entities.list" [rows]="entities.pageSize" [paginator]="true" [pageLinks]="10" [totalRecords]="entities.count" [lazy]="true"
+			 resizableColumns="true" [(selection)]="entities.selectedEntity" dataKey="id"
+			 (onPage)="onPage($event)" (onSort)="onSort($event)">
+	<p-column [style]="{'width':'38px'}" selectionMode="single"></p-column>
+	<p-column field="id" header="id" [sortable]="true"></p-column>
+	<p-column field="name" header="name" [sortable]="true"></p-column>
+</p-dataTable>
+
+
 <div class="">
-	<button md-raised-button (click)="goToEntityInstances()">Перейти</button>
+	<button [disabled]="!entities.selectedEntity" (click)="goToEntityInstances()">Перейти</button>
 </div>

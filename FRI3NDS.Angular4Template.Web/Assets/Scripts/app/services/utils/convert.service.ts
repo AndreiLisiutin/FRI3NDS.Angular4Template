@@ -1,5 +1,4 @@
 ﻿import { SortDirections } from "models/enums/SortDirections";
-import { TdDataTableSortingOrder } from "@covalent/core";
 import { Injectable } from "@angular/core";
 import { _FieldTypes } from "models/enums/_FieldTypes";
 import * as moment from 'moment/moment';
@@ -8,29 +7,7 @@ import * as moment from 'moment/moment';
 export class ConvertService {
 
 	private DATE_TIME_FORMAT: string = 'DD.MM.YYYY HH:mm:ss';
-
-	public sortDirectionToSortingOrder(sortDirection: SortDirections): TdDataTableSortingOrder {
-		switch (sortDirection) {
-			case SortDirections.Ascending:
-				return TdDataTableSortingOrder.Ascending;
-			case SortDirections.Descending:
-				return TdDataTableSortingOrder.Descending;
-			default:
-				return null;
-		}
-	}
-
-	public sortingOrderToSortDirection(sortingOrder: TdDataTableSortingOrder): SortDirections {
-		switch (sortingOrder) {
-			case TdDataTableSortingOrder.Ascending:
-				return SortDirections.Ascending;
-			case TdDataTableSortingOrder.Descending:
-				return SortDirections.Descending;
-			default:
-				return null;
-		}
-	}
-
+	
 	public deserialize(value: string, fieldTypeId: number): any {
 		if (!value) {
 			return null;

@@ -40,7 +40,7 @@ export class ReverseRoutingService {
 	public editField(id: number): Promise<boolean> {
 		return this.Router.navigate(['admin/entity/field', id, 'edit']);
 	}
-	public viewer(id: number): Promise<boolean> {
+	public viewer(): Promise<boolean> {
 		return this.Router.navigate(['admin/viewer']);
 	}
 	public entityInstances(entityId: number): Promise<boolean> {
