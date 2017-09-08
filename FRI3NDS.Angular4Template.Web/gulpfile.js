@@ -10,6 +10,11 @@ const tslint = require('gulp-tslint');
 var merge = require('merge-stream');
 var rename = require('gulp-rename');
 var tildeImporter = require('node-sass-tilde-importer');
+const vinylPaths = require('vinyl-paths');
+const gutil = require('gulp-util');
+const notifier = require('notifier');
+const webpack = require('webpack-stream')
+const webpackConfig = require('./Assets/webpack.config.js');
 
 var tsProject = ts.createProject('tsconfig.json');
 var isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV == 'development';
@@ -38,6 +43,16 @@ var paths = {
 	}
 };
 
+gulp.task('__webpack', function () {
+	return gulp.src([
+		paths.src.scripts + '/app/main.ts',
+		paths.src.scripts + '/vendor.ts',
+		paths.src.scripts + '/polyfills.ts'
+	], { base: paths.src.root })
+		.pipe(webpack(webpackConfig))
+		.pipe(gulp.dest(paths.dest.scripts));
+});
+
 // Линт скриптов
 gulp.task('tslint', function () {
 	return gulp.src(paths.src.js + "/**/*.ts")
@@ -56,6 +71,9 @@ gulp.task('ts:compile:copy', function () {
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest(paths.dest.js));
 });
+
+
+
 gulp.task('lib:copy', function () {
 	return gulp.src([
 		paths.src.lib + '/core-js/client/shim.min.js',

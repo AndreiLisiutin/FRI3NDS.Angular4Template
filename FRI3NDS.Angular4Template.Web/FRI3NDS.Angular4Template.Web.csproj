@@ -7,6 +7,9 @@
 
   <ItemGroup>
     <Content Include="wwwroot\Scripts\app\components\login\login.component.html" />
+    <Content Include="wwwroot\Scripts\polyfills - Копировать.js">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -148,5 +151,6 @@
       <CustomToolNamespace>Models\ViewModels\_Admin\_GenericEntityViewModels.cs</CustomToolNamespace>
     </None>
   </ItemGroup>
+  <ProjectExtensions><VisualStudio><UserProperties package_1json__JSONSchema="http://json.schemastore.org/bundleconfig" /></VisualStudio></ProjectExtensions>
 
 </Project>
