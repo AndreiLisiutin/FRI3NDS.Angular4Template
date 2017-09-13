@@ -1,27 +1,30 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./Assets/Scripts/app/",
-		"noImplicitAny": false,
-		"noEmitOnError": true,
-		"removeComments": false,
-		"sourceMap": true,
-		"module": "es2015",
+		"baseUrl": "./app/",
+		"target": "es5",
+		"module": "commonjs",
 		"moduleResolution": "node",
+		"sourceMap": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"lib": [ "es2015", "dom" ],
-		"typeRoots": [
-			"node_modules/@types/"
+		"removeComments": true,
+		"noImplicitAny": false,
+		"skipLibCheck": true,
+		"lib": [
+			"es2015",
+			"dom"
 		],
-		"target": "es5"
+		"typeRoots": [
+			"./node_modules/@types/"
+		]
 	},
-	"compileOnSave": false,
 	"exclude": [
 		"node_modules",
-		"wwwroot",
-		"Assets/Scripts/app/main-aot.ts"
+		"app/main-aot.ts"
 	],
 	"awesomeTypescriptLoaderOptions": {
 		"useWebpackText": true
-	}
+	},
+	"compileOnSave": false,
+	"buildOnSave": false
 }

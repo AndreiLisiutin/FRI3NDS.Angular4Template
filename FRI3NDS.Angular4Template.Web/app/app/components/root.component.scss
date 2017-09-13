@@ -1,0 +1,35 @@
+﻿@import '~styles/base/base.scss';
+
+.root {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.root_remaining-space {
+    flex: 1 1 auto;
+}
+
+.root_base {
+    width: 100%;
+    flex: 1 1 100%;
+}
+
+.root_navigation {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.root_navigation-link {
+    text-decoration: none;
+    padding: 5px;
+}
+
+.root_navigation-link__is-active {
+    color: accent-color(500);
+}

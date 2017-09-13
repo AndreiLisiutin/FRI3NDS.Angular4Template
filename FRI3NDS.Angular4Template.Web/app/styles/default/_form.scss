@@ -1,0 +1,27 @@
+﻿$errors-list-font-size: 12px;
+$errors-list-color: #f44336;
+
+md-input-container {
+	flex: 1 1 100%;
+}
+
+.validation-messages {
+}
+
+.vertical-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.vertical-form-column {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	padding: 20px 0 0 0;
+}
+
+.vertical-form-row {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: row;
+}
